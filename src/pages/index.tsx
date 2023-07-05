@@ -1,8 +1,21 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { api } from "~/utils/api";
-import { Button } from "@nextui-org/react";
+import {
+  Avatar,
+  Button,
+  Card,
+  Dropdown,
+  Grid,
+  Row,
+  Text,
+  Container,
+} from "@nextui-org/react";
 import Catalog from "~/components/catalog";
+import { MdOutlineLogout } from "react-icons/md";
+import LoginActionDialog from "~/components/dialog/login-action-dialog";
+import { useState } from "react";
+import HomePageSkeleton from "~/components/skeleton/home-page-skeleton";
+type Key = string | number;
 export default function Home() {
   return (
     <>
@@ -12,7 +25,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className="flex flex-col items-center gap-2">
+        <div>
           <AuthShowcase />
         </div>
       </main>
@@ -23,23 +36,80 @@ export default function Home() {
 function AuthShowcase() {
   const { data: sessionData } = useSession();
 
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-      </p>
+  const handleDropDownAction = async (option: Key) => {
+    switch (option) {
+      case "logout":
+        try {
+          await signOut();
+        } catch (error) {}
+        break;
+      default:
+        break;
+    }
+  };
 
-      {sessionData && (
-        <div>
-          <Catalog />
-        </div>
+  return (
+    <>
+      {sessionData ? null : (
+        <>
+          <HomePageSkeleton />
+          <LoginActionDialog />
+        </>
       )}
 
-      <Button
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </Button>
-    </div>
+      {sessionData && (
+        <Grid className="mr-4 mt-4 flex items-center justify-end">
+          <Text className="mr-2">
+            Welcome {sessionData?.user?.name as string}
+          </Text>
+
+          <Dropdown placement="bottom-left">
+            <Dropdown.Trigger>
+              <Avatar
+                className="cursor-pointer"
+                src={sessionData?.user?.image as string}
+                text={sessionData?.user?.name as string}
+                size="md"
+              />
+            </Dropdown.Trigger>
+            <Dropdown.Menu
+              disabledKeys={["profile"]}
+              color="secondary"
+              aria-label="Avatar Actions"
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onAction={handleDropDownAction}
+            >
+              <Dropdown.Item key="profile" css={{ height: "$18" }}>
+                <Text b color="inherit" css={{ d: "flex" }}>
+                  Signed in as
+                </Text>
+                <Text b color="inherit" css={{ d: "flex" }}>
+                  {sessionData?.user?.email}
+                </Text>
+              </Dropdown.Item>
+              <Dropdown.Item
+                key="logout"
+                color="error"
+                withDivider
+                icon={<MdOutlineLogout size={22} fill="currentColor" />}
+              >
+                Log Out
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Grid>
+      )}
+      <div className="flex flex-col items-center justify-center gap-4">
+        <p className="text-center text-2xl text-white">
+          {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
+        </p>
+
+        {sessionData && (
+          <div>
+            <Catalog />
+          </div>
+        )}
+      </div>
+    </>
   );
 }
