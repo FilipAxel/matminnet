@@ -2,11 +2,11 @@ import { Avatar, Card, Dropdown, Grid, Row, Text } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import CreateCatalog from "./create-catalog";
-import DeleteActionDialog from "./dialog/delete-action-dialog";
+import DeleteActionDialog from "./dialog/delete-catalog-action-dialog";
 import { useState } from "react";
 import Link from "next/link";
 import { MdDelete, MdModeEdit, MdOutlineSettings } from "react-icons/md";
-import EditActionDialog from "./dialog/edit-action-dialog";
+import EditActionDialog from "./dialog/edit-catalog-action-dialog";
 
 type Key = string | number;
 
@@ -35,7 +35,6 @@ const Catalog = () => {
     setSelectedCatalog(catalog);
     switch (option) {
       case "edit":
-        console.log("edit");
         setEditActionOpen(true);
         break;
       case "delete":
@@ -57,7 +56,7 @@ const Catalog = () => {
             <Grid key={catalog.id}>
               <Card css={{ width: "180px", height: "180px" }}>
                 <Card.Body className="group relative" css={{ p: 0 }}>
-                  <Link color="primary" href={"/catalogs/" + catalog?.id}>
+                  <Link color="primary" href={"/catalog/" + catalog?.id}>
                     <Card.Image
                       src={
                         "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80"

@@ -11,21 +11,21 @@ import {
   Text,
   useInput,
 } from "@nextui-org/react";
-import { useMemo } from "react";
 import { type SubmitHandler, useForm, Controller } from "react-hook-form";
 import { api } from "~/utils/api";
 
 interface IFormInput {
   name: string;
-  type: string;
 }
 
-interface CreateCatalogDialogProps {
+interface createRecipeDialogProps {
+  catalogId: string;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
+const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
+  catalogId,
   isOpen,
   setIsOpen,
 }) => {
@@ -42,20 +42,15 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
   } = useForm({
     defaultValues: {
       name: "",
-      type: "",
     },
   });
 
   const { isLoading, mutate: createCatalog } =
-    api.catalog.createCatalog.useMutation({
-      onSuccess() {
-        console.log("success");
-      },
-    });
+    api.recipe.createRecipe.useMutation();
 
   const onSubmit: SubmitHandler<IFormInput> = (FormdData) => {
     setIsOpen(false);
-    createCatalog(FormdData);
+    createCatalog({ catalogId: catalogId, name: FormdData.name });
   };
 
   return (
@@ -67,7 +62,7 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
         onClose={closeHandler}
       >
         <Modal.Header>
-          <Text id="modal-title">Create Catalog</Text>
+          <Text id="modal-title">Create Recipe</Text>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -107,28 +102,6 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
               )}
             />
             <Spacer y={1.6} />
-            {/*       <Controller
-              name="type"
-              control={control}
-              rules={{
-                required: true,
-                maxLength: 20,
-                minLength: 3,
-              }}
-              render={({ field }) => (
-                <Input
-                  clearable
-                  bordered
-                  fullWidth
-                  aria-label={field.name}
-                  placeholder={field.name}
-                  {...field}
-                  color="primary"
-                  size="lg"
-                />
-              )}
-            />
-            <Spacer y={1.6} /> */}
             <Grid.Container gap={2} justify="flex-end">
               <Grid>
                 <Button
@@ -155,4 +128,4 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
   );
 };
 
-export default CreateCatalogDialog;
+export default CreateRecipeDialog;
