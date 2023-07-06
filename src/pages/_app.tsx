@@ -2,6 +2,7 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
+import { Analytics } from "@vercel/analytics/react";
 import "~/styles/globals.css";
 
 // 1. import `NextUIProvider` component
@@ -18,6 +19,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <Navigation />
         <Spacer y={1} />
         <Component {...pageProps} />
+        <Analytics />
       </NextUIProvider>
     </SessionProvider>
   );
