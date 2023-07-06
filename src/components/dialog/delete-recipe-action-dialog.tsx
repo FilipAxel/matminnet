@@ -26,6 +26,7 @@ const DeleteRecipeActionDialog: React.FC<DeleteRecipeActionDialogProps> = ({
     <div>
       <Modal
         closeButton
+        className="mx-5"
         aria-labelledby="modal-title"
         open={isDeleteActionOpen}
         onClose={() => setDeleteActioOpen(false)}

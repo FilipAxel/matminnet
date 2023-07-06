@@ -29,9 +29,13 @@ const Recipe = ({ recipe }) => {
   return (
     <>
       <Grid>
-        <Card css={{ width: "180px", height: "180px" }}>
+        <Card className="h-[150px] w-[150px] sm:h-[180px] sm:w-[180px]">
           <Card.Body className="group relative" css={{ p: 0 }}>
-            <Link color="primary" href={`/recipe/${recipe?.id as string}`}>
+            <Link
+              className="overflow-hidden"
+              color="primary"
+              href={`/recipe/${recipe?.id as string}`}
+            >
               <Card.Image
                 src={
                   "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80"

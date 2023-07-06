@@ -5,7 +5,12 @@ import { useState } from "react";
 const LoginActionDialog = () => {
   return (
     <div>
-      <Modal open={true} preventClose aria-labelledby="modal-title">
+      <Modal
+        className="mx-5"
+        open={true}
+        preventClose
+        aria-labelledby="modal-title"
+      >
         <Modal.Header>
           <Text id="modal-title" size={18}>
             Welcome to{" "}

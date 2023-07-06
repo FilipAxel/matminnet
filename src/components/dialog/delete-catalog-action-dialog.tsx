@@ -28,6 +28,7 @@ const DeleteActionDialog: React.FC<DeleteActionDialogProps> = ({
     <div>
       <Modal
         closeButton
+        className="mx-5"
         aria-labelledby="modal-title"
         open={isDeleteActionOpen}
         onClose={() => setDeleteActioOpen(false)}

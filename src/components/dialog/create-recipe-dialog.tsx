@@ -57,6 +57,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
     <div>
       <Modal
         closeButton
+        className="mx-5"
         aria-labelledby="modal-title"
         open={isOpen}
         onClose={closeHandler}

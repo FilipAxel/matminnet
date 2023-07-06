@@ -44,6 +44,7 @@ const EditRecipeActionDialog: React.FC<editRecipeActionDialogProps> = ({
         closeButton
         aria-labelledby="modal-title"
         open={isEditActionOpen}
+        className="mx-5"
         onClose={() => setEditActionOpen(false)}
       >
         <Modal.Header>
