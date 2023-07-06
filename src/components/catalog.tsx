@@ -71,7 +71,11 @@ const Catalog = () => {
             {catalogs?.map((catalog) => {
               return (
                 <Grid key={catalog.id}>
-                  <Card className="h-[150px] w-[150px] sm:h-[180px] sm:w-[180px]">
+                  <Card
+                    isPressable
+                    isHoverable
+                    className="h-[150px] w-[150px] sm:h-[180px] sm:w-[180px]"
+                  >
                     <Card.Body className="group relative" css={{ p: 0 }}>
                       <Link
                         className="overflow-hidden"
