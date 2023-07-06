@@ -7,7 +7,7 @@ import "~/styles/globals.css";
 
 // 1. import `NextUIProvider` component
 import { NextUIProvider, Spacer } from "@nextui-org/react";
-import Navigation from "~/components/navigation";
+import NavigationBar from "~/components/navigation/navigation-bar";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -16,7 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <NextUIProvider>
-        <Navigation />
+        <NavigationBar />
         <Spacer y={1} />
         <Component {...pageProps} />
         <Analytics />
