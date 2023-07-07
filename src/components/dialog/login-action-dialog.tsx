@@ -1,6 +1,5 @@
-import { Button, Modal, Row, Text } from "@nextui-org/react";
+import { Button, Modal, Text } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
 
 const LoginActionDialog = () => {
   return (

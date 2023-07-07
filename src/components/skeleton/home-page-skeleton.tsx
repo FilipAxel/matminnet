@@ -1,4 +1,4 @@
-import { Grid, Card, Row, Text, Avatar } from "@nextui-org/react";
+import { Grid, Card, Row, Text } from "@nextui-org/react";
 
 import { FaPlus } from "react-icons/fa6";
 import { MdPerson2 } from "react-icons/md";
