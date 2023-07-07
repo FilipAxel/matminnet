@@ -23,8 +23,8 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           {CssBaseline.flush()}
-          <link rel="manifest" href="../../public/manifest/manifest.json" />
-          <link rel="apple-touch-icon" href="../icon.png"></link>
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="apple-touch-icon" href="/icon.png"></link>
           <title>Matminne</title>
           <meta name="robots" content="index, follow" />
           <meta name="author" content="Filip Johansson" />
