@@ -36,11 +36,7 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
   });
 
   const { isLoading, mutate: createCatalog } =
-    api.catalog.createCatalog.useMutation({
-      onSuccess() {
-        console.log("success");
-      },
-    });
+    api.catalog.createCatalog.useMutation();
 
   const onSubmit: SubmitHandler<IFormInput> = (FormdData) => {
     setIsOpen(false);

@@ -15,7 +15,6 @@ const NavigationBar = () => {
   const collapseItems = [
     { name: "Catalog", path: "/" },
     { name: "Recipes", path: "/recipes" },
-    { name: "Favorites", path: "favorites" },
   ];
 
   const handleDropDownAction = async (option: Key) => {
@@ -58,12 +57,6 @@ const NavigationBar = () => {
         </Navbar.Link>
         <Navbar.Link isActive={router.pathname === "/recipes"} href="/recipes">
           Recipes
-        </Navbar.Link>
-        <Navbar.Link
-          isActive={router.pathname === "/favorite"}
-          href="/favorite"
-        >
-          Favorites
         </Navbar.Link>
       </Navbar.Content>
       <Navbar.Content

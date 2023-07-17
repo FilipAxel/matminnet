@@ -6,7 +6,6 @@ import HomePageSkeleton from "~/components/skeleton/home-page-skeleton";
 
 export default function Home() {
   const { data: sessionData, status } = useSession();
-  console.log(status);
 
   if (status === "loading") {
     return (
