@@ -18,6 +18,21 @@ export const catalogRouter = createTRPCRouter({
     return result;
   }),
 
+  getCatalogWithId: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      const result = ctx.prisma.catalog.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+      return result;
+    }),
+
   createCatalog: protectedProcedure
     .input(
       z.object({

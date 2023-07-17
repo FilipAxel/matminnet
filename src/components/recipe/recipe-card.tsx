@@ -9,7 +9,7 @@ import DeleteRecipeActionDialog from "../dialog/delete-recipe-action-dialog";
 
 type Key = string | number;
 
-const Recipe = ({ recipe }) => {
+const RecipeCard = ({ recipe }) => {
   const [isDeleteActionOpen, setDeleteActioOpen] = useState(false);
   const [isEditActionOpen, setEditActionOpen] = useState(false);
 
@@ -122,4 +122,4 @@ const Recipe = ({ recipe }) => {
   );
 };
 
-export default Recipe;
+export default RecipeCard;

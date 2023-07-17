@@ -5,10 +5,10 @@ import { FaPlus } from "react-icons/fa6";
 import CreateRecipeDialog from "../dialog/create-recipe-dialog";
 
 interface createRecipeProps {
-  catalogId: string;
+  name?: string;
 }
 
-const CreateRecipe: React.FC<createRecipeProps> = ({ catalogId }) => {
+const CreateRecipe: React.FC<createRecipeProps> = ({ name }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -28,7 +28,7 @@ const CreateRecipe: React.FC<createRecipeProps> = ({ catalogId }) => {
         </Card.Body>
       </Card>
       <CreateRecipeDialog
-        catalogId={catalogId}
+        catalogName={name}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />

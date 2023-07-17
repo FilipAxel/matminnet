@@ -1,21 +1,51 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable react/jsx-no-undef */
-import { Button, Grid, Input, Modal, Spacer, Text } from "@nextui-org/react";
+import {
+  Button,
+  Grid,
+  Input,
+  Modal,
+  Spacer,
+  Text,
+  Textarea,
+} from "@nextui-org/react";
 import { type SubmitHandler, useForm, Controller } from "react-hook-form";
+import Select, { type ActionMeta } from "react-select";
 import { api } from "~/utils/api";
+import CreatableSelect from "react-select/creatable";
+import { Fragment } from "react";
 
-interface IFormInput {
+interface CatalogOption {
+  value: string;
+  label: string;
+}
+
+interface IngredientOption {
+  value: string;
+  label: string;
+  quantity: string;
+  unit: string;
+}
+
+interface FormValues {
   name: string;
+  description: string;
+  direction: string;
+  ingredients: IngredientOption[];
+  servingSize: string;
+  video: string;
+  country: string;
+  author: string;
+  catalog: CatalogOption;
 }
 
 interface createRecipeDialogProps {
-  catalogId: string;
+  catalogName?: string;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
-  catalogId,
+  catalogName,
   isOpen,
   setIsOpen,
 }) => {
@@ -24,23 +54,42 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
     reset();
   };
 
+  const ingredientOptions: IngredientOption[] = [];
+
   const {
     control,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormValues>({
     defaultValues: {
       name: "",
+      description: "",
+      direction: "",
+      servingSize: "",
+      video: "",
+      country: "",
+      author: "",
+      catalog: {
+        value: catalogName ? catalogName : "",
+        label: catalogName ? catalogName : "",
+      },
+      ingredients: [],
     },
   });
 
-  const { isLoading, mutate: createCatalog } =
-    api.recipe.createRecipe.useMutation();
+  const { mutate: createRecipe } = api.recipe.createRecipe.useMutation();
+  const { data: catalogs } = api.catalog.getCatalogs.useQuery(
+    undefined // no input
+  );
 
-  const onSubmit: SubmitHandler<IFormInput> = (FormdData) => {
+  const onSubmit: SubmitHandler<FormValues> = (formdData) => {
     setIsOpen(false);
-    createCatalog({ catalogId: catalogId, name: FormdData.name });
+    createRecipe({
+      recipe: formdData,
+    });
+    reset();
   };
 
   return (
@@ -53,7 +102,9 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
         onClose={closeHandler}
       >
         <Modal.Header>
-          <Text id="modal-title">Create Recipe</Text>
+          <Text size={30} weight="bold" h1 id="modal-title">
+            Create Recipe
+          </Text>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +122,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   bordered
                   helperText={
                     errors?.name?.type === "required"
-                      ? "Input is required"
+                      ? "Name is required"
                       : "" || errors?.name?.type === "maxLength"
                       ? "name must not exceed 100 characters"
                       : ""
@@ -83,10 +134,243 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                       ? "error"
                       : "primary"
                   }
-                  color={errors.name?.type === "required" ? "error" : "primary"}
+                  color={errors.name?.type === "required" ? "error" : "default"}
+                  aria-label={field.name}
+                  label="Name"
+                  fullWidth
+                  {...field}
+                  size="lg"
+                />
+              )}
+            />
+            <Spacer y={1} />
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <Textarea
+                  bordered
+                  label="Description"
                   aria-label={field.name}
                   fullWidth
-                  placeholder={field.name}
+                  {...field}
+                  size="lg"
+                  minRows={1}
+                  maxRows={8}
+                />
+              )}
+            />
+            <Spacer y={1} />
+            <label htmlFor="ingredients">Ingredients</label>
+            <Controller
+              name="ingredients"
+              render={({ field }) => {
+                const { onChange } = field;
+                const currentValue = getValues("ingredients") || [];
+
+                const handleInputChange = (
+                  newValue: IngredientOption[],
+                  actionMeta: ActionMeta<IngredientOption>
+                ) => {
+                  if (actionMeta.action === "create-option") {
+                    const { label, value } = actionMeta.option;
+                    const existingOptionIndex = currentValue.findIndex(
+                      (option) => option.label === label
+                    );
+                    if (existingOptionIndex !== -1) {
+                      currentValue.splice(existingOptionIndex, 1);
+                    }
+                    const newIngredient: IngredientOption = {
+                      value: value,
+                      label: label,
+                      quantity: "1",
+                      unit: "st",
+                    };
+                    const updatedValue = [...currentValue, newIngredient];
+                    onChange(updatedValue);
+                  } else {
+                    onChange(newValue);
+                  }
+                };
+
+                const handleIngredientChange = (
+                  index: number,
+                  field: string,
+                  value: string
+                ) => {
+                  const updatedIngredients = [...currentValue];
+                  if (updatedIngredients[index]) {
+                    updatedIngredients[index] = {
+                      ...updatedIngredients[index],
+                      [field]: value,
+                    } as IngredientOption;
+                    onChange(updatedIngredients);
+                  }
+                };
+
+                return (
+                  <>
+                    <CreatableSelect
+                      {...field}
+                      isMulti
+                      options={ingredientOptions}
+                      isClearable={true}
+                      onChange={handleInputChange}
+                    />
+                    {currentValue.length > 0 && (
+                      <Grid.Container gap={1} justify="center">
+                        {currentValue.map((option, index) => (
+                          <Fragment key={option.value}>
+                            <Grid xs={4}>
+                              <Input
+                                aria-labelledby={option.label}
+                                size="sm"
+                                value={option.label}
+                                type="text"
+                                onChange={(e) =>
+                                  handleIngredientChange(
+                                    index,
+                                    "label",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            </Grid>
+                            <Grid xs={4}>
+                              <Input
+                                aria-labelledby={"quantity"}
+                                size="sm"
+                                value={option.quantity}
+                                type="number"
+                                onChange={(e) =>
+                                  handleIngredientChange(
+                                    index,
+                                    "quantity",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            </Grid>
+                            <Grid xs={4}>
+                              <Input
+                                aria-labelledby={option.unit}
+                                size="sm"
+                                value={option.unit}
+                                type="text"
+                                onChange={(e) =>
+                                  handleIngredientChange(
+                                    index,
+                                    "unit",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            </Grid>
+                          </Fragment>
+                        ))}
+                      </Grid.Container>
+                    )}
+                  </>
+                );
+              }}
+              control={control}
+              rules={{ required: true }}
+            />
+            <Spacer y={1} />
+            <Controller
+              name="direction"
+              control={control}
+              render={({ field }) => (
+                <Textarea
+                  bordered
+                  label="Direction"
+                  aria-label={field.name}
+                  fullWidth
+                  {...field}
+                  size="lg"
+                  minRows={2}
+                  maxRows={8}
+                />
+              )}
+            />
+            <Spacer y={1} />
+            <Controller
+              name="servingSize"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  bordered
+                  aria-label={field.name}
+                  fullWidth
+                  label="Serving size"
+                  type="number"
+                  {...field}
+                  size="lg"
+                />
+              )}
+            />
+            <Spacer y={1} />
+            <Controller
+              name="video"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  clearable
+                  bordered
+                  aria-label={field.name + "url"}
+                  label="Youtube Url"
+                  fullWidth
+                  type="url"
+                  {...field}
+                  size="lg"
+                />
+              )}
+            />
+            <Spacer y={1} />
+            <label htmlFor="catalog">Catalog</label>
+            <Controller
+              name="catalog"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  classNamePrefix="select"
+                  isClearable={true}
+                  isSearchable={true}
+                  {...field}
+                  options={catalogs?.map((catalog) => {
+                    return { value: catalog.id, label: catalog.name };
+                  })}
+                />
+              )}
+            />
+
+            <Spacer y={1} />
+            <Controller
+              name="country"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  clearable
+                  bordered
+                  label="Country"
+                  aria-label={field.name}
+                  fullWidth
+                  {...field}
+                  size="lg"
+                />
+              )}
+            />
+            <Spacer y={1} />
+            <Controller
+              name="author"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  clearable
+                  bordered
+                  label="Author"
+                  aria-label={field.name}
+                  fullWidth
                   {...field}
                   size="lg"
                 />
