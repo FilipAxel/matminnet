@@ -62,7 +62,9 @@ const CatalogsPage = () => {
         ) : null}
 
         {searchResults && !isLoading
-          ? searchResults.map((r) => <RecipeCard key={r.id} recipe={r} />)
+          ? searchResults.map((recipe: Recipe) => (
+              <RecipeCard key={recipe.id} recipe={recipe} />
+            ))
           : null}
       </Grid.Container>
     </>

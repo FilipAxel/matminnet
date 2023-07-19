@@ -27,6 +27,12 @@ const NavigationBar = () => {
           throw error;
         }
         break;
+      case "settings":
+        await router.push("/settings").catch((error) => {
+          console.warn(error);
+          throw error;
+        });
+        break;
       default:
         break;
     }
@@ -92,6 +98,11 @@ const NavigationBar = () => {
               </Text>
               <Text b color="inherit" css={{ d: "flex" }}>
                 {sessionData?.user?.email}
+              </Text>
+            </Dropdown.Item>
+            <Dropdown.Item withDivider key="settings" css={{ height: "$18" }}>
+              <Text b color="inherit" css={{ d: "flex" }}>
+                Settings
               </Text>
             </Dropdown.Item>
             <Dropdown.Item
