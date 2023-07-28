@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["jsonProtocol"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -52,9 +51,11 @@ model User {
     recipe        Recipe[]
     accounts      Account[]
     sessions      Session[]
+    isAdmin       Boolean   @default(false)
 
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+    created_at               DateTime                   @default(now())
+    updated_at               DateTime                   @updatedAt
+    RecipePublicationRequest RecipePublicationRequest[]
 }
 
 model Author {
@@ -98,24 +99,40 @@ model Tags {
 }
 
 model Recipe {
-    id          String            @id @default(cuid())
-    name        String
-    catalogs    RecipeOnCatalog[]
-    tags        Tags[]
-    servingSize Int?
-    description String?
-    direction   String?
-    country     String?
-    images      Image[]
-    video       String?
-    User        User?             @relation(fields: [userId], references: [id])
-    userId      String?
-    author      Author?           @relation(fields: [authorId], references: [id])
-    authorId    String?
+    id                       String                     @id @default(cuid())
+    name                     String
+    catalogs                 RecipeOnCatalog[]
+    RecipeIngredient         RecipeIngredient[]
+    tags                     Tags[]
+    servingSize              Int?
+    description              String?
+    direction                String?
+    country                  String?
+    images                   Image[]
+    video                    String?
+    author                   Author?                    @relation(fields: [authorId], references: [id])
+    authorId                 String?
+    publicationStatus        String                     @default("private") // Add a field to track publication status: "private", "published", "pending approval"
+    RecipePublicationRequest RecipePublicationRequest[]
+
+    User                     User?                      @relation(fields: [userId], references: [id])
+    userId                   String?
 
     created_at       DateTime           @default(now())
     updated_at       DateTime           @updatedAt
-    RecipeIngredient RecipeIngredient[]
+
+}
+
+model RecipePublicationRequest {
+    id       String @id @default(cuid())
+    recipe   Recipe @relation(fields: [recipeId], references: [id])
+    recipeId String
+    user     User   @relation(fields: [userId], references: [id])
+    userId   String
+    status   String @default("pending") // Use this field to track the status: "pending", "accepted", "declined"
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 }
 
 model Ingredient {

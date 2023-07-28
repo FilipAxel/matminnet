@@ -91,6 +91,7 @@ export const recipeRouter = createTRPCRouter({
               unit: z.string(),
             })
           ),
+          publicationStatus: z.boolean(),
         }),
       })
     )
@@ -107,6 +108,7 @@ export const recipeRouter = createTRPCRouter({
         name,
         servingSize,
         video,
+        publicationStatus,
       } = recipe;
 
       try {
@@ -197,11 +199,23 @@ export const recipeRouter = createTRPCRouter({
                 },
               })),
             },
+            publicationStatus: publicationStatus
+              ? "pending approval"
+              : "private",
           },
           include: {
             RecipeIngredient: true, // Include the created ingredients in the response
           },
         });
+
+        if (publicationStatus) {
+          await ctx.prisma.recipePublicationRequest.create({
+            data: {
+              recipeId: createdRecipe.id,
+              userId: id,
+            },
+          });
+        }
 
         return {
           status: "success",
