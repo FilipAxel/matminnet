@@ -5,6 +5,8 @@ import {
   Input,
   Modal,
   Spacer,
+  Switch,
+  type SwitchEvent,
   Text,
   Textarea,
 } from "@nextui-org/react";
@@ -36,6 +38,7 @@ interface FormValues {
   country: string;
   author: string;
   catalog: CatalogOption;
+  publicationStatus: boolean;
 }
 
 interface createRecipeDialogProps {
@@ -76,6 +79,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
         label: catalogName ? catalogName : "",
       },
       ingredients: [],
+      publicationStatus: false,
     },
   });
 
@@ -86,6 +90,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
 
   const onSubmit: SubmitHandler<FormValues> = (formdData) => {
     setIsOpen(false);
+    console.log(formdData);
     createRecipe({
       recipe: formdData,
     });
@@ -376,6 +381,27 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 />
               )}
             />
+            <Spacer y={1.6} />
+
+            <div className="flex items-center">
+              <Controller
+                name="publicationStatus"
+                control={control}
+                render={({ field }) => (
+                  <Switch
+                    {...field}
+                    shadow
+                    color="success"
+                    onChange={(e: SwitchEvent) =>
+                      field.onChange(e.target.checked)
+                    }
+                  />
+                )}
+              />
+              <label className="ml-2" htmlFor="publicationStatus">
+                Publish
+              </label>
+            </div>
             <Spacer y={1.6} />
             <Grid.Container gap={2} justify="flex-end">
               <Grid>
