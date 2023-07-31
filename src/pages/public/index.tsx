@@ -1,32 +1,15 @@
-import { Grid, Loading, Spacer, Text } from "@nextui-org/react";
+import { Spacer, Grid, Loading } from "@nextui-org/react";
 import { type Recipe } from "@prisma/client";
 import { useState } from "react";
-import CreateRecipe from "~/components/recipe/create-recipe";
-import RecipeList from "~/components/recipe/recipe-card";
 import SearchRecipe from "~/components/recipe/recipe-search";
 import { api } from "~/utils/api";
+import RecipeList from "~/components/recipe/recipe-card";
 
-const Recipes = () => {
+const Public = () => {
   const [searchResults, setSearchResults] = useState<Recipe[]>([]);
 
   const { data: fetchedRecipes, isLoading } =
-    api.recipe.getAllRecipes.useQuery();
-
-  if (!fetchedRecipes?.length && !isLoading) {
-    return (
-      <div className="grid h-[60vh] place-items-center ">
-        <div>
-          <Text weight="bold" size={40} h1 className="text-center">
-            Soory, you dont have any recipes...
-          </Text>
-
-          <div className="mt-5 flex justify-center">
-            <CreateRecipe />
-          </div>
-        </div>
-      </div>
-    );
-  }
+    api.recipe.getApprovedPublication.useQuery();
 
   return (
     <>
@@ -46,9 +29,6 @@ const Recipes = () => {
         className="mx-auto flex w-full max-w-[1200px] justify-start"
         gap={2}
       >
-        <Grid>
-          <CreateRecipe />
-        </Grid>
         {searchResults.map((recipe) => (
           <RecipeList key={recipe.id} recipe={recipe} />
         ))}
@@ -57,4 +37,4 @@ const Recipes = () => {
   );
 };
 
-export default Recipes;
+export default Public;

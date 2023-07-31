@@ -1,7 +1,11 @@
-import { type Author, Prisma, Ingredient } from "@prisma/client";
+import { type Author, Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const recipeRouter = createTRPCRouter({
   getAllRecipes: protectedProcedure.query(({ ctx }) => {
@@ -14,6 +18,17 @@ export const recipeRouter = createTRPCRouter({
     });
 
     return recipes;
+  }),
+
+  getApprovedPublication: publicProcedure.query(async ({ ctx }) => {
+    try {
+      const recipes = await ctx.prisma.recipe.findMany({
+        where: {
+          publicationStatus: "published",
+        },
+      });
+      return recipes;
+    } catch (error) {}
   }),
 
   getRecipeWithCatalogId: protectedProcedure

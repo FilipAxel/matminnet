@@ -1,5 +1,4 @@
 import { Card, Grid, Text } from "@nextui-org/react";
-import SettingsTable from "~/components/table/table";
 import {
   MdKeyboardArrowRight,
   MdOutlineMenuBook,
@@ -7,6 +6,7 @@ import {
 } from "react-icons/md";
 import cn from "classnames";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 interface Setting {
   name: string;
@@ -16,6 +16,10 @@ interface Setting {
 }
 
 const Settings = () => {
+  const { data: session } = useSession();
+  // Get the isAdmin value from the session data
+  const isAdmin = session?.user?.isAdmin;
+
   const SettingsList: Setting[] = [
     {
       name: "Recipes Management",
@@ -29,35 +33,40 @@ const Settings = () => {
       path: "account",
       styles: ["text-blue-500"],
     },
-  ];
+    isAdmin && {
+      name: "Admin",
+      icon: MdSettings,
+      path: "admin",
+      styles: ["text-red-500"],
+    },
+  ].filter(Boolean) as Setting[];
 
   return (
-    <>
-      {/* <SettingsTable /> */}
-
-      <Grid.Container className="mt-4" gap={1} justify="center">
-        {SettingsList.map((setting, index) => (
-          <Grid xs={11} key={index}>
+    <Grid.Container className="mt-4" gap={1} justify="center">
+      {SettingsList.map((setting, index) => (
+        <Grid xs={11} key={index}>
+          <Link
+            className="w-full"
+            color="primary"
+            href={`/settings/${setting?.path}`}
+          >
             <Card isPressable css={{ mw: "400px" }} variant="flat">
               <Card.Body className="flex flex-row items-center justify-between">
-                <Link color="primary" href={`/settings/${setting?.path}`}>
-                  <Text className="flex items-center" weight="normal" h2>
-                    {setting.icon && (
-                      <div className={cn(`mr-2 text-xl`, ...setting.styles)}>
-                        <setting.icon />
-                      </div>
-                    )}
-                    {setting.name}
-                  </Text>
-                </Link>
-
+                <Text className="flex items-center" weight="normal" h2>
+                  {setting.icon && (
+                    <div className={cn(`mr-2 text-xl`, ...setting.styles)}>
+                      <setting.icon />
+                    </div>
+                  )}
+                  {setting.name}
+                </Text>
                 <MdKeyboardArrowRight className="text-xl" />
               </Card.Body>
             </Card>
-          </Grid>
-        ))}
-      </Grid.Container>
-    </>
+          </Link>
+        </Grid>
+      ))}
+    </Grid.Container>
   );
 };
 

@@ -17,8 +17,6 @@ const SettingsTable = () => {
   const { data: fetchedRecipes, isLoading } =
     api.recipe.getAllRecipes.useQuery();
 
-  console.log(fetchedRecipes);
-
   return (
     <>
       {isLoading ? (
@@ -64,7 +62,3 @@ const SettingsTable = () => {
 };
 
 export default SettingsTable;
-
-{
-  /*  */
-}
