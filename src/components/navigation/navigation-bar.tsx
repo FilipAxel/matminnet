@@ -15,6 +15,7 @@ const NavigationBar = () => {
   const collapseItems = [
     { name: "Catalog", path: "/" },
     { name: "Recipes", path: "/recipes" },
+    { name: "Public", path: "/public" },
   ];
 
   const handleDropDownAction = async (option: Key) => {
@@ -49,7 +50,7 @@ const NavigationBar = () => {
         }}
       >
         <Text b color="inherit" hideIn="xs">
-          Name of Page
+          MatMinnet
         </Text>
       </Navbar.Brand>
       <Navbar.Content
@@ -63,6 +64,9 @@ const NavigationBar = () => {
         </Navbar.Link>
         <Navbar.Link isActive={router.pathname === "/recipes"} href="/recipes">
           Recipes
+        </Navbar.Link>
+        <Navbar.Link isActive={router.pathname === "/public"} href="/public">
+          Public
         </Navbar.Link>
       </Navbar.Content>
       <Navbar.Content
