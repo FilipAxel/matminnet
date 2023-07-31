@@ -129,7 +129,7 @@ model RecipePublicationRequest {
     recipeId String
     user     User   @relation(fields: [userId], references: [id])
     userId   String
-    status   String @default("pending") // Use this field to track the status: "pending", "accepted", "declined"
+    status   String @default("pending") // Use this field to track the status: "pending", "approved", "declined"
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt

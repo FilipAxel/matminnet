@@ -15,7 +15,7 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
   setSearchResults,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState<string>("asc");
+  const [sortOrder, setSortOrder] = useState<string>("A-Z");
 
   useEffect(() => {
     const results = fetchedRecipes?.filter((recipe) =>
@@ -23,9 +23,9 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
     );
 
     const sortedResults = results ? [...results] : [];
-    if (sortOrder === "asc") {
+    if (sortOrder === "A-Z") {
       sortedResults.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortOrder === "desc") {
+    } else if (sortOrder === "Z-A") {
       sortedResults.sort((a, b) => b.name.localeCompare(a.name));
     }
     setSearchResults(sortedResults);
@@ -78,8 +78,8 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
           onAction={(option) => handleSortChange(option)}
           aria-label="Static Actions"
         >
-          <Dropdown.Item key="asc">Asc</Dropdown.Item>
-          <Dropdown.Item key="desc">Desc</Dropdown.Item>
+          <Dropdown.Item key="A-Z">A-Z</Dropdown.Item>
+          <Dropdown.Item key="Z-A">Z-A</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </form>

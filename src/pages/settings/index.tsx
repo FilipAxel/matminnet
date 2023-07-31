@@ -1,64 +1,72 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import { Input } from "@nextui-org/react";
-import { Controller, type SubmitHandler, useForm } from "react-hook-form";
+import { Card, Grid, Text } from "@nextui-org/react";
+import {
+  MdKeyboardArrowRight,
+  MdOutlineMenuBook,
+  MdSettings,
+} from "react-icons/md";
+import cn from "classnames";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
-interface IFormInput {
-  searchName: string;
+interface Setting {
+  name: string;
+  icon: React.ComponentType;
+  path: string;
+  styles: string[];
 }
 
 const Settings = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      searchName: "",
-    },
-  });
+  const { data: session } = useSession();
+  // Get the isAdmin value from the session data
+  const isAdmin = session?.user?.isAdmin;
 
-  const onSubmit: SubmitHandler<IFormInput> = (FormdData) => {
-    console.log("you submited");
-  };
+  const SettingsList: Setting[] = [
+    {
+      name: "Recipes Management",
+      icon: MdOutlineMenuBook,
+      path: "managment",
+      styles: ["text-purple-700"],
+    },
+    {
+      name: "Account Settings",
+      icon: MdSettings,
+      path: "account",
+      styles: ["text-blue-500"],
+    },
+    isAdmin && {
+      name: "Admin",
+      icon: MdSettings,
+      path: "admin",
+      styles: ["text-red-500"],
+    },
+  ].filter(Boolean) as Setting[];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="searchName"
-        control={control}
-        rules={{
-          required: true,
-          maxLength: 20,
-          minLength: 3,
-        }}
-        render={({ field }) => (
-          <Input
-            aria-label={field.name}
-            helperText={
-              errors?.searchName?.type === "required"
-                ? "Input is required"
-                : "" || errors?.searchName?.type === "maxLength"
-                ? "name must not exceed 100 characters"
-                : ""
-            }
-            helperColor={
-              errors.searchName?.type === "required"
-                ? "error"
-                : "primary" || errors?.searchName?.type === "maxLength"
-                ? "error"
-                : "primary"
-            }
-            color={errors.searchName?.type === "required" ? "error" : "primary"}
-            clearable
-            bordered
-            fullWidth
-            placeholder={field.name}
-            {...field}
-            size="lg"
-          />
-        )}
-      />
-    </form>
+    <Grid.Container className="mt-4" gap={1} justify="center">
+      {SettingsList.map((setting, index) => (
+        <Grid xs={11} key={index}>
+          <Link
+            className="w-full"
+            color="primary"
+            href={`/settings/${setting?.path}`}
+          >
+            <Card isPressable css={{ mw: "400px" }} variant="flat">
+              <Card.Body className="flex flex-row items-center justify-between">
+                <Text className="flex items-center" weight="normal" h2>
+                  {setting.icon && (
+                    <div className={cn(`mr-2 text-xl`, ...setting.styles)}>
+                      <setting.icon />
+                    </div>
+                  )}
+                  {setting.name}
+                </Text>
+                <MdKeyboardArrowRight className="text-xl" />
+              </Card.Body>
+            </Card>
+          </Link>
+        </Grid>
+      ))}
+    </Grid.Container>
   );
 };
 
