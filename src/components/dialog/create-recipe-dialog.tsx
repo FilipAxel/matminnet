@@ -57,7 +57,14 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
     reset();
   };
 
-  const ingredientOptions: IngredientOption[] = [];
+  const { data } = api.ingredient.getAllIngredients.useQuery();
+  const ingredientOptions: IngredientOption[] =
+    data?.map((item: { name: string }) => ({
+      value: item.name,
+      label: item.name,
+      quantity: "1",
+      unit: "st",
+    })) ?? [];
 
   const {
     control,
@@ -407,7 +414,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               <Grid>
                 <Button
                   type="button"
-                  onClick={() => reset()}
+                  onPress={() => reset()}
                   auto
                   flat
                   color="primary"
