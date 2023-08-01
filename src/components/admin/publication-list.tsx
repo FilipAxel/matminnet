@@ -134,7 +134,7 @@ const PublicationList = () => {
                     selectedRecipe.size === 0)
                 }
                 bordered
-                color="primary"
+                color="error"
               >
                 Decline
               </Button>

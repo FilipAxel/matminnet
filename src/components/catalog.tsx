@@ -28,10 +28,10 @@ const Catalog = () => {
   const [isEditActionOpen, setEditActionOpen] = useState(false);
   const [selectedCatalog, setSelectedCatalog] = useState<Catalog | null>(null);
 
-  const { data: sessionData } = useSession();
+  const { data: session } = useSession();
   const { data: catalogs, isLoading } = api.catalog.getCatalogs.useQuery(
     undefined, // no input
-    { enabled: sessionData?.user !== undefined }
+    { enabled: session?.user !== undefined }
   );
 
   const handleDropDownAction = (option: Key, id: string) => {

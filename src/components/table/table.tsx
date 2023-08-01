@@ -5,6 +5,7 @@ import { type Recipe } from "@prisma/client";
 
 const columns = [
   { name: "NAME", uid: "name" },
+  { name: "PUBLICATION STATUS", uid: "publicationStatus" },
   { name: "COUNTRY", uid: "country" },
   { name: "DESCRIPTION", uid: "description" },
   { name: "DIRECTION", uid: "direction" },
@@ -14,8 +15,7 @@ const columns = [
 ];
 
 const SettingsTable = () => {
-  const { data: fetchedRecipes, isLoading } =
-    api.recipe.getAllRecipes.useQuery();
+  const { data: recipes, isLoading } = api.recipe.getAllRecipes.useQuery();
 
   return (
     <>
@@ -44,7 +44,7 @@ const SettingsTable = () => {
             )}
           </Table.Header>
 
-          <Table.Body items={fetchedRecipes}>
+          <Table.Body items={recipes}>
             {(recipe: Recipe) => (
               <Table.Row>
                 {(columnKey) => (

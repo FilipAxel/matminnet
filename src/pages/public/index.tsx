@@ -8,16 +8,13 @@ import RecipeList from "~/components/recipe/recipe-card";
 const Public = () => {
   const [searchResults, setSearchResults] = useState<Recipe[]>([]);
 
-  const { data: fetchedRecipes, isLoading } =
+  const { data: recipes, isLoading } =
     api.recipe.getApprovedPublication.useQuery();
 
   return (
     <>
-      {fetchedRecipes ? (
-        <SearchRecipe
-          fetchedRecipes={fetchedRecipes}
-          setSearchResults={setSearchResults}
-        />
+      {recipes ? (
+        <SearchRecipe recipes={recipes} setSearchResults={setSearchResults} />
       ) : null}
       <Spacer y={1} />
       {isLoading ? (

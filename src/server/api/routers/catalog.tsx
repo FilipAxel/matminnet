@@ -24,13 +24,26 @@ export const catalogRouter = createTRPCRouter({
         id: z.string(),
       })
     )
-    .query(({ ctx, input }) => {
-      const result = ctx.prisma.catalog.findFirst({
-        where: {
-          id: input.id,
-        },
-      });
-      return result;
+    .query(async ({ ctx, input }) => {
+      const { session } = ctx;
+      try {
+        const catalog = await ctx.prisma.catalog.findFirst({
+          where: {
+            id: input.id,
+          },
+        });
+
+        console.log(session.user.id);
+
+        if (session.user.id === catalog?.userId) {
+          return catalog;
+        }
+
+        return null;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     }),
 
   createCatalog: protectedProcedure

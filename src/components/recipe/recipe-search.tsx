@@ -6,19 +6,19 @@ import { Controller, useForm } from "react-hook-form";
 type Key = string | number;
 
 interface SearchRecipeProps {
-  fetchedRecipes: Recipe[];
+  recipes: Recipe[];
   setSearchResults: (results: Recipe[]) => void;
 }
 
 const SearchRecipe: React.FC<SearchRecipeProps> = ({
-  fetchedRecipes,
+  recipes,
   setSearchResults,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState<string>("A-Z");
 
   useEffect(() => {
-    const results = fetchedRecipes?.filter((recipe) =>
+    const results = recipes?.filter((recipe) =>
       recipe?.name.toLowerCase().includes(searchTerm)
     );
 
@@ -29,7 +29,7 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
       sortedResults.sort((a, b) => b.name.localeCompare(a.name));
     }
     setSearchResults(sortedResults);
-  }, [searchTerm, fetchedRecipes, sortOrder, setSearchResults]);
+  }, [searchTerm, recipes, sortOrder, setSearchResults]);
 
   const {
     control,

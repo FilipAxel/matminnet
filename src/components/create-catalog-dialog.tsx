@@ -118,7 +118,7 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
               <Grid>
                 <Button
                   type="button"
-                  onClick={() => reset()}
+                  onPress={() => reset()}
                   auto
                   flat
                   color="primary"

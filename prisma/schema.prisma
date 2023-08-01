@@ -112,7 +112,7 @@ model Recipe {
     video                    String?
     author                   Author?                    @relation(fields: [authorId], references: [id])
     authorId                 String?
-    publicationStatus        String                     @default("private") // Add a field to track publication status: "private", "published", "pending approval"
+    publicationStatus        String                     @default("private") // Add a field to track publication status: "private", "published", "unapproved"
     RecipePublicationRequest RecipePublicationRequest[]
 
     User                     User?                      @relation(fields: [userId], references: [id])
@@ -125,9 +125,9 @@ model Recipe {
 
 model RecipePublicationRequest {
     id       String @id @default(cuid())
-    recipe   Recipe @relation(fields: [recipeId], references: [id])
+    recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
     recipeId String
-    user     User   @relation(fields: [userId], references: [id])
+    user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId   String
     status   String @default("pending") // Use this field to track the status: "pending", "approved", "declined"
 
@@ -149,7 +149,7 @@ model RecipeIngredient {
     unit         String?
     ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
     ingredientId String
-    recipe       Recipe     @relation(fields: [recipeId], references: [id])
+    recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
     recipeId     String
 
     created_at DateTime @default(now())

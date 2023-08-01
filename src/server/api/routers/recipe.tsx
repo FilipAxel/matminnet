@@ -64,9 +64,9 @@ export const recipeRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const recipeId: string = input.id;
-
+      const { session } = ctx;
       try {
-        const recipes = await ctx.prisma.recipe.findFirst({
+        const recipe = await ctx.prisma.recipe.findFirst({
           where: {
             id: recipeId,
           },
@@ -79,8 +79,19 @@ export const recipeRouter = createTRPCRouter({
             },
           },
         });
-        return recipes;
-      } catch (error) {}
+
+        if (
+          recipe?.publicationStatus === "published" ||
+          session.user.id === recipe?.userId
+        ) {
+          return recipe;
+        }
+
+        return null;
+      } catch (error) {
+        console.error(error);
+        throw error; // Rethrow the error to propagate it up the call stack
+      }
     }),
 
   createRecipe: protectedProcedure
@@ -194,15 +205,17 @@ export const recipeRouter = createTRPCRouter({
             video: video,
             authorId: authorFromDb?.id || createdAuthor?.id,
             userId: id,
-            catalogs: {
-              create: {
-                catalog: {
-                  connect: {
-                    id: catalogFromDb?.id,
+            catalogs: catalogFromDb
+              ? {
+                  create: {
+                    catalog: {
+                      connect: {
+                        id: catalogFromDb.id,
+                      },
+                    },
                   },
-                },
-              },
-            },
+                }
+              : undefined,
             RecipeIngredient: {
               create: recipeIngredients.map((ingredient) => ({
                 quantity: ingredient.quantity,
@@ -214,9 +227,7 @@ export const recipeRouter = createTRPCRouter({
                 },
               })),
             },
-            publicationStatus: publicationStatus
-              ? "pending approval"
-              : "private",
+            publicationStatus: publicationStatus ? "unapproved" : "private",
           },
           include: {
             RecipeIngredient: true, // Include the created ingredients in the response

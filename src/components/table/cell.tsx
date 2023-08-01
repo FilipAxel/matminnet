@@ -1,4 +1,4 @@
-import { User, Col, Row, StyledBadge, Tooltip, Text } from "@nextui-org/react";
+import { User, Col, Row, Tooltip, Text } from "@nextui-org/react";
 import { IconButton } from "./actions/IconButton";
 import { useState, type Key } from "react";
 import { type Recipe } from "@prisma/client";
@@ -6,6 +6,7 @@ import { EditIcon } from "./actions/EditIcon";
 import { DeleteIcon } from "./actions/DeleteIcon";
 import { api } from "~/utils/api";
 import DeleteRecipeActionDialog from "../dialog/delete-recipe-action-dialog";
+import { StyledBadge } from "./actions/StyledBadge";
 
 const RenderCell: React.FC<{ recipe: Recipe; columnKey: Key }> = ({
   recipe,
@@ -13,6 +14,15 @@ const RenderCell: React.FC<{ recipe: Recipe; columnKey: Key }> = ({
 }) => {
   const [isDeleteActionOpen, setDeleteActioOpen] = useState(false);
   const cellValue: string = recipe[columnKey] as string;
+
+  /*   { name: "NAME", uid: "name" },
+  { name: "PUBLICATION STATUS", uid: "publicationStatus" },
+  { name: "COUNTRY", uid: "country" },
+  { name: "DESCRIPTION", uid: "description" },
+  { name: "DIRECTION", uid: "direction" },
+  { name: "SERVING SIZE", uid: "servingSize" },
+  { name: "VIDEO", uid: "video" },
+  { name: "ACTIONS", uid: "actions" }, */
 
   switch (columnKey) {
     case "name":
@@ -26,7 +36,7 @@ const RenderCell: React.FC<{ recipe: Recipe; columnKey: Key }> = ({
           {recipe?.name}
         </User>
       );
-    case "role":
+    case "servingSize":
       return (
         <Col>
           <Row>
@@ -34,16 +44,11 @@ const RenderCell: React.FC<{ recipe: Recipe; columnKey: Key }> = ({
               {cellValue}
             </Text>
           </Row>
-          <Row>
-            <Text b size={13} css={{ tt: "capitalize", color: "$accents7" }}>
-              {recipe?.servingSize}
-            </Text>
-          </Row>
         </Col>
       );
 
-    case "status":
-      return <StyledBadge>{cellValue}</StyledBadge>;
+    case "publicationStatus":
+      return <StyledBadge type="private">{cellValue}</StyledBadge>;
 
     case "actions":
       return (

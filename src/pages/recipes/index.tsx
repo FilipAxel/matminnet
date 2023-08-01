@@ -1,23 +1,40 @@
 import { Grid, Loading, Spacer, Text } from "@nextui-org/react";
 import { type Recipe } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
+import LoginActionDialog from "~/components/dialog/login-action-dialog";
 import CreateRecipe from "~/components/recipe/create-recipe";
 import RecipeList from "~/components/recipe/recipe-card";
 import SearchRecipe from "~/components/recipe/recipe-search";
 import { api } from "~/utils/api";
 
 const Recipes = () => {
+  const { data: session, status } = useSession();
+
   const [searchResults, setSearchResults] = useState<Recipe[]>([]);
+  const { data: recipes, isLoading } = api.recipe.getAllRecipes.useQuery(
+    undefined,
+    {
+      enabled: !!session?.user,
+    }
+  );
 
-  const { data: fetchedRecipes, isLoading } =
-    api.recipe.getAllRecipes.useQuery();
+  if (status === "unauthenticated" && !session) {
+    return <LoginActionDialog pageName={"recipe"} />;
+  }
 
-  if (!fetchedRecipes?.length && !isLoading) {
+  if (!recipes?.length && !isLoading) {
     return (
       <div className="grid h-[60vh] place-items-center ">
-        <div>
-          <Text weight="bold" size={40} h1 className="text-center">
-            Soory, you dont have any recipes...
+        <div className="mx-2">
+          <Text weight="bold" size={25} h1 className="text-center">
+            Oh no! It seems like you haven&apos;t added any recipes yet.
+          </Text>
+          <Text h2 className="mt-3 text-center">
+            Don&apos;t miss out on the fun! Our recipe app is all about
+            discovering and sharing delicious dishes. Click below to add your
+            very first recipe and become a part of our thriving culinary
+            community.
           </Text>
 
           <div className="mt-5 flex justify-center">
@@ -30,11 +47,8 @@ const Recipes = () => {
 
   return (
     <>
-      {fetchedRecipes ? (
-        <SearchRecipe
-          fetchedRecipes={fetchedRecipes}
-          setSearchResults={setSearchResults}
-        />
+      {recipes ? (
+        <SearchRecipe recipes={recipes} setSearchResults={setSearchResults} />
       ) : null}
       <Spacer y={1} />
       {isLoading ? (

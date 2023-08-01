@@ -2,10 +2,13 @@ import { Grid, Loading } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import Catalog from "~/components/catalog";
 import LoginActionDialog from "~/components/dialog/login-action-dialog";
-import HomePageSkeleton from "~/components/skeleton/home-page-skeleton";
 
 export default function Home() {
-  const { data: sessionData, status } = useSession();
+  const { status, data: session } = useSession();
+
+  if (status === "unauthenticated" && !session) {
+    return <LoginActionDialog pageName={"catalog"} />;
+  }
 
   if (status === "loading") {
     return (
@@ -14,20 +17,14 @@ export default function Home() {
       </Grid>
     );
   }
+
   return (
     <>
-      {sessionData && status === "authenticated" ? (
-        <div className="flex flex-col items-center justify-center gap-4">
-          <div className="flex w-full justify-center">
-            <Catalog />
-          </div>
+      <div className="flex flex-col items-center justify-center gap-4">
+        <div className="flex w-full justify-center">
+          <Catalog />
         </div>
-      ) : (
-        <>
-          <HomePageSkeleton />
-          <LoginActionDialog />
-        </>
-      )}
+      </div>
     </>
   );
 }

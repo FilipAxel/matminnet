@@ -1,26 +1,28 @@
 import { Button, Modal, Text } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
-const LoginActionDialog = () => {
+const LoginActionDialog = ({ pageName }) => {
+  const router = useRouter(); // Get the router instance
+
+  const handleClose = () => {
+    // Redirect the user to a specific page when the modal is closed
+    void router.push("/public");
+  };
+
   return (
     <div>
       <Modal
+        onClose={handleClose}
         className="mx-5"
         open={true}
-        preventClose
-        aria-labelledby="modal-title"
+        aria-labelledby="login"
       >
-        <Modal.Header>
-          <Text id="modal-title" size={18}>
-            Welcome to{" "}
-            <Text b size={18}>
-              Name of page
-            </Text>
-          </Text>
-        </Modal.Header>
+        <Modal.Header></Modal.Header>
         <Modal.Body>
           <Text className="text-center" size={18}>
-            Login in to continue using the site
+            Welcome! To access {pageName} page, please create an account or log
+            in.
           </Text>
           <Button
             flat
@@ -28,7 +30,7 @@ const LoginActionDialog = () => {
             size={"lg"}
             rounded
             className="text-center"
-            onClick={() => void signIn()}
+            onPress={() => void signIn()}
           >
             Sign in
           </Button>
