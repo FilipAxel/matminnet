@@ -36,7 +36,6 @@ const PublicationList = () => {
 
   const handelApprove = () => {
     if (selectedRecipe === "all") {
-      console.log("Selected Recipe:", selectedRecipe);
       const arrayOfIds =
         data?.recipes && Array.isArray(data.recipes)
           ? data.recipes.map((obj) => obj.id)
@@ -56,8 +55,6 @@ const PublicationList = () => {
         data?.recipes && Array.isArray(data.recipes)
           ? data.recipes.map((obj) => obj.id)
           : [];
-      updateDecline(arrayOfIds);
-      console.log("Selected Recipe:", selectedRecipe);
     } else if (selectedRecipe instanceof Set) {
       const selectedRecipeArray = Array.from(selectedRecipe);
       updateDecline(selectedRecipeArray as string[]);

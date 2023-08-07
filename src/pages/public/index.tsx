@@ -1,12 +1,12 @@
 import { Spacer, Grid, Loading } from "@nextui-org/react";
-import { type Recipe } from "@prisma/client";
 import { useState } from "react";
 import SearchRecipe from "~/components/recipe/recipe-search";
 import { api } from "~/utils/api";
 import RecipeList from "~/components/recipe/recipe-card";
+import { type RecipeWithImage } from "../recipes";
 
 const Public = () => {
-  const [searchResults, setSearchResults] = useState<Recipe[]>([]);
+  const [searchResults, setSearchResults] = useState<RecipeWithImage[]>([]);
 
   const { data: recipes, isLoading } =
     api.recipe.getApprovedPublication.useQuery();

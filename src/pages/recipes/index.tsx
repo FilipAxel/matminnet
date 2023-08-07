@@ -3,15 +3,20 @@ import { type Recipe } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import LoginActionDialog from "~/components/dialog/login-action-dialog";
+
 import CreateRecipe from "~/components/recipe/create-recipe";
-import RecipeList from "~/components/recipe/recipe-card";
+import RecipeCard from "~/components/recipe/recipe-card";
 import SearchRecipe from "~/components/recipe/recipe-search";
 import { api } from "~/utils/api";
+
+export type RecipeWithImage = Recipe & {
+  images: { name: string }[];
+};
 
 const Recipes = () => {
   const { data: session, status } = useSession();
 
-  const [searchResults, setSearchResults] = useState<Recipe[]>([]);
+  const [searchResults, setSearchResults] = useState<RecipeWithImage[]>([]);
   const { data: recipes, isLoading } = api.recipe.getAllRecipes.useQuery(
     undefined,
     {
@@ -20,7 +25,7 @@ const Recipes = () => {
   );
 
   if (status === "unauthenticated" && !session) {
-    return <LoginActionDialog pageName={"recipe"} />;
+    return <LoginActionDialog pageName={"Settings"} />;
   }
 
   if (!recipes?.length && !isLoading) {
@@ -64,7 +69,7 @@ const Recipes = () => {
           <CreateRecipe />
         </Grid>
         {searchResults.map((recipe) => (
-          <RecipeList key={recipe.id} recipe={recipe} />
+          <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
       </Grid.Container>
     </>

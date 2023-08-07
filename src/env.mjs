@@ -23,6 +23,14 @@ export const env = createEnv({
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    CLOUDFRONT_KEYPAIR_ID: z.string(),
+    CLOUDFRONT_PRIVATE_KEY: z.string(),
+    CLOUDFRONT_URL: z.string(),
+    CLOUDFRONT_DISTRIBUTION_ID: z.string(),
+    AWS_BUCKET_NAME: z.string(),
+    AWS_BUCKET_REGION: z.string(),
+    AWS_MATMINNET_ACCESS_KEY: z.string(),
+    AWS_SECRET_ACCESS_KEY: z.string(),
   },
 
   /**
@@ -45,6 +53,14 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    CLOUDFRONT_KEYPAIR_ID: process.env.CLOUDFRONT_KEYPAIR_ID,
+    CLOUDFRONT_PRIVATE_KEY: process.env.CLOUDFRONT_PRIVATE_KEY,
+    CLOUDFRONT_URL: process.env.CLOUDFRONT_URL,
+    CLOUDFRONT_DISTRIBUTION_ID: process.env.CLOUDFRONT_DISTRIBUTION_ID,
+    AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
+    AWS_BUCKET_REGION: process.env.AWS_BUCKET_REGION,
+    AWS_MATMINNET_ACCESS_KEY: process.env.AWS_MATMINNET_ACCESS_KEY,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

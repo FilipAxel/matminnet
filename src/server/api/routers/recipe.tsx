@@ -1,23 +1,127 @@
 import { type Author, Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { DeleteObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
+import { getSignedUrl } from "@aws-sdk/cloudfront-signer";
+import {
+  CloudFrontClient,
+  CreateInvalidationCommand,
+} from "@aws-sdk/client-cloudfront";
 import { z } from "zod";
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import { v4 as uuidv4 } from "uuid";
+
+const UPLOAD_MAX_FILE_SIZE = 1000000;
+
+const bucketName = process.env.AWS_BUCKET_NAME || "";
+const cloudFrontUrl = process.env.CLOUDFRONT_URL || "";
+const region = process.env.AWS_BUCKET_REGION;
+const accessKeyId = process.env.AWS_MATMINNET_ACCESS_KEY || "";
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "";
+const cloudfrontDistributionId = process.env.CLOUDFRONT_DISTRIBUTION_ID;
+
+const s3Client = new S3Client({
+  region,
+  credentials: {
+    accessKeyId,
+    secretAccessKey,
+  },
+});
+
+const cloudfront = new CloudFrontClient({
+  credentials: {
+    accessKeyId: accessKeyId,
+    secretAccessKey: secretAccessKey,
+  },
+  region,
+});
 
 export const recipeRouter = createTRPCRouter({
-  getAllRecipes: protectedProcedure.query(({ ctx }) => {
+  createPresignedUrl: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const recipe = await ctx.prisma.recipe.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!recipe) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "the recipe does not exist",
+        });
+      }
+
+      const imageName = uuidv4();
+      await ctx.prisma.recipe.update({
+        where: {
+          id: recipe.id,
+        },
+        data: {
+          images: {
+            create: {
+              name: imageName,
+            },
+          },
+        },
+      });
+
+      return createPresignedPost(s3Client, {
+        Bucket: bucketName,
+        Key: imageName,
+        Fields: {
+          key: imageName,
+        },
+        Expires: 60,
+        Conditions: [
+          ["starts-with", "$Content-Type", "image/"],
+          ["content-length-range", 0, UPLOAD_MAX_FILE_SIZE],
+        ],
+      });
+    }),
+
+  getAllRecipes: protectedProcedure.query(async ({ ctx }) => {
     const { id } = ctx.session.user;
     if (!id) return;
-    const recipes = ctx.prisma.recipe.findMany({
-      where: {
-        userId: id,
-      },
-    });
+    try {
+      const recipes = await ctx.prisma.recipe.findMany({
+        where: {
+          userId: id,
+        },
+        include: {
+          images: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
 
-    return recipes;
+      if (recipes) {
+        for (const recipe of recipes) {
+          for (const image of recipe.images) {
+            const signedUrl = getSignedUrl({
+              keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
+              privateKey: process.env.CLOUDFRONT_PRIVATE_KEY as string,
+              url: cloudFrontUrl + image.name,
+              dateLessThan: new Date(
+                Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
+              ).toString(),
+            });
+            image.name = signedUrl;
+          }
+        }
+      }
+
+      return recipes;
+    } catch (error) {
+      console.log(error);
+    }
   }),
 
   getApprovedPublication: publicProcedure.query(async ({ ctx }) => {
@@ -26,7 +130,28 @@ export const recipeRouter = createTRPCRouter({
         where: {
           publicationStatus: "published",
         },
+        include: {
+          images: {
+            select: {
+              name: true,
+            },
+          },
+        },
       });
+
+      for (const recipe of recipes) {
+        for (const image of recipe.images) {
+          const signedUrl = getSignedUrl({
+            keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
+            privateKey: process.env.CLOUDFRONT_PRIVATE_KEY as string,
+            url: cloudFrontUrl + image.name,
+            dateLessThan: new Date(
+              Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
+            ).toString(),
+          });
+          image.name = signedUrl;
+        }
+      }
       return recipes;
     } catch (error) {}
   }),
@@ -51,7 +176,27 @@ export const recipeRouter = createTRPCRouter({
               },
             },
           },
+          include: {
+            images: {
+              select: {
+                name: true,
+              },
+            },
+          },
         });
+        for (const recipe of recipes) {
+          for (const image of recipe.images) {
+            const signedUrl = getSignedUrl({
+              keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
+              privateKey: process.env.CLOUDFRONT_PRIVATE_KEY as string,
+              url: cloudFrontUrl + image.name,
+              dateLessThan: new Date(
+                Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
+              ).toString(),
+            });
+            image.name = signedUrl;
+          }
+        }
         return recipes;
       } catch (error) {}
     }),
@@ -72,6 +217,11 @@ export const recipeRouter = createTRPCRouter({
           },
           include: {
             author: true,
+            images: {
+              select: {
+                name: true,
+              },
+            },
             RecipeIngredient: {
               include: {
                 ingredient: true,
@@ -84,6 +234,20 @@ export const recipeRouter = createTRPCRouter({
           recipe?.publicationStatus === "published" ||
           session.user.id === recipe?.userId
         ) {
+          if (recipe?.images) {
+            for (const image of recipe?.images) {
+              const signedUrl = getSignedUrl({
+                keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
+                privateKey: process.env.CLOUDFRONT_PRIVATE_KEY as string,
+                url: cloudFrontUrl + image.name,
+                dateLessThan: new Date(
+                  Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
+                ).toString(),
+              });
+              image.name = signedUrl;
+            }
+          }
+
           return recipe;
         }
 
@@ -296,11 +460,42 @@ export const recipeRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        await ctx.prisma.recipe.delete({
+        const recipe = await ctx.prisma.recipe.delete({
           where: {
             id: input.id,
           },
+          include: {
+            images: {
+              select: {
+                name: true,
+              },
+            },
+          },
         });
+
+        const imageName = recipe?.images?.[0]?.name || "";
+
+        if (imageName) {
+          const deleteParams = {
+            Bucket: bucketName,
+            Key: imageName,
+          };
+          await s3Client.send(new DeleteObjectCommand(deleteParams));
+        }
+
+        const cfCommand = new CreateInvalidationCommand({
+          DistributionId: cloudfrontDistributionId,
+          InvalidationBatch: {
+            CallerReference: imageName,
+            Paths: {
+              Quantity: 1,
+              Items: ["/" + imageName],
+            },
+          },
+        });
+
+        const response = await cloudfront.send(cfCommand);
+
         return {
           status: "success",
         };
@@ -309,7 +504,7 @@ export const recipeRouter = createTRPCRouter({
           if (error.code === "P2025") {
             throw new TRPCError({
               code: "NOT_FOUND",
-              message: "Catalog with that ID not found",
+              message: "Recipe with that ID not found",
             });
           }
         }

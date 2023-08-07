@@ -1,35 +1,30 @@
 import { User, Col, Row, Tooltip, Text } from "@nextui-org/react";
 import { IconButton } from "./actions/IconButton";
 import { useState, type Key } from "react";
-import { type Recipe } from "@prisma/client";
 import { EditIcon } from "./actions/EditIcon";
 import { DeleteIcon } from "./actions/DeleteIcon";
-import { api } from "~/utils/api";
 import DeleteRecipeActionDialog from "../dialog/delete-recipe-action-dialog";
 import { StyledBadge } from "./actions/StyledBadge";
+import { type RecipeWithImage } from "~/pages/recipes";
 
-const RenderCell: React.FC<{ recipe: Recipe; columnKey: Key }> = ({
+const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
   recipe,
   columnKey,
 }) => {
   const [isDeleteActionOpen, setDeleteActioOpen] = useState(false);
   const cellValue: string = recipe[columnKey] as string;
-
-  /*   { name: "NAME", uid: "name" },
-  { name: "PUBLICATION STATUS", uid: "publicationStatus" },
-  { name: "COUNTRY", uid: "country" },
-  { name: "DESCRIPTION", uid: "description" },
-  { name: "DIRECTION", uid: "direction" },
-  { name: "SERVING SIZE", uid: "servingSize" },
-  { name: "VIDEO", uid: "video" },
-  { name: "ACTIONS", uid: "actions" }, */
+  const imageUrl = recipe?.images?.[0]?.name ?? "/recipe-placeholder.webp";
 
   switch (columnKey) {
     case "name":
       return (
         <User
+          src={imageUrl}
+          onErrorCapture={(event) => {
+            const imgElement = event.currentTarget as HTMLImageElement;
+            imgElement.src = "/recipe-placeholder.webp";
+          }}
           squared
-          src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
           name={cellValue}
           css={{ p: 0 }}
         >

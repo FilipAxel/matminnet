@@ -2,12 +2,13 @@ import { Dropdown, Input } from "@nextui-org/react";
 import { type Recipe } from "@prisma/client";
 import { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { RecipeWithImage } from "~/pages/recipes";
 
 type Key = string | number;
 
 interface SearchRecipeProps {
-  recipes: Recipe[];
-  setSearchResults: (results: Recipe[]) => void;
+  recipes: RecipeWithImage[];
+  setSearchResults: (results: RecipeWithImage[]) => void;
 }
 
 const SearchRecipe: React.FC<SearchRecipeProps> = ({

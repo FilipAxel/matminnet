@@ -7,6 +7,8 @@ import {
 import cn from "classnames";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import LoginActionDialog from "~/components/dialog/login-action-dialog";
+import { useRouter } from "next/router";
 
 interface Setting {
   name: string;
@@ -16,7 +18,12 @@ interface Setting {
 }
 
 const Settings = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  if (status === "unauthenticated" && !session) {
+    void router.push("/404");
+  }
   // Get the isAdmin value from the session data
   const isAdmin = session?.user?.isAdmin;
 
@@ -41,33 +48,35 @@ const Settings = () => {
     },
   ].filter(Boolean) as Setting[];
 
-  return (
-    <Grid.Container className="mt-4" gap={1} justify="center">
-      {SettingsList.map((setting, index) => (
-        <Grid xs={11} key={index}>
-          <Link
-            className="w-full"
-            color="primary"
-            href={`/settings/${setting?.path}`}
-          >
-            <Card isPressable css={{ mw: "400px" }} variant="flat">
-              <Card.Body className="flex flex-row items-center justify-between">
-                <Text className="flex items-center" weight="normal" h2>
-                  {setting.icon && (
-                    <div className={cn(`mr-2 text-xl`, ...setting.styles)}>
-                      <setting.icon />
-                    </div>
-                  )}
-                  {setting.name}
-                </Text>
-                <MdKeyboardArrowRight className="text-xl" />
-              </Card.Body>
-            </Card>
-          </Link>
-        </Grid>
-      ))}
-    </Grid.Container>
-  );
+  if (status !== "loading") {
+    return (
+      <Grid.Container className="mt-4" gap={1} justify="center">
+        {SettingsList.map((setting, index) => (
+          <Grid xs={11} key={index}>
+            <Link
+              className="w-full"
+              color="primary"
+              href={`/settings/${setting?.path}`}
+            >
+              <Card isPressable css={{ mw: "400px" }} variant="flat">
+                <Card.Body className="flex flex-row items-center justify-between">
+                  <Text className="flex items-center" weight="normal" h2>
+                    {setting.icon && (
+                      <div className={cn(`mr-2 text-xl`, ...setting.styles)}>
+                        <setting.icon />
+                      </div>
+                    )}
+                    {setting.name}
+                  </Text>
+                  <MdKeyboardArrowRight className="text-xl" />
+                </Card.Body>
+              </Card>
+            </Link>
+          </Grid>
+        ))}
+      </Grid.Container>
+    );
+  }
 };
 
 export default Settings;

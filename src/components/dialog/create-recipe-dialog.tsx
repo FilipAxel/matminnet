@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import {
   Button,
@@ -14,7 +16,9 @@ import { type SubmitHandler, useForm, Controller } from "react-hook-form";
 import Select, { type ActionMeta } from "react-select";
 import { api } from "~/utils/api";
 import CreatableSelect from "react-select/creatable";
-import { Fragment } from "react";
+import { type ChangeEvent, Fragment, useState } from "react";
+import { uploadFileToS3 } from "../utils/s3";
+import Image from "next/image";
 
 interface CatalogOption {
   value: string;
@@ -52,16 +56,21 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
   isOpen,
   setIsOpen,
 }) => {
+  const [file, setFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
   const closeHandler = () => {
     setIsOpen(false);
+    setImagePreviewUrl(null);
+    setFile(null);
     reset();
   };
 
-  const { data } = api.ingredient.getAllIngredients.useQuery();
+  const { data: ingredients } = api.ingredient.getAllIngredients.useQuery();
   const ingredientOptions: IngredientOption[] =
-    data?.map((item: { name: string }) => ({
-      value: item.name,
-      label: item.name,
+    ingredients?.map((ingredient: { name: string }) => ({
+      value: ingredient.name,
+      label: ingredient.name,
       quantity: "1",
       unit: "st",
     })) ?? [];
@@ -90,18 +99,48 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
     },
   });
 
-  const { mutate: createRecipe } = api.recipe.createRecipe.useMutation();
+  const { mutate: createRecipe } = api.recipe.createRecipe.useMutation({
+    onSuccess: async (data, _variables, _context) => {
+      if (data.status === "success" && file) {
+        await uploadFileToS3({
+          getPresignedUrl: () =>
+            createPresignedUrlMutation.mutateAsync({
+              id: data.createdRecipe.id,
+            }),
+          file,
+        });
+
+        reset(); // Reset the form after successful submission
+      }
+    },
+  });
   const { data: catalogs } = api.catalog.getCatalogs.useQuery(
     undefined // no input
   );
+  const createPresignedUrlMutation =
+    api.recipe.createPresignedUrl.useMutation();
 
-  const onSubmit: SubmitHandler<FormValues> = (formdData) => {
+  const onSubmit: SubmitHandler<FormValues> = (formData) => {
     setIsOpen(false);
-    console.log(formdData);
+    setImagePreviewUrl(null);
     createRecipe({
-      recipe: formdData,
+      recipe: formData,
     });
-    reset();
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    setFile(selectedFile || null);
+
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setImagePreviewUrl(null);
+    }
   };
 
   return (
@@ -156,6 +195,37 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               )}
             />
             <Spacer y={1} />
+
+            <label
+              htmlFor="fileInput"
+              className="font-semibol mb-2 block text-black"
+            >
+              Upload an image to be displayed:
+            </label>
+
+            <input
+              aria-label={file?.name ?? ""}
+              onChange={handleFileChange}
+              className="focus:border-primary focus:shadow-te-primary dark:focus:border-primary relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:text-neutral-700 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
+              accept="image/*"
+              type="file"
+            />
+
+            {imagePreviewUrl?.length && (
+              <div className="mt-2">
+                Selected Image preview:
+                <Image
+                  src={imagePreviewUrl}
+                  alt="Image Preview"
+                  style={{ maxWidth: "100%", maxHeight: "80px" }}
+                  width={80}
+                  height={80}
+                />
+              </div>
+            )}
+
+            <Spacer y={1} />
+
             <Controller
               name="description"
               control={control}
@@ -330,7 +400,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   clearable
                   bordered
                   aria-label={field.name + "url"}
-                  label="Youtube Url"
+                  label="Youtube link"
                   fullWidth
                   type="url"
                   {...field}

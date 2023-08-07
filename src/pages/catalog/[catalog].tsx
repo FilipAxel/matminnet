@@ -3,16 +3,19 @@ import { type Recipe } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import BackButton from "~/components/back-button";
-import LoginActionDialog from "~/components/dialog/login-action-dialog";
+import BackButton from "~/components/shered/back-button";
 import CreateRecipe from "~/components/recipe/create-recipe";
 import RecipeCard from "~/components/recipe/recipe-card";
 import SearchRecipe from "~/components/recipe/recipe-search";
 import { api } from "~/utils/api";
 
+export type RecipeWithImage = Recipe & {
+  images: { name: string }[];
+};
+
 const CatalogsPage = () => {
-  const [searchResults, setSearchResults] = useState<Recipe[]>([]);
-  const { data: session, status } = useSession();
+  const [searchResults, setSearchResults] = useState<RecipeWithImage[]>([]);
+  const { data: session } = useSession();
   const router = useRouter();
   const { query } = router;
   const id = query.catalog as string;
@@ -30,10 +33,11 @@ const CatalogsPage = () => {
       },
       { enabled: !!session?.user }
     );
-
-  if (!session?.user) {
-    void router.push("/404");
-  }
+  useEffect(() => {
+    if (!session?.user && !isLoading) {
+      void router.push("/404");
+    }
+  }, [router, session?.user, isLoading]);
 
   if (!isLoading) {
     return (
@@ -60,7 +64,7 @@ const CatalogsPage = () => {
           ) : null}
 
           {searchResults && !isLoading
-            ? searchResults.map((recipe: Recipe) => (
+            ? searchResults.map((recipe: RecipeWithImage) => (
                 <RecipeCard key={recipe.id} recipe={recipe} />
               ))
             : null}

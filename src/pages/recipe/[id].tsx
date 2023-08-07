@@ -1,6 +1,6 @@
 import { Avatar, Card, Grid, Text } from "@nextui-org/react";
 import { useRouter } from "next/router";
-import BackButton from "~/components/back-button";
+import BackButton from "~/components/shered/back-button";
 import { api } from "~/utils/api";
 
 const Recipe = () => {
@@ -22,8 +22,8 @@ const Recipe = () => {
         <BackButton />
         <Grid>
           <Avatar
-            className="m-auto h-[250px] w-[250px]"
-            src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80"
+            className="m-auto h-[250px] w-[250px] object-fill"
+            src={recipe?.images?.[0]?.name ?? "/recipe-placeholder.webp"}
           />
         </Grid>
 
