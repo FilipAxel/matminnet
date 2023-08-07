@@ -26,7 +26,7 @@ const notFoundPage = () => {
           <div>
             <Image
               alt="404"
-              src="https://i.ibb.co/G9DC8S0/404-2.png"
+              src={"https://i.ibb.co/G9DC8S0/404-2.png"}
               width={100}
               height={100}
             />
@@ -36,7 +36,7 @@ const notFoundPage = () => {
       <div>
         <Image
           alt="group"
-          src="https://i.ibb.co/ck1SGFJ/Group.png"
+          src={"https://i.ibb.co/ck1SGFJ/Group.png"}
           width={100}
           height={100}
         />

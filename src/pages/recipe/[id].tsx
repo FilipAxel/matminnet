@@ -49,7 +49,7 @@ const Recipe = () => {
                       {ingredient?.ingredient.name}
                     </Text>
                     <Text h3 size={15} small>
-                      {ingredient?.quantity}
+                      {ingredient?.quantity}&nbsp;
                       {ingredient?.unit}
                     </Text>
                   </Card.Body>
