@@ -62,7 +62,6 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
   const closeHandler = () => {
     setIsOpen(false);
     setImagePreviewUrl(null);
-    setFile(null);
     reset();
   };
 
@@ -109,7 +108,6 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
             }),
           file,
         });
-
         reset(); // Reset the form after successful submission
       }
     },
@@ -147,17 +145,17 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
     <div>
       <Modal
         closeButton
-        className="mx-5"
-        aria-labelledby="modal-title"
+        aria-labelledby="create recipe"
+        fullScreen
         open={isOpen}
         onClose={closeHandler}
       >
         <Modal.Header>
-          <Text size={30} weight="bold" h1 id="modal-title">
+          <Text size={30} weight="bold" h1 id="create recipe">
             Create Recipe
           </Text>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="mx-2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller
               name="name"
@@ -385,7 +383,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   aria-label={field.name}
                   fullWidth
                   label="Serving size"
-                  type="number"
+                  type="text"
                   {...field}
                   size="lg"
                 />
