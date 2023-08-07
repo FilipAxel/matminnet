@@ -1,16 +1,15 @@
-import { Card, Grid, Row, Text } from "@nextui-org/react";
-import { type Recipe } from "@prisma/client";
-import Link from "next/link";
+import { Card, Grid, Link, Row, Text } from "@nextui-org/react";
+import { type Catalog } from "@prisma/client";
 
-type RecipeWithImage = Recipe & {
-  images: { name: string }[];
+type CatalogWithImage = Catalog & {
+  image: { name: string }[];
 };
-interface RecipeCardProps {
-  recipe: RecipeWithImage;
+interface CatalogCardProps {
+  catalog: CatalogWithImage;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
-  const imageUrl = recipe?.images?.[0]?.name ?? "/recipe-placeholder.webp";
+const CatalogCard: React.FC<CatalogCardProps> = ({ catalog }) => {
+  const imageUrl = catalog?.image?.[0]?.name ?? "/recipe-placeholder.webp";
   return (
     <Grid>
       <Card className="h-[150px] w-[150px] sm:h-[180px] sm:w-[180px]">
@@ -18,7 +17,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           <Link
             className="overflow-hidden"
             color="primary"
-            href={`/recipe/${recipe?.id}`}
+            href={`/catalog/${catalog?.id}`}
           >
             <Card.Image
               src={imageUrl}
@@ -30,7 +29,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
               objectFit="cover"
               width={"100%"}
               height={130}
-              alt={recipe?.name}
+              alt={catalog?.name}
             />
           </Link>
         </Card.Body>
@@ -46,7 +45,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
               }}
               className="truncate"
             >
-              {recipe?.name}
+              {catalog?.name}
             </Text>
           </Row>
         </Card.Footer>
@@ -55,4 +54,4 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   );
 };
 
-export default RecipeCard;
+export default CatalogCard;

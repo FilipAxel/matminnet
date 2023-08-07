@@ -1,7 +1,6 @@
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import PublicationList from "~/components/admin/publication-list";
-import BackButton from "~/components/back-button";
+import BackButton from "~/components/shered/back-button";
 
 const Admin = () => {
   const { data: session } = useSession();

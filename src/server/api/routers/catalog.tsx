@@ -1,21 +1,112 @@
-import { Prisma, type Catalog } from "@prisma/client";
+import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
+import { S3Client } from "@aws-sdk/client-s3";
+import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { v4 as uuidv4 } from "uuid";
+import { getSignedUrl } from "@aws-sdk/cloudfront-signer";
+import { env } from "~/env.mjs";
+
+const UPLOAD_MAX_FILE_SIZE = 1000000;
+
+const bucketName = env.AWS_BUCKET_NAME || "";
+const cloudFrontUrl = env.CLOUDFRONT_URL || "";
+const region = env.AWS_BUCKET_REGION;
+const accessKeyId = env.AWS_MATMINNET_ACCESS_KEY || "";
+const secretAccessKey = env.AWS_SECRET_ACCESS_KEY || "";
+
+const s3Client = new S3Client({
+  region,
+  credentials: {
+    accessKeyId,
+    secretAccessKey,
+  },
+});
 
 export const catalogRouter = createTRPCRouter({
-  getCatalogs: protectedProcedure.query(({ ctx }) => {
+  createPresignedUrl: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const catalog = await ctx.prisma.catalog.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!catalog) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "the catalog does not exist",
+        });
+      }
+
+      const imageName = uuidv4();
+      await ctx.prisma.catalog.update({
+        where: {
+          id: catalog.id,
+        },
+        data: {
+          image: {
+            create: {
+              name: imageName,
+            },
+          },
+        },
+      });
+
+      return createPresignedPost(s3Client, {
+        Bucket: bucketName,
+        Key: imageName,
+        Fields: {
+          key: imageName,
+        },
+        Expires: 60,
+        Conditions: [
+          ["starts-with", "$Content-Type", "image/"],
+          ["content-length-range", 0, UPLOAD_MAX_FILE_SIZE],
+        ],
+      });
+    }),
+
+  getCatalogs: protectedProcedure.query(async ({ ctx }) => {
     const { id } = ctx.session.user;
-    const result: Prisma.PrismaPromise<Catalog[]> = ctx.prisma.catalog.findMany(
-      {
+    try {
+      const catalogs = await ctx.prisma.catalog.findMany({
         where: {
           User: {
             id: id,
           },
         },
+        include: {
+          image: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+
+      if (catalogs) {
+        catalogs?.forEach((catalog) => {
+          catalog.image?.forEach((image) => {
+            const signedUrl = getSignedUrl({
+              keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
+              privateKey: process.env.CLOUDFRONT_PRIVATE_KEY as string,
+              url: cloudFrontUrl + image.name,
+              dateLessThan: new Date(
+                Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
+              ).toString(),
+            });
+            image.name = signedUrl;
+          });
+        });
       }
-    );
-    return result;
+      return catalogs;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }),
 
   getCatalogWithId: protectedProcedure
@@ -32,8 +123,6 @@ export const catalogRouter = createTRPCRouter({
             id: input.id,
           },
         });
-
-        console.log(session.user.id);
 
         if (session.user.id === catalog?.userId) {
           return catalog;
@@ -65,7 +154,7 @@ export const catalogRouter = createTRPCRouter({
         });
         return {
           status: "success",
-          data: {
+          response: {
             catalog,
           },
         };

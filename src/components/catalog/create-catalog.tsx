@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Card, Text } from "@nextui-org/react";
-import CreateCatalogDialog from "./create-catalog-dialog";
+
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
+import CreateCatalogDialog from "../dialog/create-catalog-dialog";
 
 const CreateCatalog = () => {
   const [isOpen, setIsOpen] = useState(false);

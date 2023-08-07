@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable react/jsx-no-undef */
 import { Button, Grid, Input, Modal, Spacer, Text } from "@nextui-org/react";
+import { type ChangeEvent, useState } from "react";
 import { type SubmitHandler, useForm, Controller } from "react-hook-form";
 import { api } from "~/utils/api";
+
+import Image from "next/image";
+import { uploadFileToS3 } from "../utils/s3";
 
 interface IFormInput {
   name: string;
@@ -18,7 +22,10 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
   isOpen,
   setIsOpen,
 }) => {
+  const [file, setFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const closeHandler = () => {
+    setImagePreviewUrl(null);
     setIsOpen(false);
     reset();
   };
@@ -31,28 +38,62 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
   } = useForm({
     defaultValues: {
       name: "",
+      image: null,
       type: "",
     },
   });
 
-  const { isLoading, mutate: createCatalog } =
-    api.catalog.createCatalog.useMutation();
+  const createPresignedUrlMutation =
+    api.catalog.createPresignedUrl.useMutation();
+
+  const { mutate: createCatalog } = api.catalog.createCatalog.useMutation({
+    onSuccess: async (data, _variables, _context) => {
+      if (data.status === "success" && file) {
+        await uploadFileToS3({
+          getPresignedUrl: () =>
+            createPresignedUrlMutation.mutateAsync({
+              id: data.response.catalog.id,
+            }),
+          file,
+        });
+
+        reset();
+      }
+    },
+  });
 
   const onSubmit: SubmitHandler<IFormInput> = (FormdData) => {
     setIsOpen(false);
+    setImagePreviewUrl(null);
     createCatalog(FormdData);
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    setFile(selectedFile || null);
+
+    // Create a preview URL for the selected image
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setImagePreviewUrl(null);
+    }
   };
 
   return (
     <div>
       <Modal
         closeButton
-        aria-labelledby="modal-title"
+        aria-labelledby="create-catalog"
         open={isOpen}
         onClose={closeHandler}
       >
         <Modal.Header>
-          <Text id="modal-title">Create Catalog</Text>
+          <Text id="create-catalog">Create Catalog</Text>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -92,28 +133,37 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
               )}
             />
             <Spacer y={1.6} />
-            {/*       <Controller
-              name="type"
-              control={control}
-              rules={{
-                required: true,
-                maxLength: 20,
-                minLength: 3,
-              }}
-              render={({ field }) => (
-                <Input
-                  clearable
-                  bordered
-                  fullWidth
-                  aria-label={field.name}
-                  placeholder={field.name}
-                  {...field}
-                  color="primary"
-                  size="lg"
-                />
-              )}
+
+            <label
+              htmlFor="fileInput"
+              className="font-semibol mb-2 block text-black"
+            >
+              Upload an image to be displayed:
+            </label>
+
+            <input
+              id="fileInput"
+              aria-label={file?.name ?? ""}
+              onChange={handleFileChange}
+              className="focus:border-primary focus:shadow-te-primary dark:focus:border-primary relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:text-neutral-700 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
+              accept="image/*"
+              type="file"
             />
-            <Spacer y={1.6} /> */}
+
+            <Spacer y={1.6} />
+            {imagePreviewUrl?.length && (
+              <div className="mt-2">
+                Selected Image preview:
+                <Image
+                  src={imagePreviewUrl}
+                  alt="Image Preview"
+                  style={{ maxWidth: "100%", maxHeight: "80px" }}
+                  width={80}
+                  height={80}
+                />
+              </div>
+            )}
+            <Spacer y={1.6} />
             <Grid.Container gap={2} justify="flex-end">
               <Grid>
                 <Button

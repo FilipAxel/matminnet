@@ -37,7 +37,6 @@ export const adminRouter = createTRPCRouter({
   approvePublication: protectedProcedure
     .input(z.array(z.string()))
     .mutation(async ({ input, ctx }) => {
-      console.log(input);
       if (!ctx.session.user.isAdmin) {
         return {
           message: "Authentication is required",

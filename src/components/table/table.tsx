@@ -1,7 +1,7 @@
 import { Table, Grid, Loading } from "@nextui-org/react";
 import RenderCell from "./cell";
 import { api } from "~/utils/api";
-import { type Recipe } from "@prisma/client";
+import { type RecipeWithImage } from "~/pages/recipes";
 
 const columns = [
   { name: "NAME", uid: "name" },
@@ -45,7 +45,7 @@ const SettingsTable = () => {
           </Table.Header>
 
           <Table.Body items={recipes}>
-            {(recipe: Recipe) => (
+            {(recipe: RecipeWithImage) => (
               <Table.Row>
                 {(columnKey) => (
                   <Table.Cell>
