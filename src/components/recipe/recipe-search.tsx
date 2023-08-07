@@ -1,8 +1,7 @@
 import { Dropdown, Input } from "@nextui-org/react";
-import { type Recipe } from "@prisma/client";
 import { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { RecipeWithImage } from "~/pages/recipes";
+import { type RecipeWithImage } from "~/pages/recipes";
 
 type Key = string | number;
 
@@ -32,10 +31,7 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
     setSearchResults(sortedResults);
   }, [searchTerm, recipes, sortOrder, setSearchResults]);
 
-  const {
-    control,
-    formState: { errors },
-  } = useForm({
+  const { control } = useForm({
     defaultValues: {
       recipeSearch: "",
     },

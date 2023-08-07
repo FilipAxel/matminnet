@@ -1,4 +1,5 @@
-import { Button, Link } from "@nextui-org/react";
+import { Link } from "@nextui-org/react";
+import Image from "next/image";
 
 const notFoundPage = () => {
   return (
@@ -8,7 +9,7 @@ const notFoundPage = () => {
           <div className="absolute">
             <div className="">
               <h1 className="my-2 text-2xl font-bold text-gray-800">
-                Looks like you've found the doorway to the great nothing
+                Looks like you&apos;ve found the doorway to the great nothing
               </h1>
               <p className="my-2 text-gray-800">
                 Sorry about that! Please visit our hompage to get where you need
@@ -23,12 +24,22 @@ const notFoundPage = () => {
             </div>
           </div>
           <div>
-            <img src="https://i.ibb.co/G9DC8S0/404-2.png" />
+            <Image
+              alt="404"
+              src="https://i.ibb.co/G9DC8S0/404-2.png"
+              width={100}
+              height={100}
+            />
           </div>
         </div>
       </div>
       <div>
-        <img src="https://i.ibb.co/ck1SGFJ/Group.png" />
+        <Image
+          alt="group"
+          src="https://i.ibb.co/ck1SGFJ/Group.png"
+          width={100}
+          height={100}
+        />
       </div>
     </div>
   );

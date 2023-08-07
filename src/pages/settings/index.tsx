@@ -7,7 +7,6 @@ import {
 import cn from "classnames";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import LoginActionDialog from "~/components/dialog/login-action-dialog";
 import { useRouter } from "next/router";
 
 interface Setting {

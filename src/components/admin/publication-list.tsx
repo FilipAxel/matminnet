@@ -51,10 +51,10 @@ const PublicationList = () => {
 
   const handelDecline = () => {
     if (selectedRecipe === "all") {
-      const arrayOfIds =
+      /*       const arrayOfIds =
         data?.recipes && Array.isArray(data.recipes)
           ? data.recipes.map((obj) => obj.id)
-          : [];
+          : []; */
     } else if (selectedRecipe instanceof Set) {
       const selectedRecipeArray = Array.from(selectedRecipe);
       updateDecline(selectedRecipeArray as string[]);

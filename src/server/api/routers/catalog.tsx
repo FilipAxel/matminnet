@@ -1,19 +1,20 @@
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { S3Client } from "@aws-sdk/client-s3";
-import { Prisma, type Catalog } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { v4 as uuidv4 } from "uuid";
 import { getSignedUrl } from "@aws-sdk/cloudfront-signer";
+import { env } from "~/env.mjs";
 
 const UPLOAD_MAX_FILE_SIZE = 1000000;
 
-const bucketName = process.env.AWS_BUCKET_NAME || "";
-const cloudFrontUrl = process.env.CLOUDFRONT_URL || "";
-const region = process.env.AWS_BUCKET_REGION;
-const accessKeyId = process.env.AWS_MATMINNET_ACCESS_KEY || "";
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "";
+const bucketName = env.AWS_BUCKET_NAME || "";
+const cloudFrontUrl = env.CLOUDFRONT_URL || "";
+const region = env.AWS_BUCKET_REGION;
+const accessKeyId = env.AWS_MATMINNET_ACCESS_KEY || "";
+const secretAccessKey = env.AWS_SECRET_ACCESS_KEY || "";
 
 const s3Client = new S3Client({
   region,

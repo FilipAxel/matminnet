@@ -46,22 +46,21 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
   const createPresignedUrlMutation =
     api.catalog.createPresignedUrl.useMutation();
 
-  const { isLoading, mutate: createCatalog } =
-    api.catalog.createCatalog.useMutation({
-      onSuccess: async (data, _variables, _context) => {
-        if (data.status === "success" && file) {
-          await uploadFileToS3({
-            getPresignedUrl: () =>
-              createPresignedUrlMutation.mutateAsync({
-                id: data.response.catalog.id,
-              }),
-            file,
-          });
+  const { mutate: createCatalog } = api.catalog.createCatalog.useMutation({
+    onSuccess: async (data, _variables, _context) => {
+      if (data.status === "success" && file) {
+        await uploadFileToS3({
+          getPresignedUrl: () =>
+            createPresignedUrlMutation.mutateAsync({
+              id: data.response.catalog.id,
+            }),
+          file,
+        });
 
-          reset();
-        }
-      },
-    });
+        reset();
+      }
+    },
+  });
 
   const onSubmit: SubmitHandler<IFormInput> = (FormdData) => {
     setIsOpen(false);
