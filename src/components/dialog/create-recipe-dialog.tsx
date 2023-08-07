@@ -155,7 +155,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
             Create Recipe
           </Text>
         </Modal.Header>
-        <Modal.Body className="mx-2">
+        <Modal.Body className="mx-2 mb-3">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller
               name="name"
@@ -477,8 +477,8 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 Publish
               </label>
             </div>
-            <Spacer y={1.6} />
-            <Grid.Container gap={2} justify="flex-end">
+            <Spacer y={0.5} />
+            <Grid.Container gap={2} justify="flex-end" className="mb-4">
               <Grid>
                 <Button
                   type="button"
@@ -498,6 +498,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               </Grid>
             </Grid.Container>
           </form>
+          <Spacer y={2.4} />
         </Modal.Body>
       </Modal>
     </div>
