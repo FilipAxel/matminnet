@@ -10,11 +10,11 @@ import { env } from "~/env.mjs";
 
 const UPLOAD_MAX_FILE_SIZE = 1000000;
 
-const bucketName = env.AWS_BUCKET_NAME || "";
-const cloudFrontUrl = env.CLOUDFRONT_URL || "";
+const bucketName = env.AWS_BUCKET_NAME;
+const cloudFrontUrl = env.CLOUDFRONT_URL;
 const region = env.AWS_BUCKET_REGION;
-const accessKeyId = env.AWS_MATMINNET_ACCESS_KEY || "";
-const secretAccessKey = env.AWS_SECRET_ACCESS_KEY || "";
+const accessKeyId = env.AWS_MATMINNET_ACCESS_KEY;
+const secretAccessKey = env.AWS_SECRET_ACCESS_KEY;
 
 const s3Client = new S3Client({
   region,
@@ -92,11 +92,12 @@ export const catalogRouter = createTRPCRouter({
           catalog.image?.forEach((image) => {
             const signedUrl = getSignedUrl({
               keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
-              privateKey: process.env.CLOUDFRONT_PRIVATE_KEY as string,
+              privateKey: process.env.CLOUDFRONT_PRIVATE_KEY?.replace(
+                /\\n/gm,
+                "\n"
+              ) as string,
               url: cloudFrontUrl + image.name,
-              dateLessThan: new Date(
-                Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
-              ).toString(),
+              dateLessThan: new Date(Date.now() + 1000 * 60 * 60).toString(),
             });
             image.name = signedUrl;
           });

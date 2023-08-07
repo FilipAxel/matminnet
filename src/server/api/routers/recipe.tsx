@@ -108,7 +108,10 @@ export const recipeRouter = createTRPCRouter({
           for (const image of recipe.images) {
             const signedUrl = getSignedUrl({
               keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
-              privateKey: process.env.CLOUDFRONT_PRIVATE_KEY as string,
+              privateKey: process.env.CLOUDFRONT_PRIVATE_KEY?.replace(
+                /\\n/gm,
+                "\n"
+              ) as string,
               url: cloudFrontUrl + image.name,
               dateLessThan: new Date(
                 Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
@@ -144,7 +147,10 @@ export const recipeRouter = createTRPCRouter({
         for (const image of recipe.images) {
           const signedUrl = getSignedUrl({
             keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
-            privateKey: process.env.CLOUDFRONT_PRIVATE_KEY as string,
+            privateKey: process.env.CLOUDFRONT_PRIVATE_KEY?.replace(
+              /\\n/gm,
+              "\n"
+            ) as string,
             url: cloudFrontUrl + image.name,
             dateLessThan: new Date(
               Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
@@ -189,7 +195,10 @@ export const recipeRouter = createTRPCRouter({
           for (const image of recipe.images) {
             const signedUrl = getSignedUrl({
               keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
-              privateKey: process.env.CLOUDFRONT_PRIVATE_KEY as string,
+              privateKey: process.env.CLOUDFRONT_PRIVATE_KEY?.replace(
+                /\\n/gm,
+                "\n"
+              ) as string,
               url: cloudFrontUrl + image.name,
               dateLessThan: new Date(
                 Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
@@ -239,7 +248,10 @@ export const recipeRouter = createTRPCRouter({
             for (const image of recipe?.images) {
               const signedUrl = getSignedUrl({
                 keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
-                privateKey: process.env.CLOUDFRONT_PRIVATE_KEY as string,
+                privateKey: process.env.CLOUDFRONT_PRIVATE_KEY?.replace(
+                  /\\n/gm,
+                  "\n"
+                ) as string,
                 url: cloudFrontUrl + image.name,
                 dateLessThan: new Date(
                   Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
