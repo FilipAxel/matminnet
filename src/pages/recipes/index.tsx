@@ -58,7 +58,7 @@ const Recipes = () => {
         </Grid>
       ) : null}
       <Grid.Container
-        className="mx-auto flex w-full max-w-[1200px] justify-center"
+        className="mx-auto flex w-full max-w-[1200px] justify-center p-0"
         gap={1}
       >
         <Grid>
