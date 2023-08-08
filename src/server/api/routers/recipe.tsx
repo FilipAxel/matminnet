@@ -221,7 +221,7 @@ export const recipeRouter = createTRPCRouter({
       const recipeId: string = input.id;
       const { session } = ctx;
       try {
-        const recipe = await ctx.prisma.recipe.findFirst({
+        const recipe = await ctx.prisma.recipe.findFirstOrThrow({
           where: {
             id: recipeId,
           },
@@ -232,7 +232,7 @@ export const recipeRouter = createTRPCRouter({
                 name: true,
               },
             },
-            RecipeIngredient: {
+            recipeIngredients: {
               include: {
                 ingredient: true,
               },
@@ -245,20 +245,20 @@ export const recipeRouter = createTRPCRouter({
           session.user.id === recipe?.userId
         ) {
           if (recipe?.images) {
-            for (const image of recipe?.images) {
+            recipe.images.forEach((image) => {
               const signedUrl = getSignedUrl({
                 keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
                 privateKey: process.env.CLOUDFRONT_PRIVATE_KEY?.replace(
                   /\\n/gm,
                   "\n"
                 ) as string,
-                url: cloudFrontUrl + image.name,
+                url: cloudFrontUrl + image?.name,
                 dateLessThan: new Date(
                   Date.now() + 1000 /*sec*/ * 60 /*min*/ * 60 /*hour*/
                 ).toString(),
               });
               image.name = signedUrl;
-            }
+            });
           }
 
           return recipe;
@@ -376,7 +376,7 @@ export const recipeRouter = createTRPCRouter({
           data: {
             name: name,
             description: description,
-            direction: direction,
+            directions: direction,
             country: country,
             servingSize: parseInt(servingSize),
             video: video,
@@ -393,7 +393,7 @@ export const recipeRouter = createTRPCRouter({
                   },
                 }
               : undefined,
-            RecipeIngredient: {
+            recipeIngredients: {
               create: recipeIngredients.map((ingredient) => ({
                 quantity: ingredient.quantity,
                 unit: ingredient.unit,
@@ -407,7 +407,7 @@ export const recipeRouter = createTRPCRouter({
             publicationStatus: publicationStatus ? "unapproved" : "private",
           },
           include: {
-            RecipeIngredient: true, // Include the created ingredients in the response
+            recipeIngredients: true, // Include the created ingredients in the response
           },
         });
 

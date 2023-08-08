@@ -94,7 +94,7 @@ model Catalog {
     @@index([userId])
 }
 
-model Tags {
+model Tag {
     id       String  @id @default(cuid())
     name     String
     Recipe   Recipe? @relation(fields: [recipeId], references: [id])
@@ -110,11 +110,12 @@ model Recipe {
     id                       String                     @id @default(cuid())
     name                     String
     catalogs                 RecipeOnCatalog[]
-    RecipeIngredient         RecipeIngredient[]
-    tags                     Tags[]
+    recipeIngredients        RecipeIngredient[]
+    tags                     Tag[]
     servingSize              Int?
     description              String?
-    direction                String?
+    cookingTime              String?
+    directions               String?
     country                  String?
     images                   Image[]
     video                    String?
