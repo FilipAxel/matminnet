@@ -38,6 +38,7 @@ interface FormValues {
   direction: string;
   ingredients: IngredientOption[];
   servingSize: string;
+  cookingTime: number;
   video: string;
   country: string;
   author: string;
@@ -86,6 +87,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
       description: "",
       direction: "",
       servingSize: "",
+      cookingTime: 0,
       video: "",
       country: "",
       author: "",
@@ -112,13 +114,12 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
       }
     },
   });
-  const { data: catalogs } = api.catalog.getCatalogs.useQuery(
-    undefined // no input
-  );
+  const { data: catalogs } = api.catalog.getCatalogs.useQuery();
   const createPresignedUrlMutation =
     api.recipe.createPresignedUrl.useMutation();
 
   const onSubmit: SubmitHandler<FormValues> = (formData) => {
+    formData.cookingTime = Number(formData.cookingTime);
     setIsOpen(false);
     setImagePreviewUrl(null);
     createRecipe({
@@ -384,6 +385,23 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   fullWidth
                   label="Serving size"
                   type="text"
+                  {...field}
+                  size="lg"
+                />
+              )}
+            />
+            <Spacer y={1} />
+            <Controller
+              name="cookingTime"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  bordered
+                  aria-label={field.name}
+                  fullWidth
+                  label="cooking Time (in minutes)"
+                  labelRight="Min"
+                  type="number"
                   {...field}
                   size="lg"
                 />

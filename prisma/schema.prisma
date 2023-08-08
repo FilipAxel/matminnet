@@ -112,9 +112,9 @@ model Recipe {
     catalogs                 RecipeOnCatalog[]
     recipeIngredients        RecipeIngredient[]
     tags                     Tag[]
-    servingSize              Int?
+    servingSize              String?
     description              String?
-    cookingTime              String?
+    cookingTime              Int?
     directions               String?
     country                  String?
     images                   Image[]
