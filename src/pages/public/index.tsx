@@ -23,8 +23,8 @@ const Public = () => {
         </Grid>
       ) : null}
       <Grid.Container
-        className="mx-auto flex w-full max-w-[1200px] justify-start"
-        gap={2}
+        className="mx-auto flex w-full max-w-[1200px] justify-center"
+        gap={1}
       >
         {searchResults.map((recipe) => (
           <RecipeList key={recipe.id} recipe={recipe} />

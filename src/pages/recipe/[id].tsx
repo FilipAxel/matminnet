@@ -12,6 +12,8 @@ const Recipe = () => {
     id,
   });
 
+  console.log(recipe);
+
   if (!recipe && !isLoading) {
     void router.push("/404");
   }
@@ -40,17 +42,17 @@ const Recipe = () => {
           </Text>
         </div>
         <Grid.Container className="mt-4" gap={1} justify="center">
-          {recipe?.RecipeIngredient.map((ingredient) => {
+          {recipe?.recipeIngredients?.map((recipeIngredient) => {
             return (
-              <Grid key={ingredient.id} xs={11}>
+              <Grid key={recipeIngredient.id} xs={11}>
                 <Card css={{ mw: "400px" }} variant="flat">
                   <Card.Body className="flex flex-row items-center justify-between">
                     <Text b h2>
-                      {ingredient?.ingredient.name}
+                      {recipeIngredient.ingredient.name}
                     </Text>
                     <Text h3 size={15} small>
-                      {ingredient?.quantity}&nbsp;
-                      {ingredient?.unit}
+                      {recipeIngredient?.quantity}&nbsp;
+                      {recipeIngredient?.unit}
                     </Text>
                   </Card.Body>
                 </Card>
@@ -62,7 +64,7 @@ const Recipe = () => {
         <Text h2 size={25} className="ml-4 mt-5" weight="bold">
           Directions
         </Text>
-        <p className="m-5">{recipe?.direction}</p>
+        <p className="m-5">{recipe?.directions}</p>
 
         {recipe?.video && (
           <div className="aspect-h-9 aspect-w-16 m-5 flex justify-center">
