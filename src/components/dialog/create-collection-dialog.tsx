@@ -13,12 +13,12 @@ interface IFormInput {
   type: string;
 }
 
-interface CreateCatalogDialogProps {
+interface CreateCollectionDialogProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
+const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
   isOpen,
   setIsOpen,
 }) => {
@@ -44,28 +44,29 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
   });
 
   const createPresignedUrlMutation =
-    api.catalog.createPresignedUrl.useMutation();
+    api.collection.createPresignedUrl.useMutation();
 
-  const { mutate: createCatalog } = api.catalog.createCatalog.useMutation({
-    onSuccess: async (data, _variables, _context) => {
-      if (data.status === "success" && file) {
-        await uploadFileToS3({
-          getPresignedUrl: () =>
-            createPresignedUrlMutation.mutateAsync({
-              id: data.response.catalog.id,
-            }),
-          file,
-        });
+  const { mutate: createCollection } =
+    api.collection.createCollection.useMutation({
+      onSuccess: async (data, _variables, _context) => {
+        if (data.status === "success" && file) {
+          await uploadFileToS3({
+            getPresignedUrl: () =>
+              createPresignedUrlMutation.mutateAsync({
+                id: data.response.collection.id,
+              }),
+            file,
+          });
 
-        reset();
-      }
-    },
-  });
+          reset();
+        }
+      },
+    });
 
   const onSubmit: SubmitHandler<IFormInput> = (FormdData) => {
     setIsOpen(false);
     setImagePreviewUrl(null);
-    createCatalog(FormdData);
+    createCollection(FormdData);
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -88,12 +89,12 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
     <div>
       <Modal
         closeButton
-        aria-labelledby="create-catalog"
+        aria-labelledby="create-collection"
         open={isOpen}
         onClose={closeHandler}
       >
         <Modal.Header>
-          <Text id="create-catalog">Create Catalog</Text>
+          <Text id="create-collection">Create Collection</Text>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -190,4 +191,4 @@ const CreateCatalogDialog: React.FC<CreateCatalogDialogProps> = ({
   );
 };
 
-export default CreateCatalogDialog;
+export default CreateCollectionDialog;

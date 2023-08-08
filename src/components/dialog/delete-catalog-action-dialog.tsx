@@ -14,15 +14,14 @@ const DeleteActionDialog: React.FC<DeleteActionDialogProps> = ({
   isDeleteActionOpen,
   setDeleteActioOpen,
 }) => {
-  const { mutate: deleteCatalog } = api.catalog.deleteCatalogWithId.useMutation(
-    {
+  const { mutate: deleteCollection } =
+    api.collection.deleteCollectionWithId.useMutation({
       onSuccess() {
         setDeleteActioOpen(false);
       },
-    }
-  );
+    });
 
-  const handleDelete = () => deleteCatalog({ id: id });
+  const handleDelete = () => deleteCollection({ id: id });
 
   return (
     <div>

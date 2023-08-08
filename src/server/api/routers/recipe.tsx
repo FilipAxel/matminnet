@@ -163,22 +163,22 @@ export const recipeRouter = createTRPCRouter({
     } catch (error) {}
   }),
 
-  getRecipeWithCatalogId: protectedProcedure
+  getRecipeWithCollectionId: protectedProcedure
     .input(
       z.object({
         id: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const catalogId: string = input.id;
+      const collectionId: string = input.id;
 
       try {
         const recipes = await ctx.prisma.recipe.findMany({
           where: {
-            catalogs: {
+            collections: {
               some: {
-                catalog: {
-                  id: catalogId,
+                collection: {
+                  id: collectionId,
                 },
               },
             },
@@ -283,7 +283,7 @@ export const recipeRouter = createTRPCRouter({
           video: z.string(),
           country: z.string(),
           author: z.string(),
-          catalog: z.object({
+          collection: z.object({
             value: z.string(),
             label: z.string(),
           }),
@@ -304,7 +304,7 @@ export const recipeRouter = createTRPCRouter({
       const { recipe } = input;
       const {
         author,
-        catalog,
+        collection,
         country,
         description,
         direction,
@@ -323,9 +323,9 @@ export const recipeRouter = createTRPCRouter({
           },
         });
 
-        const catalogFromDb = await ctx.prisma.catalog.findFirst({
+        const collectionFromDb = await ctx.prisma.collection.findFirst({
           where: {
-            name: catalog?.value,
+            name: collection?.value,
           },
         });
 
@@ -385,12 +385,12 @@ export const recipeRouter = createTRPCRouter({
             video: video,
             authorId: authorFromDb?.id || createdAuthor?.id,
             userId: id,
-            catalogs: catalogFromDb
+            collections: collectionFromDb
               ? {
                   create: {
-                    catalog: {
+                    collection: {
                       connect: {
-                        id: catalogFromDb.id,
+                        id: collectionFromDb.id,
                       },
                     },
                   },

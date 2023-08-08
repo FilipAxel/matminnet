@@ -7,7 +7,7 @@ const LoginActionDialog = ({ pageName }) => {
 
   const handleClose = () => {
     // Redirect the user to a specific page when the modal is closed
-    void router.push("/public");
+    void router.push("/discover");
   };
 
   return (

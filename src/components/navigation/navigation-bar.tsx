@@ -19,9 +19,9 @@ const NavigationBar = () => {
   const router = useRouter();
 
   const collapseItems = [
-    { name: "Catalog", path: "/" },
+    { name: "Collections", path: "/" },
     { name: "Recipes", path: "/recipes" },
-    { name: "Public", path: "/public" },
+    { name: "Discover", path: "/discover" },
   ];
 
   const handleDropDownAction = async (option: Key) => {
@@ -67,7 +67,7 @@ const NavigationBar = () => {
           variant="highlight"
         >
           <Navbar.Link isActive={router.pathname === "/"} href="/">
-            Catalog
+            Collections
           </Navbar.Link>
           <Navbar.Link
             isActive={router.pathname === "/recipes"}
@@ -75,8 +75,11 @@ const NavigationBar = () => {
           >
             Recipes
           </Navbar.Link>
-          <Navbar.Link isActive={router.pathname === "/public"} href="/public">
-            Public
+          <Navbar.Link
+            isActive={router.pathname === "/discover"}
+            href="/discover"
+          >
+            Discover
           </Navbar.Link>
         </Navbar.Content>
         <Navbar.Content

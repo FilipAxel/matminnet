@@ -3,9 +3,9 @@ import { Card, Text } from "@nextui-org/react";
 
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import CreateCatalogDialog from "../dialog/create-catalog-dialog";
+import CreateCollectionDialog from "../dialog/create-collection-dialog";
 
-const CreateCatalog = () => {
+const CreateCollection = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -14,19 +14,19 @@ const CreateCatalog = () => {
         isPressable
         isHoverable
         variant="bordered"
-        className="h-[150px] w-[150px] sm:h-[180px] sm:w-[180px]"
+        className="h-[240px] w-[175px] sm:h-[260px] sm:w-[210px]"
       >
         <Card.Body className="flex items-center justify-center">
           <Text className="text-center text-2xl text-gray-800">
-            Create Catalog
+            Create Collection
           </Text>
 
           <FaPlus className="mt-5 text-xl text-gray-800" />
         </Card.Body>
       </Card>
-      <CreateCatalogDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+      <CreateCollectionDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 };
 
-export default CreateCatalog;
+export default CreateCollection;

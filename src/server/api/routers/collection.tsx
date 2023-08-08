@@ -24,27 +24,27 @@ const s3Client = new S3Client({
   },
 });
 
-export const catalogRouter = createTRPCRouter({
+export const collectionRouter = createTRPCRouter({
   createPresignedUrl: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const catalog = await ctx.prisma.catalog.findUnique({
+      const collection = await ctx.prisma.collection.findUnique({
         where: {
           id: input.id,
         },
       });
 
-      if (!catalog) {
+      if (!collection) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "the catalog does not exist",
+          message: "the collection does not exist",
         });
       }
 
       const imageName = uuidv4();
-      await ctx.prisma.catalog.update({
+      await ctx.prisma.collection.update({
         where: {
-          id: catalog.id,
+          id: collection.id,
         },
         data: {
           image: {
@@ -69,10 +69,10 @@ export const catalogRouter = createTRPCRouter({
       });
     }),
 
-  getCatalogs: protectedProcedure.query(async ({ ctx }) => {
+  getCollections: protectedProcedure.query(async ({ ctx }) => {
     const { id } = ctx.session.user;
     try {
-      const catalogs = await ctx.prisma.catalog.findMany({
+      const collections = await ctx.prisma.collection.findMany({
         where: {
           User: {
             id: id,
@@ -84,12 +84,13 @@ export const catalogRouter = createTRPCRouter({
               name: true,
             },
           },
+          _count: true,
         },
       });
 
-      if (catalogs) {
-        catalogs?.forEach((catalog) => {
-          catalog.image?.forEach((image) => {
+      if (collections) {
+        collections?.forEach((collection) => {
+          collection.image?.forEach((image) => {
             const signedUrl = getSignedUrl({
               keyPairId: process.env.CLOUDFRONT_KEYPAIR_ID as string,
               privateKey: process.env.CLOUDFRONT_PRIVATE_KEY?.replace(
@@ -103,14 +104,14 @@ export const catalogRouter = createTRPCRouter({
           });
         });
       }
-      return catalogs;
+      return collections;
     } catch (error) {
       console.error(error);
       throw error;
     }
   }),
 
-  getCatalogWithId: protectedProcedure
+  getCollectionWithId: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -119,14 +120,14 @@ export const catalogRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { session } = ctx;
       try {
-        const catalog = await ctx.prisma.catalog.findFirst({
+        const collection = await ctx.prisma.collection.findFirst({
           where: {
             id: input.id,
           },
         });
 
-        if (session.user.id === catalog?.userId) {
-          return catalog;
+        if (session.user.id === collection?.userId) {
+          return collection;
         }
 
         return null;
@@ -136,7 +137,7 @@ export const catalogRouter = createTRPCRouter({
       }
     }),
 
-  createCatalog: protectedProcedure
+  createCollection: protectedProcedure
     .input(
       z.object({
         name: z.string(),
@@ -146,7 +147,7 @@ export const catalogRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const { id } = ctx.session.user;
       try {
-        const catalog = await ctx.prisma.catalog.create({
+        const collection = await ctx.prisma.collection.create({
           data: {
             userId: id,
             name: input.name,
@@ -156,7 +157,7 @@ export const catalogRouter = createTRPCRouter({
         return {
           status: "success",
           response: {
-            catalog,
+            collection,
           },
         };
       } catch (error) {
@@ -164,7 +165,7 @@ export const catalogRouter = createTRPCRouter({
           if (error.code === "P2002") {
             throw new TRPCError({
               code: "CONFLICT",
-              message: "Catalog with that title already exists",
+              message: "collection with that title already exists",
             });
           }
         }
@@ -172,7 +173,7 @@ export const catalogRouter = createTRPCRouter({
       }
     }),
 
-  deleteCatalogWithId: protectedProcedure
+  deleteCollectionWithId: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -180,7 +181,7 @@ export const catalogRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        await ctx.prisma.catalog.delete({
+        await ctx.prisma.collection.delete({
           where: {
             id: input.id,
           },
@@ -193,7 +194,7 @@ export const catalogRouter = createTRPCRouter({
           if (error.code === "P2025") {
             throw new TRPCError({
               code: "NOT_FOUND",
-              message: "Catalog with that ID not found",
+              message: "collection with that ID not found",
             });
           }
         }
@@ -201,7 +202,7 @@ export const catalogRouter = createTRPCRouter({
       }
     }),
 
-  updateCatalog: protectedProcedure
+  updateCollection: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -210,7 +211,7 @@ export const catalogRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        const catalog = await ctx.prisma.catalog.update({
+        const collection = await ctx.prisma.collection.update({
           where: {
             id: input.id,
           },
@@ -221,7 +222,7 @@ export const catalogRouter = createTRPCRouter({
         return {
           status: "success",
           data: {
-            catalog,
+            collection,
           },
         };
       } catch (error) {
@@ -229,7 +230,7 @@ export const catalogRouter = createTRPCRouter({
           if (error.code === "P2025") {
             throw new TRPCError({
               code: "NOT_FOUND",
-              message: "Catalog with that ID not found",
+              message: "Collection with that ID not found",
             });
           }
         }

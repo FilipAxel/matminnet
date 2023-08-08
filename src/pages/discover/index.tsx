@@ -5,7 +5,7 @@ import { api } from "~/utils/api";
 import RecipeList from "~/components/recipe/recipe-card";
 import { type RecipeWithImage } from "../recipes";
 
-const Public = () => {
+const Discover = () => {
   const [searchResults, setSearchResults] = useState<RecipeWithImage[]>([]);
 
   const { data: recipes, isLoading } =
@@ -34,4 +34,4 @@ const Public = () => {
   );
 };
 
-export default Public;
+export default Discover;

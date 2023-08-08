@@ -59,14 +59,14 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                     <div className="flex items-center">
                       <MdAccessTime className="mr-1 text-[#d1d1d1]" />
                       <Text className="mr-3 text-white" size={11}>
-                        {recipe.cookingTime}
+                        {recipe.cookingTime} min
                       </Text>
                     </div>
 
                     <div className="flex items-center">
                       <PiBowlFoodDuotone className="mr-1 text-[#d1d1d1]" />
                       <Text className="text-white" size={11}>
-                        {recipe.servingSize} Serve
+                        {recipe.servingSize} Servings
                       </Text>
                     </div>
                   </Row>

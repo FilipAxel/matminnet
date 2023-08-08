@@ -13,21 +13,21 @@ export type RecipeWithImage = Recipe & {
   images: { name: string }[];
 };
 
-const CatalogsPage = () => {
+const CollectionPage = () => {
   const [searchResults, setSearchResults] = useState<RecipeWithImage[]>([]);
   const { data: session } = useSession();
   const router = useRouter();
   const { query } = router;
-  const id = query.catalog as string;
+  const id = query.collection as string;
 
   const { data: recipes, isLoading } =
-    api.recipe.getRecipeWithCatalogId.useQuery(
+    api.recipe.getRecipeWithCollectionId.useQuery(
       { id },
       { enabled: !!session?.user }
     );
 
-  const { data: catalog, isLoading: isLoadingCatalog } =
-    api.catalog.getCatalogWithId.useQuery(
+  const { data: collection, isLoading: isLoadingCollection } =
+    api.collection.getCollectionWithId.useQuery(
       {
         id,
       },
@@ -57,9 +57,9 @@ const CatalogsPage = () => {
           className="mx-auto flex w-full max-w-[1200px] justify-start"
           gap={2}
         >
-          {catalog && !isLoadingCatalog ? (
+          {collection && !isLoadingCollection ? (
             <Grid>
-              <CreateRecipe name={catalog?.name} />
+              <CreateRecipe name={collection?.name} />
             </Grid>
           ) : null}
 
@@ -74,4 +74,4 @@ const CatalogsPage = () => {
   }
 };
 
-export default CatalogsPage;
+export default CollectionPage;

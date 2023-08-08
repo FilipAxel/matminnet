@@ -4,7 +4,7 @@ import { FaPlus } from "react-icons/fa6";
 import { MdPerson2 } from "react-icons/md";
 
 const HomePageSkeleton = () => {
-  const catalogs = [
+  const collections = [
     {
       id: 1,
       name: "Pasta",
@@ -108,26 +108,26 @@ const HomePageSkeleton = () => {
           <Card variant="bordered" css={{ width: "180px", height: "180px" }}>
             <Card.Body className="flex items-center justify-center">
               <Text className="text-center text-2xl text-gray-800">
-                Create Catalog
+                Create Collection
               </Text>
 
               <FaPlus className="mt-5 text-xl text-gray-800" />
             </Card.Body>
           </Card>
         </Grid>
-        {catalogs?.map((catalog) => {
+        {collections?.map((collection) => {
           return (
-            <Grid key={catalog.id}>
+            <Grid key={collection.id}>
               <Card css={{ width: "180px", height: "180px" }}>
                 <Card.Body className="group relative" css={{ p: 0 }}>
                   <div color="primary">
                     <Card.Image
-                      src={catalog.image}
+                      src={collection.image}
                       showSkeleton
                       objectFit="cover"
                       width={"100%"}
                       height={130}
-                      alt={catalog.name}
+                      alt={collection.name}
                     />
                   </div>
                 </Card.Body>
@@ -143,7 +143,7 @@ const HomePageSkeleton = () => {
                       }}
                       className="truncate"
                     >
-                      {catalog?.name}
+                      {collection?.name}
                     </Text>
                   </Row>
                 </Card.Footer>

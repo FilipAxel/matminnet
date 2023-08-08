@@ -14,13 +14,14 @@ const DeleteRecipeActionDialog: React.FC<DeleteRecipeActionDialogProps> = ({
   isDeleteActionOpen,
   setDeleteActioOpen,
 }) => {
-  const { mutate: deleteCatalog } = api.recipe.deleteRecipeWithId.useMutation({
-    onSuccess() {
-      setDeleteActioOpen(false);
-    },
-  });
+  const { mutate: deleteCollection } =
+    api.recipe.deleteRecipeWithId.useMutation({
+      onSuccess() {
+        setDeleteActioOpen(false);
+      },
+    });
 
-  const handleDelete = () => deleteCatalog({ id: id });
+  const handleDelete = () => deleteCollection({ id: id });
 
   return (
     <div>

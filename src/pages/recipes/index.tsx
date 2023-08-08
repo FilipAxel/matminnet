@@ -17,8 +17,7 @@ const Recipes = () => {
   const { data: session, status } = useSession();
 
   const [searchResults, setSearchResults] = useState<RecipeWithImage[]>([]);
-  const { data: recipes, isLoading } =
-    api.recipe.getAllRecipes.useQuery(undefined);
+  const { data: recipes, isLoading } = api.recipe.getAllRecipes.useQuery();
 
   if (status === "unauthenticated" && !session) {
     return <LoginActionDialog pageName={"Settings"} />;

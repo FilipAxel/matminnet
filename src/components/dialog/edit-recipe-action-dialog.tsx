@@ -29,14 +29,14 @@ const EditRecipeActionDialog: React.FC<editRecipeActionDialogProps> = ({
     },
   });
 
-  const { mutate: updateCatalog } = api.recipe.updateRecipe.useMutation({
+  const { mutate: updateCollection } = api.recipe.updateRecipe.useMutation({
     onSuccess() {
       setEditActionOpen(false);
     },
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (FormdData) =>
-    updateCatalog({ id: id, name: FormdData.name });
+    updateCollection({ id: id, name: FormdData.name });
 
   return (
     <div>

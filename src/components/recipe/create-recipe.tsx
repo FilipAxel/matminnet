@@ -27,11 +27,14 @@ const CreateRecipe: React.FC<createRecipeProps> = ({ name }) => {
           <FaPlus className="mt-5 text-xl text-gray-800" />
         </Card.Body>
       </Card>
-      <CreateRecipeDialog
-        catalogName={name}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
+
+      {isOpen ? (
+        <CreateRecipeDialog
+          collectionName={name}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+      ) : null}
     </>
   );
 };

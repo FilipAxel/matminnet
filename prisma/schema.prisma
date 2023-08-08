@@ -46,16 +46,16 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String       @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?      @unique
     emailVerified DateTime?
     image         String?
-    catalog       Catalog[]
+    collection    Collection[]
     recipe        Recipe[]
     accounts      Account[]
     sessions      Session[]
-    isAdmin       Boolean   @default(false)
+    isAdmin       Boolean      @default(false)
 
     created_at               DateTime                   @default(now())
     updated_at               DateTime                   @updatedAt
@@ -79,13 +79,13 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Catalog {
-    id      String            @id @default(cuid())
+model Collection {
+    id      String               @id @default(cuid())
     name    String
     type    String?
-    recipes RecipeOnCatalog[]
+    recipes RecipeOnCollection[]
     image   Image[]
-    User    User              @relation(fields: [userId], references: [id])
+    User    User                 @relation(fields: [userId], references: [id])
     userId  String
 
     created_at DateTime @default(now())
@@ -109,7 +109,7 @@ model Tag {
 model Recipe {
     id                       String                     @id @default(cuid())
     name                     String
-    catalogs                 RecipeOnCatalog[]
+    collections              RecipeOnCollection[]
     recipeIngredients        RecipeIngredient[]
     tags                     Tag[]
     servingSize              String?
@@ -173,31 +173,31 @@ model RecipeIngredient {
     @@index([recipeId])
 }
 
-model RecipeOnCatalog {
-    recipe    Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-    recipeId  String // relation scalar field (used in the `@relation` attribute above)
-    catalog   Catalog @relation(fields: [catalogId], references: [id], onDelete: Cascade)
-    catalogId String // relation scalar field (used in the `@relation` attribute above)
+model RecipeOnCollection {
+    recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId     String // relation scalar field (used in the `@relation` attribute above)
+    collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+    collectionId String // relation scalar field (used in the `@relation` attribute above)
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    @@id([recipeId, catalogId])
+    @@id([recipeId, collectionId])
     @@index([recipeId])
-    @@index([catalogId])
+    @@index([collectionId])
 }
 
 model Image {
-    id        String   @id @default(cuid())
-    name      String
-    Recipe    Recipe?  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-    recipeId  String?
-    Catalog   Catalog? @relation(fields: [catalogId], references: [id], onDelete: Cascade)
-    catalogId String?
+    id           String      @id @default(cuid())
+    name         String
+    Recipe       Recipe?     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId     String?
+    collection   Collection? @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+    collectionId String?
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
     @@index([recipeId])
-    @@index([catalogId])
+    @@index([collectionId])
 }

@@ -20,7 +20,7 @@ import { type ChangeEvent, Fragment, useState } from "react";
 import { uploadFileToS3 } from "../utils/s3";
 import Image from "next/image";
 
-interface CatalogOption {
+interface CollectionOption {
   value: string;
   label: string;
 }
@@ -42,18 +42,18 @@ interface FormValues {
   video: string;
   country: string;
   author: string;
-  catalog: CatalogOption;
+  collection: CollectionOption;
   publicationStatus: boolean;
 }
 
 interface createRecipeDialogProps {
-  catalogName?: string;
+  collectionName?: string;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
-  catalogName,
+  collectionName,
   isOpen,
   setIsOpen,
 }) => {
@@ -91,9 +91,9 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
       video: "",
       country: "",
       author: "",
-      catalog: {
-        value: catalogName ? catalogName : "",
-        label: catalogName ? catalogName : "",
+      collection: {
+        value: collectionName ? collectionName : "",
+        label: collectionName ? collectionName : "",
       },
       ingredients: [],
       publicationStatus: false,
@@ -114,7 +114,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
       }
     },
   });
-  const { data: catalogs } = api.catalog.getCatalogs.useQuery();
+  const { data: collections } = api.collection.getCollections.useQuery();
   const createPresignedUrlMutation =
     api.recipe.createPresignedUrl.useMutation();
 
@@ -425,9 +425,9 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               )}
             />
             <Spacer y={1} />
-            <label htmlFor="catalog">Catalog</label>
+            <label htmlFor="collection">Collection</label>
             <Controller
-              name="catalog"
+              name="collection"
               control={control}
               render={({ field }) => (
                 <Select
@@ -435,8 +435,8 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   isClearable={true}
                   isSearchable={true}
                   {...field}
-                  options={catalogs?.map((catalog) => {
-                    return { value: catalog.id, label: catalog.name };
+                  options={collections?.map((collection) => {
+                    return { value: collection.id, label: collection.name };
                   })}
                 />
               )}

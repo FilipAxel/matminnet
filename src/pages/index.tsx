@@ -1,20 +1,21 @@
 import { Grid, Loading } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import CatalogCard from "~/components/catalog/catalog-card";
-import CreateCatalog from "~/components/catalog/create-catalog";
+import CollectionCard from "~/components/collection/collection-card";
+import CreateCollection from "~/components/collection/create-collection";
 import { api } from "~/utils/api";
 
 export default function Home() {
   const { status, data: session } = useSession();
   const router = useRouter();
-  const { data: catalogs, isLoading } = api.catalog.getCatalogs.useQuery(
-    undefined, // no input
-    { enabled: session?.user !== undefined }
-  );
+  const { data: collections, isLoading } =
+    api.collection.getCollections.useQuery(
+      undefined, // no input
+      { enabled: session?.user !== undefined }
+    );
 
   if (status === "unauthenticated" && !session) {
-    void router.push("/public");
+    void router.push("/discover");
   }
 
   if (status === "loading" || isLoading) {
@@ -31,14 +32,14 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center gap-4">
           <div className="flex w-full justify-center">
             <Grid.Container
-              className="mx-auto flex w-full max-w-[1200px] justify-start"
-              gap={2}
+              className="mx-auto flex w-full max-w-[1200px] justify-center p-0"
+              gap={1}
             >
               <Grid>
-                <CreateCatalog />
+                <CreateCollection />
               </Grid>
-              {catalogs?.map((catalog) => (
-                <CatalogCard key={catalog.id} catalog={catalog} />
+              {collections?.map((collection) => (
+                <CollectionCard key={collection.id} collection={collection} />
               ))}
             </Grid.Container>
           </div>
