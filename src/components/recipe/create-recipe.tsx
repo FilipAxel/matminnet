@@ -17,7 +17,7 @@ const CreateRecipe: React.FC<createRecipeProps> = ({ name }) => {
         isPressable
         isHoverable
         variant="bordered"
-        className="h-[240px] w-[170px] sm:h-[260px] sm:w-[200px]"
+        className="h-[240px] w-[175px] sm:h-[260px] sm:w-[210px]"
       >
         <Card.Body className="flex items-center justify-center">
           <Text className="text-center text-2xl text-gray-800">

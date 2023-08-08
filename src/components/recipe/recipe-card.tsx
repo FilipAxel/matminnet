@@ -24,7 +24,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
       <Grid>
         <Card
           isPressable
-          className="h-[240px] w-[170px] sm:h-[260px] sm:w-[200px]"
+          className="h-[240px] w-[175px] sm:h-[260px] sm:w-[210px]"
           onClick={() => handleRoute()}
         >
           <Card.Body css={{ p: 0 }}>
