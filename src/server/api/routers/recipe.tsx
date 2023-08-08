@@ -221,7 +221,7 @@ export const recipeRouter = createTRPCRouter({
       const recipeId: string = input.id;
       const { session } = ctx;
       try {
-        const recipe = await ctx.prisma.recipe.findFirstOrThrow({
+        const recipe = await ctx.prisma.recipe.findFirst({
           where: {
             id: recipeId,
           },
