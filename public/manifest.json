@@ -4,8 +4,8 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "matMinne",
-  "short_name": "matMinne",
+  "name": "Mat Minne",
+  "short_name": "Mat Minne",
   "description": "store recipes",
   "icons": [
     {

@@ -56,9 +56,9 @@ class MyDocument extends Document {
             name="msapplication-config"
             content="/icons/browserconfig.xml"
           />
-          <meta name="msapplication-TileColor" content="#2B5797" />
+          <meta name="msapplication-TileColor" content="#FFFFFF" />
           <meta name="msapplication-tap-highlight" content="no" />
-          <meta name="theme-color" content="#9FC4E7" />
+          <meta name="theme-color" content="#FFFFFF" />
 
           <meta property="og:type" content="website" />
           <meta property="og:title" content="Recipe Application" />
