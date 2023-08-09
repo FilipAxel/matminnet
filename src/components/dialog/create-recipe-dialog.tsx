@@ -42,7 +42,7 @@ interface FormValues {
   video: string;
   country: string;
   author: string;
-  collection: CollectionOption;
+  collections: CollectionOption[];
   publicationStatus: boolean;
 }
 
@@ -75,6 +75,13 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
       unit: "st",
     })) ?? [];
 
+  const { data: collections } = api.collection.getCollections.useQuery();
+  const collectionOptions: CollectionOption[] =
+    collections?.map((collection: { id: string; name: string }) => ({
+      value: collection.id,
+      label: collection.name,
+    })) ?? [];
+
   const {
     control,
     handleSubmit,
@@ -91,10 +98,9 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
       video: "",
       country: "",
       author: "",
-      collection: {
-        value: collectionName ? collectionName : "",
-        label: collectionName ? collectionName : "",
-      },
+      collections: collectionName
+        ? [{ value: collectionName, label: collectionName }]
+        : [],
       ingredients: [],
       publicationStatus: false,
     },
@@ -114,7 +120,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
       }
     },
   });
-  const { data: collections } = api.collection.getCollections.useQuery();
+
   const createPresignedUrlMutation =
     api.recipe.createPresignedUrl.useMutation();
 
@@ -355,7 +361,6 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 );
               }}
               control={control}
-              rules={{ required: true }}
             />
             <Spacer y={1} />
             <Controller
@@ -425,21 +430,49 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               )}
             />
             <Spacer y={1} />
-            <label htmlFor="collection">Collection</label>
+            <label htmlFor="collections">Collections</label>
             <Controller
-              name="collection"
+              name="collections"
+              render={({ field }) => {
+                const { onChange } = field;
+                const currentValue = getValues("collections") || [];
+
+                const handleInputChange = (
+                  newValue: CollectionOption[],
+                  actionMeta: ActionMeta<CollectionOption>
+                ) => {
+                  if (actionMeta.action === "create-option") {
+                    const { label, value } = actionMeta.option;
+                    const existingOptionIndex = currentValue.findIndex(
+                      (option) => option.label === label
+                    );
+                    if (existingOptionIndex !== -1) {
+                      currentValue.splice(existingOptionIndex, 1);
+                    }
+                    const newCollection: CollectionOption = {
+                      value: value,
+                      label: label,
+                    };
+                    const updatedValue = [...currentValue, newCollection];
+                    onChange(updatedValue);
+                  } else {
+                    onChange(newValue);
+                  }
+                };
+
+                return (
+                  <Select
+                    {...field}
+                    isMulti
+                    classNamePrefix="select"
+                    isClearable={true}
+                    isSearchable={true}
+                    options={collectionOptions}
+                    onChange={handleInputChange}
+                  />
+                );
+              }}
               control={control}
-              render={({ field }) => (
-                <Select
-                  classNamePrefix="select"
-                  isClearable={true}
-                  isSearchable={true}
-                  {...field}
-                  options={collections?.map((collection) => {
-                    return { value: collection.id, label: collection.name };
-                  })}
-                />
-              )}
             />
 
             <Spacer y={1} />

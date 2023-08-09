@@ -1,4 +1,4 @@
-import { type Author, Prisma } from "@prisma/client";
+import { type Author, Prisma, type Collection } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { DeleteObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
@@ -283,10 +283,12 @@ export const recipeRouter = createTRPCRouter({
           video: z.string(),
           country: z.string(),
           author: z.string(),
-          collection: z.object({
-            value: z.string(),
-            label: z.string(),
-          }),
+          collections: z.array(
+            z.object({
+              value: z.string(),
+              label: z.string(),
+            })
+          ),
           ingredients: z.array(
             z.object({
               value: z.string(),
@@ -304,7 +306,7 @@ export const recipeRouter = createTRPCRouter({
       const { recipe } = input;
       const {
         author,
-        collection,
+        collections,
         country,
         description,
         direction,
@@ -323,11 +325,23 @@ export const recipeRouter = createTRPCRouter({
           },
         });
 
-        const collectionFromDb = await ctx.prisma.collection.findFirst({
-          where: {
-            name: collection?.value,
-          },
-        });
+        const foundCollections: Collection[] = [];
+
+        console.log(collections);
+
+        if (collections) {
+          for (const collection of collections) {
+            const collectionFromDb = await ctx.prisma.collection.findFirst({
+              where: {
+                id: collection?.value,
+              },
+            });
+
+            if (collectionFromDb) {
+              foundCollections.push(collectionFromDb);
+            }
+          }
+        }
 
         let createdAuthor: Author | null = null;
         if (!authorFromDb) {
@@ -385,17 +399,15 @@ export const recipeRouter = createTRPCRouter({
             video: video,
             authorId: authorFromDb?.id || createdAuthor?.id,
             userId: id,
-            collections: collectionFromDb
-              ? {
-                  create: {
-                    collection: {
-                      connect: {
-                        id: collectionFromDb.id,
-                      },
-                    },
+            collections: {
+              create: foundCollections.map((collection) => ({
+                collection: {
+                  connect: {
+                    id: collection.id,
                   },
-                }
-              : undefined,
+                },
+              })),
+            },
             recipeIngredients: {
               create: recipeIngredients.map((ingredient) => ({
                 quantity: ingredient.quantity,

@@ -79,6 +79,18 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
+model Tag {
+    id       String  @id @default(cuid())
+    name     String
+    Recipe   Recipe? @relation(fields: [recipeId], references: [id])
+    recipeId String?
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@index([recipeId])
+}
+
 model Collection {
     id      String               @id @default(cuid())
     name    String
@@ -94,16 +106,18 @@ model Collection {
     @@index([userId])
 }
 
-model Tag {
-    id       String  @id @default(cuid())
-    name     String
-    Recipe   Recipe? @relation(fields: [recipeId], references: [id])
-    recipeId String?
+model RecipeOnCollection {
+    recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId     String // relation scalar field (used in the `@relation` attribute above)
+    collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+    collectionId String // relation scalar field (used in the `@relation` attribute above)
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
+    @@id([recipeId, collectionId])
     @@index([recipeId])
+    @@index([collectionId])
 }
 
 model Recipe {
@@ -171,20 +185,6 @@ model RecipeIngredient {
 
     @@index([ingredientId])
     @@index([recipeId])
-}
-
-model RecipeOnCollection {
-    recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-    recipeId     String // relation scalar field (used in the `@relation` attribute above)
-    collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-    collectionId String // relation scalar field (used in the `@relation` attribute above)
-
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
-
-    @@id([recipeId, collectionId])
-    @@index([recipeId])
-    @@index([collectionId])
 }
 
 model Image {
