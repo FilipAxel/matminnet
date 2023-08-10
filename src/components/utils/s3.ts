@@ -4,7 +4,7 @@
 
 const MAX_WIDTH = 400;
 const MAX_HEIGHT = 400;
-const MIME_TYPE = "image/jpeg";
+const MIME_TYPE = "image/webp";
 const QUALITY = 0.8;
 
 export async function uploadFileToS3({
