@@ -26,9 +26,11 @@ const notFoundPage = () => {
           <div>
             <Image
               alt="404"
-              src={"https://i.ibb.co/G9DC8S0/404-2.png"}
-              width={100}
-              height={100}
+              src="/404.png"
+              width={0}
+              height={0}
+              sizes="100vw"
+              style={{ width: "100%", height: "auto" }}
             />
           </div>
         </div>
@@ -36,9 +38,11 @@ const notFoundPage = () => {
       <div>
         <Image
           alt="group"
-          src={"https://i.ibb.co/ck1SGFJ/Group.png"}
-          width={100}
-          height={100}
+          src={"/group.png"}
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{ width: "100%", height: "auto" }}
         />
       </div>
     </div>
