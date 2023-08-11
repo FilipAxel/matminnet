@@ -169,18 +169,19 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               control={control}
               rules={{
                 required: true,
-                maxLength: 20,
+                maxLength: 40,
                 minLength: 3,
               }}
               render={({ field }) => (
                 <Input
+                  size="xl"
                   clearable
                   bordered
                   helperText={
                     errors?.name?.type === "required"
                       ? "Name is required"
                       : "" || errors?.name?.type === "maxLength"
-                      ? "name must not exceed 100 characters"
+                      ? "name must not exceed 40 characters"
                       : ""
                   }
                   helperColor={
@@ -195,7 +196,6 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   label="Name"
                   fullWidth
                   {...field}
-                  size="lg"
                 />
               )}
             />
@@ -242,7 +242,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   fullWidth
                   {...field}
                   size="lg"
-                  minRows={1}
+                  minRows={2}
                   maxRows={8}
                 />
               )}
@@ -269,7 +269,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                     }
                     const newIngredient: IngredientOption = {
                       value: value,
-                      label: label,
+                      label: label.charAt(0).toUpperCase() + label.slice(1),
                       quantity: "1",
                       unit: "st",
                     };
@@ -305,7 +305,11 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                       onChange={handleInputChange}
                     />
                     {currentValue.length > 0 && (
-                      <Grid.Container gap={1} justify="center">
+                      <Grid.Container
+                        className="m-0 w-full rounded-b-lg bg-gray-500"
+                        gap={1}
+                        justify="center"
+                      >
                         {currentValue.map((option, index) => (
                           <Fragment key={option.value}>
                             <Grid xs={4}>

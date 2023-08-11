@@ -51,7 +51,7 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
   };
 
   return (
-    <form className="mr-5 flex justify-end" onChange={handleChange}>
+    <form className="mr-5 mt-2 flex justify-end" onChange={handleChange}>
       <Controller
         name="recipeSearch"
         control={control}

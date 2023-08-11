@@ -1,4 +1,4 @@
-import { Grid, Loading, Spacer, Text } from "@nextui-org/react";
+import { Grid, Spacer, Text } from "@nextui-org/react";
 import { type Recipe } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -7,6 +7,7 @@ import LoginActionDialog from "~/components/dialog/login-action-dialog";
 import CreateRecipe from "~/components/recipe/create-recipe";
 import RecipeCard from "~/components/recipe/recipe-card";
 import SearchRecipe from "~/components/recipe/recipe-search";
+import SkeletonRecipeCard from "~/components/skeleton/recipe-card-skeletion";
 import { api } from "~/utils/api";
 
 export type RecipeWithImage = Recipe & {
@@ -47,26 +48,32 @@ const Recipes = () => {
 
   return (
     <>
-      {recipes ? (
+      {recipes && !isLoading && (
         <SearchRecipe recipes={recipes} setSearchResults={setSearchResults} />
-      ) : null}
+      )}
       <Spacer y={1} />
       {isLoading ? (
-        <Grid className="grid h-screen place-items-center">
-          <Loading className="mb-10" size="xl" type="points-opacity" />
-        </Grid>
-      ) : null}
-      <Grid.Container
-        className="mx-auto flex w-full max-w-[1200px] justify-center p-0"
-        gap={1}
-      >
-        <Grid>
-          <CreateRecipe />
-        </Grid>
-        {searchResults.map((recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
-        ))}
-      </Grid.Container>
+        <Grid.Container
+          className="mx-auto flex w-full max-w-[1200px] justify-center p-0"
+          gap={1}
+        >
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => {
+            return <SkeletonRecipeCard key={n} />;
+          })}
+        </Grid.Container>
+      ) : (
+        <Grid.Container
+          className="mx-auto mb-10 mt-2 flex w-full max-w-[1200px] justify-center p-0"
+          gap={1}
+        >
+          <Grid>
+            <CreateRecipe />
+          </Grid>
+          {searchResults.map((recipe) => (
+            <RecipeCard key={recipe.id} recipe={recipe} />
+          ))}
+        </Grid.Container>
+      )}
     </>
   );
 };

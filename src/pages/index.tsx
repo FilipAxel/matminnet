@@ -1,12 +1,14 @@
-import { Grid, Loading } from "@nextui-org/react";
+import { Grid } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import CollectionCard from "~/components/collection/collection-card";
 import CreateCollection from "~/components/collection/create-collection";
+import SkeletoncollectionCard from "~/components/skeleton/collection-card-skeletion";
 import { api } from "~/utils/api";
 
 export default function Home() {
   const { status, data: session } = useSession();
+  const numberOfSkeletonsCards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const router = useRouter();
   const { data: collections, isLoading } =
     api.collection.getCollections.useQuery(
@@ -19,11 +21,9 @@ export default function Home() {
   }
 
   if (status === "loading" || isLoading) {
-    return (
-      <Grid className="grid h-screen place-items-center">
-        <Loading className="mb-10" size="xl" type="points-opacity" />
-      </Grid>
-    );
+    return numberOfSkeletonsCards.map((n) => {
+      <SkeletoncollectionCard key={n} />;
+    });
   }
 
   if (status === "authenticated" || !isLoading) {
