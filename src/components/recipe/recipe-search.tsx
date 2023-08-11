@@ -68,7 +68,7 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
       />
 
       <Dropdown>
-        <Dropdown.Button className="bg-blue-500" color="primary" auto>
+        <Dropdown.Button className="bg-[#b195d2]" color="primary" auto>
           {sortOrder}
         </Dropdown.Button>
         <Dropdown.Menu

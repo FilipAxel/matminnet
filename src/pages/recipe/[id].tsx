@@ -20,7 +20,7 @@ const Recipe = () => {
 
   if (!isLoading) {
     return (
-      <div className="max-w-5xl">
+      <div className="mb-10 max-w-5xl">
         <BackButton />
         <Grid>
           <Avatar
@@ -65,7 +65,7 @@ const Recipe = () => {
         <Text h2 size={25} className="ml-4 mt-5" weight="bold">
           Directions
         </Text>
-        <p className="m-5">{recipe?.directions}</p>
+        <p className="mx-5 mb-[60px] mt-5">{recipe?.directions}</p>
 
         {recipe?.video && (
           <div className="aspect-h-9 aspect-w-16 m-5 flex justify-center">

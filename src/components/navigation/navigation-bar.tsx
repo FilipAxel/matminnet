@@ -96,8 +96,6 @@ const NavigationBar = () => {
                 <Dropdown.Trigger>
                   <Avatar
                     className="cursor-pointer"
-                    bordered
-                    color="secondary"
                     src={session?.user?.image as string}
                     text={session?.user?.name as string}
                     size="md"
