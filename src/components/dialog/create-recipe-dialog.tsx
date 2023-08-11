@@ -38,7 +38,7 @@ interface FormValues {
   direction: string;
   ingredients: IngredientOption[];
   servingSize: string;
-  cookingTime: number;
+  cookingTime: number | null;
   video: string;
   country: string;
   author: string;
@@ -99,7 +99,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
       description: "",
       direction: "",
       servingSize: "",
-      cookingTime: 0,
+      cookingTime: null,
       video: "",
       country: "",
       author: "",
@@ -150,7 +150,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
     const newImageFiles: ImageFile[] = [];
 
     if (selectedFiles.length + imageFiles.length > 3) {
-      setUploadError("You can upload a maximum of 3 images.");
+      setUploadError("You have exceeded the maximum limit of three images.");
       return;
     } else {
       setUploadError(null);
@@ -229,9 +229,10 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
             <div>
               <label
                 htmlFor="fileInput"
-                className="font-semibol mb-2 block text-black"
+                className="font-semibol mb-2 block text-sm text-black"
               >
-                Upload images to be displayed:
+                Upload images for display (up to 3 images, with the first
+                selected image serving as the thumbnail)
               </label>
               <input
                 aria-label="Upload images"
