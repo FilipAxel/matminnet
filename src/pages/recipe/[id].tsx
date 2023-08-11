@@ -24,7 +24,8 @@ const Recipe = () => {
         <BackButton />
         <Grid>
           <Avatar
-            className="m-auto h-[250px] w-[250px] object-fill"
+            squared
+            className="m-auto h-[260px] w-[260px] object-fill"
             src={recipe?.images?.[0]?.name ?? "/recipe-placeholder.webp"}
           />
         </Grid>
