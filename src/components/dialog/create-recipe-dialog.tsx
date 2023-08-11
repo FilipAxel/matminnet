@@ -38,7 +38,7 @@ interface FormValues {
   direction: string;
   ingredients: IngredientOption[];
   servingSize: string;
-  cookingTime: number | null;
+  cookingTime: string | number | null;
   video: string;
   country: string;
   author: string;
@@ -441,7 +441,13 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   label="cooking Time (in minutes)"
                   labelRight="Min"
                   type="number"
-                  {...field}
+                  value={field.value !== null ? field.value : ""}
+                  onChange={(e) => {
+                    // Handle both numeric and string inputs
+                    const newValue = e.target.value;
+                    field.onChange(newValue !== "" ? Number(newValue) : null);
+                  }}
+                  onBlur={field.onBlur}
                   size="lg"
                 />
               )}
