@@ -501,28 +501,28 @@ export const recipeRouter = createTRPCRouter({
           },
         });
 
-        const imageName = recipe?.images?.[0]?.name || "";
+        for (const image of recipe?.images || []) {
+          if (image.name) {
+            const deleteParams = {
+              Bucket: bucketName,
+              Key: image.name,
+            };
+            await s3Client.send(new DeleteObjectCommand(deleteParams));
+          }
 
-        if (imageName) {
-          const deleteParams = {
-            Bucket: bucketName,
-            Key: imageName,
-          };
-          await s3Client.send(new DeleteObjectCommand(deleteParams));
-        }
-
-        const cfCommand = new CreateInvalidationCommand({
-          DistributionId: cloudfrontDistributionId,
-          InvalidationBatch: {
-            CallerReference: imageName,
-            Paths: {
-              Quantity: 1,
-              Items: ["/" + imageName],
+          const cfCommand = new CreateInvalidationCommand({
+            DistributionId: cloudfrontDistributionId,
+            InvalidationBatch: {
+              CallerReference: image.name,
+              Paths: {
+                Quantity: 1,
+                Items: ["/" + image.name],
+              },
             },
-          },
-        });
+          });
 
-        await cloudfront.send(cfCommand);
+          await cloudfront.send(cfCommand);
+        }
 
         return {
           status: "success",
