@@ -2,12 +2,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-const MAX_WIDTH = 600;
-const MAX_HEIGHT = 600;
+const MAX_WIDTH = 1000;
+const MAX_HEIGHT = 1000;
 const MIME_TYPE = "image/webp";
 const QUALITY = 0.8;
 
-export async function uploadFileToS3({
+export const uploadFileToS3 = async ({
   getPresignedUrl,
   file,
 }: {
@@ -16,7 +16,7 @@ export async function uploadFileToS3({
     fields: Record<string, string>;
   }>;
   file: File;
-}) {
+}) => {
   const { url, fields } = await getPresignedUrl();
 
   const resizedFile = await resizeImage(file, MAX_WIDTH, MAX_HEIGHT);
@@ -37,13 +37,13 @@ export async function uploadFileToS3({
     method: "POST",
     body: formData,
   });
-}
+};
 
-async function resizeImage(
+const resizeImage = async (
   file: File,
   maxWidth: number,
   maxHeight: number
-): Promise<Blob> {
+): Promise<Blob> => {
   return new Promise((resolve) => {
     const img = new Image();
     img.src = URL.createObjectURL(file);
@@ -82,9 +82,12 @@ async function resizeImage(
       }, file.type);
     };
   });
-}
+};
 
-async function compressImage(inputBlob: Blob, quality: number): Promise<Blob> {
+const compressImage = async (
+  inputBlob: Blob,
+  quality: number
+): Promise<Blob> => {
   const img = new Image();
   img.src = URL.createObjectURL(inputBlob);
 
@@ -111,12 +114,12 @@ async function compressImage(inputBlob: Blob, quality: number): Promise<Blob> {
       );
     };
   });
-}
+};
 
 // saving this for logging purposes or if i want to return an error in the feature with the image size.
-function readableBytes(bytes) {
+const readableBytes = (bytes) => {
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
   return (bytes / Math.pow(1024, i)).toFixed(2) + " " + sizes[i];
-}
+};
