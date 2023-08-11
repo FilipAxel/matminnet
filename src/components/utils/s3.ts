@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-const MAX_WIDTH = 400;
-const MAX_HEIGHT = 400;
+const MAX_WIDTH = 600;
+const MAX_HEIGHT = 600;
 const MIME_TYPE = "image/webp";
 const QUALITY = 0.8;
 
@@ -52,14 +52,18 @@ async function resizeImage(
       let width = img.width;
       let height = img.height;
 
-      if (width > maxWidth) {
-        height *= maxWidth / width;
-        width = maxWidth;
-      }
+      if (width > maxWidth || height > maxHeight) {
+        const aspectRatio = width / height;
 
-      if (height > maxHeight) {
-        width *= maxHeight / height;
-        height = maxHeight;
+        if (width > maxWidth) {
+          width = maxWidth;
+          height = width / aspectRatio;
+        }
+
+        if (height > maxHeight) {
+          height = maxHeight;
+          width = height * aspectRatio;
+        }
       }
 
       const canvas = document.createElement("canvas");

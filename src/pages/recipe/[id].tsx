@@ -1,4 +1,4 @@
-import { Avatar, Card, Grid, Text } from "@nextui-org/react";
+import { Avatar, Card, Grid, Image, Text } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import BackButton from "~/components/shered/back-button";
 import { api } from "~/utils/api";
@@ -22,13 +22,14 @@ const Recipe = () => {
     return (
       <div className="mb-10 max-w-5xl">
         <BackButton />
-        <Grid>
-          <Avatar
-            squared
-            className="m-auto h-[260px] w-[260px] object-fill"
-            src={recipe?.images?.[0]?.name ?? "/recipe-placeholder.webp"}
-          />
-        </Grid>
+
+        <Image
+          className="m-auto max-h-[300px] max-w-[200px] rounded-[15px]"
+          src={recipe?.images?.[0]?.name ?? "/recipe-placeholder.webp"}
+          width={0}
+          height={0}
+          alt={"hej"}
+        />
 
         <Text h1 size={30} className="mt-5 text-center" weight="bold">
           {recipe?.name}
