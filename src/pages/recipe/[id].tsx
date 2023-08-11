@@ -1,5 +1,6 @@
 import { Avatar, Card, Grid, Image, Text } from "@nextui-org/react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import BackButton from "~/components/shered/back-button";
 import { api } from "~/utils/api";
 
@@ -7,6 +8,7 @@ const Recipe = () => {
   const router = useRouter();
   const { query } = router;
   const id = query.id as string;
+  const [mainImageIndex, setMainImageIndex] = useState(0);
 
   const { data: recipe, isLoading } = api.recipe.getRecipeWithId.useQuery({
     id,
@@ -24,12 +26,38 @@ const Recipe = () => {
         <BackButton />
 
         <Image
-          className="m-auto max-h-[300px] max-w-[200px] rounded-[15px]"
-          src={recipe?.images?.[0]?.name ?? "/recipe-placeholder.webp"}
+          className="m-auto h-[300px] w-[200px] rounded-[15px]"
+          src={
+            recipe?.images?.[mainImageIndex]?.name ?? "/recipe-placeholder.webp"
+          }
           width={0}
           height={0}
-          alt={"hej"}
+          alt={recipe?.images?.[mainImageIndex]?.name}
         />
+
+        {recipe?.images?.length && recipe.images.length > 1 && (
+          <Grid.Container justify="center" gap={2}>
+            {recipe?.images?.map((image, index) => (
+              <Grid
+                key={index}
+                className={`mt-5 cursor-pointer  rounded-[10px] ${
+                  index === mainImageIndex ? "border-2 border-[#b195d2]" : ""
+                }`}
+                xs={3}
+              >
+                <Image
+                  src={image.name}
+                  className="h-[100px] w-[100px]"
+                  onClick={() => setMainImageIndex(index)}
+                  alt={`Image ${index}`}
+                />
+              </Grid>
+            ))}
+          </Grid.Container>
+        )}
+
+        {/* Image Previews */}
+        <div className="mt-4 flex w-[250px] justify-center"></div>
 
         <Text h1 size={30} className="mt-5 text-center" weight="bold">
           {recipe?.name}
