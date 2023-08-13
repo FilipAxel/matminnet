@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-const MAX_WIDTH = 1000;
-const MAX_HEIGHT = 1000;
+const MAX_WIDTH = 800;
+const MAX_HEIGHT = 800;
 const MIME_TYPE = "image/webp";
 const QUALITY = 0.8;
 
