@@ -244,7 +244,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               />
               {uploadError && <p className="text-red-500">{uploadError}</p>}
 
-              <Grid.Container justify="flex-start" gap={2}>
+              <Grid.Container justify="flex-start" gap={1}>
                 {imageFiles.map(({ previewUrl }, index) => (
                   <Grid key={index} xs={4}>
                     <Image

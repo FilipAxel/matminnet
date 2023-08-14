@@ -26,7 +26,7 @@ const Recipe = () => {
         <BackButton />
 
         <Image
-          className="m-auto h-[300px] w-[200px] rounded-[15px]"
+          className="m-auto h-[380px] w-[250px] rounded-[15px]"
           src={
             recipe?.images?.[mainImageIndex]?.name ?? "/recipe-placeholder.webp"
           }
