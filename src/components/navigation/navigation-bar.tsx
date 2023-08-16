@@ -114,20 +114,10 @@ const NavigationBar = () => {
                   key="profile"
                   css={{ height: "$18" }}
                 >
-                  <Text
-                    className="text-black"
-                    b
-                    color="inherit"
-                    css={{ d: "flex" }}
-                  >
+                  <Text b color="inherit" css={{ d: "flex", color: "Black" }}>
                     Signed in as
                   </Text>
-                  <Text
-                    className="text-black"
-                    b
-                    color="inherit"
-                    css={{ d: "flex" }}
-                  >
+                  <Text b color="inherit" css={{ d: "flex", color: "Black" }}>
                     {session?.user?.email}
                   </Text>
                 </Dropdown.Item>

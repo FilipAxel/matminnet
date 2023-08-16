@@ -277,7 +277,7 @@ export const recipeRouter = createTRPCRouter({
         recipe: z.object({
           name: z.string(),
           description: z.string(),
-          direction: z.string(),
+          directions: z.string(),
           servingSize: z.string(),
           cookingTime: z.union([z.number(), z.null(), z.string()]),
           video: z.string(),
@@ -309,7 +309,7 @@ export const recipeRouter = createTRPCRouter({
         collections,
         country,
         description,
-        direction,
+        directions,
         ingredients,
         name,
         servingSize,
@@ -326,8 +326,6 @@ export const recipeRouter = createTRPCRouter({
         });
 
         const foundCollections: Collection[] = [];
-
-        console.log(collections);
 
         if (collections) {
           for (const collection of collections) {
@@ -392,7 +390,7 @@ export const recipeRouter = createTRPCRouter({
           data: {
             name: name,
             description: description,
-            directions: direction,
+            directions: directions,
             country: country,
             servingSize: servingSize,
             cookingTime: cookingTime !== null ? +cookingTime : null,

@@ -127,9 +127,9 @@ model Recipe {
     recipeIngredients        RecipeIngredient[]
     tags                     Tag[]
     servingSize              String?
-    description              String?
+    description              String?                    @db.Text
     cookingTime              Int?
-    directions               String?
+    directions               String?                    @db.Text
     country                  String?
     images                   Image[]
     video                    String?
