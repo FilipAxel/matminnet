@@ -2,6 +2,7 @@ import { Card, Grid, Image, Text } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import BackButton from "~/components/shered/back-button";
+import SkeletonRecipe from "~/components/skeleton/recipe-skeleton";
 import { api } from "~/utils/api";
 
 const Recipe = () => {
@@ -18,6 +19,10 @@ const Recipe = () => {
     void router.push("/404");
   }
 
+  if (isLoading) {
+    return <SkeletonRecipe />;
+  }
+
   if (!isLoading) {
     return (
       <div className="mb-10 max-w-5xl">
@@ -30,7 +35,7 @@ const Recipe = () => {
           }
           width={0}
           height={0}
-          alt={recipe?.images?.[mainImageIndex]?.name}
+          alt={recipe?.images?.[mainImageIndex]?.name ?? "placeholder image"}
         />
 
         {recipe?.images?.length && recipe.images.length > 1 && (
@@ -54,7 +59,6 @@ const Recipe = () => {
           </Grid.Container>
         )}
 
-        {/* Image Previews */}
         <div className="mt-4 flex w-[250px] justify-center"></div>
 
         <Text h1 size={30} className="mt-5 text-center" weight="bold">
