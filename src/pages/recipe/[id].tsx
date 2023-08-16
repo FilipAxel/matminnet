@@ -1,4 +1,4 @@
-import { Avatar, Card, Grid, Image, Text } from "@nextui-org/react";
+import { Card, Grid, Image, Text } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import BackButton from "~/components/shered/back-button";
@@ -13,9 +13,7 @@ const Recipe = () => {
   const { data: recipe, isLoading } = api.recipe.getRecipeWithId.useQuery({
     id,
   });
-
-  console.log(recipe);
-
+  const directions = recipe?.directions || "";
   if (!recipe && !isLoading) {
     void router.push("/404");
   }
@@ -94,7 +92,11 @@ const Recipe = () => {
         <Text h2 size={25} className="ml-4 mt-5" weight="bold">
           Directions
         </Text>
-        <p className="mx-5 mb-[60px] mt-5">{recipe?.directions}</p>
+
+        <div
+          className="mx-5 mb-[60px] mt-5 max-w-[350px]"
+          dangerouslySetInnerHTML={{ __html: directions }}
+        ></div>
 
         {recipe?.video && (
           <div className="aspect-h-9 aspect-w-16 m-5 flex justify-center">

@@ -13,48 +13,22 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { type SubmitHandler, useForm, Controller } from "react-hook-form";
-import Select, { type ActionMeta } from "react-select";
 import { api } from "~/utils/api";
-import CreatableSelect from "react-select/creatable";
-import { type ChangeEvent, Fragment, useState } from "react";
+import { useState, useMemo } from "react";
 import { uploadFileToS3 } from "../utils/s3";
-import Image from "next/image";
-
-interface CollectionOption {
-  value: string;
-  label: string;
-}
-
-interface IngredientOption {
-  value: string;
-  label: string;
-  quantity: string;
-  unit: string;
-}
-
-interface FormValues {
-  name: string;
-  description: string;
-  direction: string;
-  ingredients: IngredientOption[];
-  servingSize: string;
-  cookingTime: string | number | null;
-  video: string;
-  country: string;
-  author: string;
-  collections: CollectionOption[];
-  publicationStatus: boolean;
-}
+import {
+  type FormValues,
+  type ImageFile,
+} from "../create-recipe-from/from-interface";
+import IngredientsControler from "../create-recipe-from/ingredients-controller";
+import ImageController from "../create-recipe-from/image-controller";
+import CollectionController from "../create-recipe-from/collection-controller";
+import QuillEditor from "../quill/quill-editor";
 
 interface createRecipeDialogProps {
   collectionName?: string;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface ImageFile {
-  file: File;
-  previewUrl: string;
 }
 
 const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
@@ -64,28 +38,13 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
 }) => {
   const [imageFiles, setImageFiles] = useState<ImageFile[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [quillContent, setQuillContent] = useState("");
 
   const closeHandler = () => {
     setIsOpen(false);
     setImageFiles([]);
     reset();
   };
-
-  const { data: ingredients } = api.ingredient.getAllIngredients.useQuery();
-  const ingredientOptions: IngredientOption[] =
-    ingredients?.map((ingredient: { name: string }) => ({
-      value: ingredient.name,
-      label: ingredient.name,
-      quantity: "1",
-      unit: "st",
-    })) ?? [];
-
-  const { data: collections } = api.collection.getCollections.useQuery();
-  const collectionOptions: CollectionOption[] =
-    collections?.map((collection: { id: string; name: string }) => ({
-      value: collection.id,
-      label: collection.name,
-    })) ?? [];
 
   const {
     control,
@@ -97,7 +56,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
     defaultValues: {
       name: "",
       description: "",
-      direction: "",
+      directions: "",
       servingSize: "",
       cookingTime: null,
       video: "",
@@ -137,47 +96,19 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
   const onSubmit: SubmitHandler<FormValues> = (formData) => {
     if (uploadError?.length) return;
     formData.cookingTime = Number(formData.cookingTime);
+    formData.directions = quillContent;
     setIsOpen(false);
     setImageFiles([]);
     createRecipe({
       recipe: formData,
     });
   };
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = event.target.files;
-    if (!selectedFiles) return;
-
-    const newImageFiles: ImageFile[] = [];
-
-    if (selectedFiles.length + imageFiles.length > 3) {
-      setUploadError("You have exceeded the maximum limit of three images.");
-      return;
-    } else {
-      setUploadError(null);
-    }
-
-    for (let i = 0; i < selectedFiles.length; i++) {
-      const file = selectedFiles[i];
-      if (!file) continue; // Skip if the file is undefined
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const previewUrl = reader.result as string;
-        newImageFiles.push({ file, previewUrl });
-
-        if (newImageFiles.length === selectedFiles.length) {
-          setImageFiles(newImageFiles);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   return (
     <div>
       <Modal
         closeButton
-        aria-labelledby="create recipe"
+        aria-labelledby="Create Recipe"
         fullScreen
         open={isOpen}
         onClose={closeHandler}
@@ -226,38 +157,12 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
             />
             <Spacer y={1} />
 
-            <div>
-              <label
-                htmlFor="fileInput"
-                className="font-semibol mb-2 block text-sm text-black"
-              >
-                Upload images for display (up to 3 images, with the first
-                selected image serving as the thumbnail)
-              </label>
-              <input
-                aria-label="Upload images"
-                onChange={handleFileChange}
-                className="focus:border-primary focus:shadow-te-primary dark:focus:border-primary relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:text-neutral-700 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
-                accept="image/*"
-                type="file"
-                multiple
-              />
-              {uploadError && <p className="text-red-500">{uploadError}</p>}
-
-              <Grid.Container justify="flex-start" gap={1}>
-                {imageFiles.map(({ previewUrl }, index) => (
-                  <Grid key={index} xs={4}>
-                    <Image
-                      src={previewUrl}
-                      alt={`Image Preview ${index}`}
-                      width={80}
-                      className="bg-gray-600"
-                      height={80}
-                    />
-                  </Grid>
-                ))}
-              </Grid.Container>
-            </div>
+            <ImageController
+              imageFiles={imageFiles}
+              setImageFiles={setImageFiles}
+              uploadError={uploadError}
+              setUploadError={setUploadError}
+            />
 
             <Spacer y={1} />
 
@@ -278,142 +183,34 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               )}
             />
             <Spacer y={1} />
-            <label htmlFor="ingredients">Ingredients</label>
+            <label className="mb-2" htmlFor="ingredients">
+              Ingredients
+            </label>
+            <Spacer y={0.2} />
             <Controller
               name="ingredients"
               render={({ field }) => {
-                const { onChange } = field;
                 const currentValue = getValues("ingredients") || [];
-
-                const handleInputChange = (
-                  newValue: IngredientOption[],
-                  actionMeta: ActionMeta<IngredientOption>
-                ) => {
-                  if (actionMeta.action === "create-option") {
-                    const { label, value } = actionMeta.option;
-                    const existingOptionIndex = currentValue.findIndex(
-                      (option) => option.label === label
-                    );
-                    if (existingOptionIndex !== -1) {
-                      currentValue.splice(existingOptionIndex, 1);
-                    }
-                    const newIngredient: IngredientOption = {
-                      value: value,
-                      label: label.charAt(0).toUpperCase() + label.slice(1),
-                      quantity: "1",
-                      unit: "st",
-                    };
-                    const updatedValue = [...currentValue, newIngredient];
-                    onChange(updatedValue);
-                  } else {
-                    onChange(newValue);
-                  }
-                };
-
-                const handleIngredientChange = (
-                  index: number,
-                  field: string,
-                  value: string
-                ) => {
-                  const updatedIngredients = [...currentValue];
-                  if (updatedIngredients[index]) {
-                    updatedIngredients[index] = {
-                      ...updatedIngredients[index],
-                      [field]: value,
-                    } as IngredientOption;
-                    onChange(updatedIngredients);
-                  }
-                };
-
                 return (
-                  <>
-                    <CreatableSelect
-                      {...field}
-                      isMulti
-                      options={ingredientOptions}
-                      isClearable={true}
-                      onChange={handleInputChange}
-                    />
-                    {currentValue.length > 0 && (
-                      <Grid.Container
-                        className="m-0 w-full rounded-b-lg bg-gray-500"
-                        gap={1}
-                        justify="center"
-                      >
-                        {currentValue.map((option, index) => (
-                          <Fragment key={option.value}>
-                            <Grid xs={4}>
-                              <Input
-                                aria-labelledby={option.label}
-                                size="sm"
-                                value={option.label}
-                                type="text"
-                                onChange={(e) =>
-                                  handleIngredientChange(
-                                    index,
-                                    "label",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                            </Grid>
-                            <Grid xs={4}>
-                              <Input
-                                aria-labelledby={"quantity"}
-                                size="sm"
-                                value={option.quantity}
-                                type="number"
-                                onChange={(e) =>
-                                  handleIngredientChange(
-                                    index,
-                                    "quantity",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                            </Grid>
-                            <Grid xs={4}>
-                              <Input
-                                aria-labelledby={option.unit}
-                                size="sm"
-                                value={option.unit}
-                                type="text"
-                                onChange={(e) =>
-                                  handleIngredientChange(
-                                    index,
-                                    "unit",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                            </Grid>
-                          </Fragment>
-                        ))}
-                      </Grid.Container>
-                    )}
-                  </>
+                  <IngredientsControler
+                    field={field}
+                    currentValue={currentValue}
+                  />
                 );
               }}
               control={control}
             />
             <Spacer y={1} />
-            <Controller
-              name="direction"
-              control={control}
-              render={({ field }) => (
-                <Textarea
-                  bordered
-                  label="Direction"
-                  aria-label={field.name}
-                  fullWidth
-                  {...field}
-                  size="lg"
-                  minRows={2}
-                  maxRows={8}
-                />
-              )}
-            />
-            <Spacer y={1} />
+            <label htmlFor="directions">Directions</label>
+            <Spacer y={0.2} />
+            <div id="directions">
+              <QuillEditor
+                quillContent={quillContent}
+                setQuillContent={setQuillContent}
+              />
+            </div>
+
+            <Spacer y={4} />
             <Controller
               name="servingSize"
               control={control}
@@ -422,7 +219,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   bordered
                   aria-label={field.name}
                   fullWidth
-                  label="Serving size"
+                  label="Serving Size"
                   type="text"
                   {...field}
                   size="lg"
@@ -438,7 +235,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   bordered
                   aria-label={field.name}
                   fullWidth
-                  label="cooking Time (in minutes)"
+                  label="Cooking Time"
                   labelRight="Min"
                   type="number"
                   value={field.value !== null ? field.value : ""}
@@ -461,7 +258,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                   clearable
                   bordered
                   aria-label={field.name + "url"}
-                  label="Youtube link"
+                  label="Youtube Link"
                   fullWidth
                   type="url"
                   {...field}
@@ -471,44 +268,15 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
             />
             <Spacer y={1} />
             <label htmlFor="collections">Collections</label>
+            <Spacer y={0.2} />
             <Controller
               name="collections"
               render={({ field }) => {
-                const { onChange } = field;
                 const currentValue = getValues("collections") || [];
-
-                const handleInputChange = (
-                  newValue: CollectionOption[],
-                  actionMeta: ActionMeta<CollectionOption>
-                ) => {
-                  if (actionMeta.action === "create-option") {
-                    const { label, value } = actionMeta.option;
-                    const existingOptionIndex = currentValue.findIndex(
-                      (option) => option.label === label
-                    );
-                    if (existingOptionIndex !== -1) {
-                      currentValue.splice(existingOptionIndex, 1);
-                    }
-                    const newCollection: CollectionOption = {
-                      value: value,
-                      label: label,
-                    };
-                    const updatedValue = [...currentValue, newCollection];
-                    onChange(updatedValue);
-                  } else {
-                    onChange(newValue);
-                  }
-                };
-
                 return (
-                  <Select
-                    {...field}
-                    isMulti
-                    classNamePrefix="select"
-                    isClearable={true}
-                    isSearchable={true}
-                    options={collectionOptions}
-                    onChange={handleInputChange}
+                  <CollectionController
+                    field={field}
+                    currentValue={currentValue}
                   />
                 );
               }}
@@ -565,9 +333,14 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 )}
               />
               <label className="ml-2" htmlFor="publicationStatus">
-                Publish
+                Publish Recipe
               </label>
             </div>
+            <Text size="$xs" color="#858585" className="mt-5 max-w-[60ch]">
+              By choosing to publish your recipe, you&apos;re sending it to our
+              administrators for review. After approval, your recipe will be
+              featured on the discovery page, making it accessible to everyone.
+            </Text>
             <Spacer y={0.5} />
             <Grid.Container gap={2} justify="flex-end" className="mb-4">
               <Grid>
