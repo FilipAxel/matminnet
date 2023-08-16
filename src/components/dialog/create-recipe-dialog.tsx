@@ -39,6 +39,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
   const [imageFiles, setImageFiles] = useState<ImageFile[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [quillContent, setQuillContent] = useState("");
+  const [isPublished, setIsPublished] = useState(false);
 
   const closeHandler = () => {
     setIsOpen(false);
@@ -326,21 +327,27 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                     {...field}
                     shadow
                     color="success"
-                    onChange={(e: SwitchEvent) =>
-                      field.onChange(e.target.checked)
-                    }
+                    onChange={(e: SwitchEvent) => {
+                      field.onChange(e.target.checked);
+                      setIsPublished(e.target.checked);
+                    }}
                   />
                 )}
               />
               <label className="ml-2" htmlFor="publicationStatus">
-                Publish Recipe
+                Share with Community
               </label>
             </div>
-            <Text size="$xs" color="#858585" className="mt-5 max-w-[60ch]">
-              By choosing to publish your recipe, you&apos;re sending it to our
-              administrators for review. After approval, your recipe will be
-              featured on the discovery page, making it accessible to everyone.
-            </Text>
+
+            {isPublished && (
+              <Text size="$xs" color="#858585" className="mt-5 max-w-[60ch]">
+                By choosing to publish your recipe, you&apos;re sending it to
+                our administrators for review. After approval, your recipe will
+                be featured on the discovery page, making it accessible to
+                everyone.
+              </Text>
+            )}
+
             <Spacer y={0.5} />
             <Grid.Container gap={2} justify="flex-end" className="mb-4">
               <Grid>
