@@ -81,13 +81,15 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               await createPresignedUrlMutation.mutateAsync({
                 id: data.createdRecipe.id,
               });
+
             await uploadFileToS3({
               getPresignedUrl: () => Promise.resolve(presignedUrlResponse), // Pass the response here
               file,
             });
+            void utils.recipe.getAllRecipes.invalidate();
           })
         );
-        await utils.recipe.getAllRecipes.invalidate();
+
         reset(); // Reset the form after successful submission
       }
     },

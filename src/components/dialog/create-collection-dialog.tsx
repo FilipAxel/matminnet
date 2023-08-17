@@ -57,11 +57,10 @@ const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
               }),
             file,
           });
+          void utils.collection.getCollections.invalidate();
 
           reset();
         }
-
-        await utils.collection.getCollections.invalidate();
       },
     });
 
