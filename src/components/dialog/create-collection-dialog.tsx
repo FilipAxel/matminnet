@@ -4,7 +4,6 @@ import { Button, Grid, Input, Modal, Spacer, Text } from "@nextui-org/react";
 import { type ChangeEvent, useState } from "react";
 import { type SubmitHandler, useForm, Controller } from "react-hook-form";
 import { api } from "~/utils/api";
-
 import Image from "next/image";
 import { uploadFileToS3 } from "../utils/s3";
 
@@ -24,6 +23,7 @@ const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
 }) => {
   const [file, setFile] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const utils = api.useContext();
   const closeHandler = () => {
     setImagePreviewUrl(null);
     setIsOpen(false);
@@ -60,6 +60,8 @@ const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
 
           reset();
         }
+
+        await utils.collection.getCollections.invalidate();
       },
     });
 

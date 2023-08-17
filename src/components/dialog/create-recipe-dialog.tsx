@@ -14,7 +14,7 @@ import {
 } from "@nextui-org/react";
 import { type SubmitHandler, useForm, Controller } from "react-hook-form";
 import { api } from "~/utils/api";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { uploadFileToS3 } from "../utils/s3";
 import {
   type FormValues,
@@ -40,6 +40,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [quillContent, setQuillContent] = useState("");
   const [isPublished, setIsPublished] = useState(false);
+  const utils = api.useContext();
 
   const closeHandler = () => {
     setIsOpen(false);
@@ -86,6 +87,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
             });
           })
         );
+        await utils.recipe.getAllRecipes.invalidate();
         reset(); // Reset the form after successful submission
       }
     },
