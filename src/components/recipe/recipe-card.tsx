@@ -21,10 +21,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
 
   return (
     <>
-      <Grid>
+      <Grid className="bg-transparent">
         <Card
           isPressable
-          className="h-[240px] w-[175px] sm:h-[260px] sm:w-[210px]"
+          className="h-[240px] w-[175px] bg-transparent sm:h-[260px] sm:w-[210px]"
           onClick={() => handleRoute()}
         >
           <Card.Body css={{ p: 0 }}>
