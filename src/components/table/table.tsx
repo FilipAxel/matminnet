@@ -5,12 +5,7 @@ import { type RecipeWithImage } from "~/pages/recipes";
 
 const columns = [
   { name: "NAME", uid: "name" },
-  { name: "PUBLICATION STATUS", uid: "publicationStatus" },
-  { name: "COUNTRY", uid: "country" },
-  { name: "DESCRIPTION", uid: "description" },
-  { name: "DIRECTION", uid: "direction" },
-  { name: "SERVING SIZE", uid: "servingSize" },
-  { name: "VIDEO", uid: "video" },
+  { name: "STATUS", uid: "publicationStatus" },
   { name: "ACTIONS", uid: "actions" },
 ];
 

@@ -1,4 +1,4 @@
-import { User, Col, Row, Tooltip, Text } from "@nextui-org/react";
+import { User, Col, Row, Tooltip } from "@nextui-org/react";
 import { IconButton } from "./actions/IconButton";
 import { useState, type Key } from "react";
 import { EditIcon } from "./actions/EditIcon";
@@ -30,16 +30,6 @@ const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
         >
           {recipe?.name}
         </User>
-      );
-    case "servingSize":
-      return (
-        <Col>
-          <Row>
-            <Text b size={14} css={{ tt: "capitalize" }}>
-              {cellValue}
-            </Text>
-          </Row>
-        </Col>
       );
 
     case "publicationStatus":
