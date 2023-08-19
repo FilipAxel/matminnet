@@ -21,29 +21,45 @@ export default function Home() {
   }
 
   if (status === "loading" || isLoading) {
-    return numberOfSkeletonsCards.map((n) => {
-      <SkeletoncollectionCard key={n} />;
-    });
+    <Grid.Container
+      className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center p-0 xs:max-w-[97%] xs:justify-normal"
+      gap={1}
+    >
+      {numberOfSkeletonsCards.map((n) => {
+        return <SkeletoncollectionCard key={n} />;
+      })}
+    </Grid.Container>;
   }
 
   if (status === "authenticated" || !isLoading) {
     return (
       <>
-        <div className="flex flex-col items-center justify-center gap-4">
-          <div className="flex w-full justify-center">
-            <Grid.Container
-              className="mx-auto flex w-full max-w-[1200px] justify-center p-0"
-              gap={1}
-            >
-              <Grid>
-                <CreateCollection />
-              </Grid>
-              {collections?.map((collection) => (
-                <CollectionCard key={collection.id} collection={collection} />
-              ))}
-            </Grid.Container>
+        {isLoading ? (
+          <Grid.Container
+            className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center p-0 xs:max-w-[97%] xs:justify-normal"
+            gap={1}
+          >
+            {numberOfSkeletonsCards.map((n) => {
+              return <SkeletoncollectionCard key={n} />;
+            })}
+          </Grid.Container>
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <div className="flex w-full justify-center">
+              <Grid.Container
+                className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center p-0 xs:max-w-[97%] xs:justify-normal"
+                gap={1}
+              >
+                <Grid className="w-full xs:w-auto">
+                  <CreateCollection />
+                </Grid>
+                {collections?.map((collection) => (
+                  <CollectionCard key={collection.id} collection={collection} />
+                ))}
+              </Grid.Container>
+            </div>
           </div>
-        </div>
+        )}
       </>
     );
   }

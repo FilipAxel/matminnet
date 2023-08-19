@@ -124,7 +124,10 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
           </Text>
         </Modal.Header>
         <Modal.Body className="mx-2 mb-3">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            className="m-auto max-w-[800px]"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <Controller
               name="name"
               control={control}

@@ -22,10 +22,10 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ collection }) => {
   };
 
   return (
-    <Grid>
+    <Grid className="w-full bg-transparent xs:w-auto">
       <Card
         isPressable
-        className="h-[240px] w-[175px] sm:h-[260px] sm:w-[210px]"
+        className="sm:w-[210px] h-[260px] w-full bg-transparent xs:h-[240px] xs:w-[175px]"
         onClick={() => handleRoute()}
       >
         <Card.Body css={{ p: 0 }}>

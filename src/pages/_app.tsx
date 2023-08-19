@@ -18,7 +18,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <NextUIProvider>
         <NavigationBar />
         <Spacer y={1} />
-        <Component {...pageProps} />
+        <div className="m-auto max-w-[1200px]">
+          <Component {...pageProps} />
+        </div>
+
         <Analytics />
       </NextUIProvider>
     </SessionProvider>

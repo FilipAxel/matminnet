@@ -54,7 +54,7 @@ const Recipes = () => {
       <Spacer y={1} />
       {isLoading ? (
         <Grid.Container
-          className="mx-auto flex w-full max-w-[1200px] justify-center p-0"
+          className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center  p-0  xs:max-w-[97%] xs:justify-normal"
           gap={1}
         >
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => {
@@ -63,10 +63,10 @@ const Recipes = () => {
         </Grid.Container>
       ) : (
         <Grid.Container
-          className="mx-auto mb-10 mt-2 flex w-full max-w-[1200px] justify-center p-0"
+          className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center  p-0  xs:max-w-[97%] xs:justify-normal"
           gap={1}
         >
-          <Grid>
+          <Grid className="w-full xs:w-auto">
             <CreateRecipe />
           </Grid>
           {searchResults.map((recipe) => (
