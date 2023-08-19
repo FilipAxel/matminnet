@@ -478,6 +478,59 @@ export const recipeRouter = createTRPCRouter({
       }
     }),
 
+  deleteImagesFromAws: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { id } = input;
+      try {
+        const recipe = await ctx.prisma.recipe.findUnique({
+          where: {
+            id: id,
+          },
+          select: {
+            images: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        });
+        if (!recipe) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Recipe with that ID not found",
+          });
+        }
+
+        for (const image of recipe.images) {
+          if (image.name) {
+            // Delete object from S3 bucket
+            const deleteParams = {
+              Bucket: bucketName,
+              Key: image.name,
+            };
+            await s3Client.send(new DeleteObjectCommand(deleteParams));
+
+            // Create CloudFront invalidation
+            const cfCommand = new CreateInvalidationCommand({
+              DistributionId: cloudfrontDistributionId,
+              InvalidationBatch: {
+                CallerReference: image.name,
+                Paths: {
+                  Quantity: 1,
+                  Items: ["/" + image.name],
+                },
+              },
+            });
+
+            await cloudfront.send(cfCommand);
+          }
+        }
+      } catch (error) {
+        throw error;
+      }
+    }),
+
   deleteRecipeWithId: protectedProcedure
     .input(
       z.object({
@@ -486,42 +539,11 @@ export const recipeRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        const recipe = await ctx.prisma.recipe.delete({
+        await ctx.prisma.recipe.delete({
           where: {
             id: input.id,
           },
-          include: {
-            images: {
-              select: {
-                name: true,
-              },
-            },
-          },
         });
-
-        for (const image of recipe?.images || []) {
-          if (image.name) {
-            const deleteParams = {
-              Bucket: bucketName,
-              Key: image.name,
-            };
-            await s3Client.send(new DeleteObjectCommand(deleteParams));
-          }
-
-          const cfCommand = new CreateInvalidationCommand({
-            DistributionId: cloudfrontDistributionId,
-            InvalidationBatch: {
-              CallerReference: image.name,
-              Paths: {
-                Quantity: 1,
-                Items: ["/" + image.name],
-              },
-            },
-          });
-
-          await cloudfront.send(cfCommand);
-        }
-
         return {
           status: "success",
         };

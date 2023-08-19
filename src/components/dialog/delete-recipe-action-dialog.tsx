@@ -23,8 +23,12 @@ const DeleteRecipeActionDialog: React.FC<DeleteRecipeActionDialogProps> = ({
     },
   });
 
+  const { mutate: deleteImagesFromAws } =
+    api.recipe.deleteImagesFromAws.useMutation({});
+
   const handleDelete = () => {
     deleteRecipe({ id: id });
+    deleteImagesFromAws({ id: id });
     setDeleteActioOpen(false);
   };
 
