@@ -73,7 +73,7 @@ class MyDocument extends Document {
             content="https://matminne.com/icons/apple-touch-icon.png"
           />
         </Head>
-        <body>
+        <body className="overflow-y-scroll">
           <Main />
           <NextScript />
         </body>
