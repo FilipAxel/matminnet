@@ -36,7 +36,7 @@ export default function Home() {
       <>
         {isLoading ? (
           <Grid.Container
-            className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center p-0 xs:max-w-[97%] xs:justify-normal"
+            className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center p-0 xs:max-w-[97%] xs:justify-normal media428:max-w-[88%]"
             gap={1}
           >
             {numberOfSkeletonsCards.map((n) => {
@@ -47,7 +47,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="flex w-full justify-center">
               <Grid.Container
-                className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center p-0 xs:max-w-[97%] xs:justify-normal"
+                className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center p-0 xs:max-w-[97%] xs:justify-normal media428:max-w-[88%]"
                 gap={1}
               >
                 <Grid className="w-full xs:w-auto">

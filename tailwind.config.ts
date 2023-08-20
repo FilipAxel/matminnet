@@ -6,6 +6,7 @@ export default {
     extend: {},
     screens: {
       xs: "385px",
+      media428: "428px",
     },
   },
   plugins: [require("@tailwindcss/aspect-ratio")],
