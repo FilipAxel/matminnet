@@ -59,7 +59,7 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
           <Input
             aria-label={field.name}
             bordered
-            className="pr-2"
+            className="sm:w-full w-[300px] pr-2 xs:w-full media428:w-[300px]"
             placeholder={"Search..."}
             {...field}
             size="md"
