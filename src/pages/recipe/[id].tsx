@@ -6,7 +6,7 @@ import SkeletonRecipe from "~/components/skeleton/recipe-skeleton";
 import { api } from "~/utils/api";
 import dynamic from "next/dynamic";
 const DynamicReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
 
 const Recipe = () => {
   const router = useRouter();
@@ -70,9 +70,12 @@ const Recipe = () => {
           <Text h2 size={25} className="ml-4" weight="bold">
             Ingredients
           </Text>
-          <Text className="mr-4" h3 size={20}>
-            Serving size: {recipe?.servingSize}
-          </Text>
+
+          {recipe?.servingSize && (
+            <Text className="mr-4" h3 size={20}>
+              Serving size: {recipe?.servingSize}
+            </Text>
+          )}
         </div>
         <Grid.Container className="mt-4" gap={1} justify="center">
           {recipe?.recipeIngredients?.map((recipeIngredient) => {

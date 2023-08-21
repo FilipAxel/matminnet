@@ -31,12 +31,13 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     "list",
     "bullet",
     "link",
+    "custom-bullet-size", // Add your custom format here
   ];
 
   return (
     <div className="max-h-[350px]">
       <DynamicReactQuill
-        className="mb-4 h-[100px]"
+        className="mb-4 h-[150px]"
         theme="snow"
         value={quillContent}
         onChange={(value) => setQuillContent(value)}
