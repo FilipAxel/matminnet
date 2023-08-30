@@ -78,6 +78,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
       <CreatableSelect
         {...field}
         isMulti
+        aria-label={"ingredients"}
         options={ingredientOptions}
         isClearable={true}
         onChange={handleInputChange}
@@ -93,6 +94,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
               <Grid xs={4}>
                 <Input
                   aria-labelledby={option.label}
+                  aria-label={option.label}
                   size="sm"
                   value={option.label}
                   type="text"
@@ -104,6 +106,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
               <Grid xs={4}>
                 <Input
                   aria-labelledby={"quantity"}
+                  aria-label={"quantity"}
                   size="sm"
                   value={option.quantity}
                   type="number"
@@ -116,6 +119,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                 <Input
                   aria-labelledby={option.unit}
                   size="sm"
+                  aria-label={option.unit}
                   value={option.unit}
                   type="text"
                   onChange={(e) =>

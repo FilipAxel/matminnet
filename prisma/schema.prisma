@@ -107,6 +107,7 @@ model Collection {
 }
 
 model RecipeOnCollection {
+    id           String     @id @default(cuid())
     recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
     recipeId     String // relation scalar field (used in the `@relation` attribute above)
     collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
@@ -115,7 +116,6 @@ model RecipeOnCollection {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    @@id([recipeId, collectionId])
     @@index([recipeId])
     @@index([collectionId])
 }

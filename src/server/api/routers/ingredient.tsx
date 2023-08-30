@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const ingredientRouter = createTRPCRouter({
@@ -10,7 +11,24 @@ export const ingredientRouter = createTRPCRouter({
       });
       return ingredients;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }),
+
+  deleteIngredient: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.prisma.recipeIngredient.delete({
+          where: {
+            id: input.id,
+          },
+        });
+        return {
+          status: "Success",
+        };
+      } catch (error) {
+        throw error;
+      }
+    }),
 });

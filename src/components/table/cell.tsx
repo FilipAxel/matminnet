@@ -6,12 +6,14 @@ import { DeleteIcon } from "./actions/DeleteIcon";
 import DeleteRecipeActionDialog from "../dialog/delete-recipe-action-dialog";
 import { StyledBadge } from "./actions/StyledBadge";
 import { type RecipeWithImage } from "~/pages/recipes";
+import UpdateRecipeDialog from "../dialog/update-recipe.dialog";
 
 const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
   recipe,
   columnKey,
 }) => {
   const [isDeleteActionOpen, setDeleteActioOpen] = useState(false);
+  const [editActionIsOpen, setEditActionIsOpen] = useState(false);
   const cellValue: string = recipe[columnKey] as string;
   const imageUrl = recipe?.images?.[0]?.name ?? "/recipe-placeholder.webp";
 
@@ -40,17 +42,15 @@ const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
         <>
           <Row justify="center" align="center">
             <Col css={{ d: "flex" }}>
-              <Tooltip content="Edit user">
-                <IconButton
-                  onClick={() => console.log("Edit user", recipe?.id)}
-                >
+              <Tooltip content="Edit Recipe">
+                <IconButton onClick={() => setEditActionIsOpen(true)}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex" }}>
               <Tooltip
-                content="Delete user"
+                content="Delete Recipe"
                 color="error"
                 onClick={() => setDeleteActioOpen(true)}
               >
@@ -69,6 +69,13 @@ const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
               setDeleteActioOpen={setDeleteActioOpen}
             />
           )}
+          {editActionIsOpen ? (
+            <UpdateRecipeDialog
+              id={recipe.id}
+              isOpen={editActionIsOpen}
+              setIsOpen={setEditActionIsOpen}
+            />
+          ) : null}
         </>
       );
 

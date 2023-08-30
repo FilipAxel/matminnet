@@ -237,4 +237,24 @@ export const collectionRouter = createTRPCRouter({
         throw error;
       }
     }),
+  deleteRecipeOnCollection: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.prisma.recipeOnCollection.delete({
+          where: {
+            id: input.id,
+          },
+        });
+        return {
+          status: "success",
+        };
+      } catch (error) {
+        throw error;
+      }
+    }),
 });

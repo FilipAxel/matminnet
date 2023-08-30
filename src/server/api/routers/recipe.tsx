@@ -124,7 +124,7 @@ export const recipeRouter = createTRPCRouter({
 
       return recipes;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }),
 
@@ -160,7 +160,9 @@ export const recipeRouter = createTRPCRouter({
         }
       }
       return recipes;
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   }),
 
   getRecipeWithCollectionId: protectedProcedure
@@ -235,6 +237,15 @@ export const recipeRouter = createTRPCRouter({
             recipeIngredients: {
               include: {
                 ingredient: true,
+              },
+            },
+            collections: {
+              include: {
+                collection: {
+                  select: {
+                    name: true,
+                  },
+                },
               },
             },
           },
@@ -319,12 +330,6 @@ export const recipeRouter = createTRPCRouter({
       } = recipe;
 
       try {
-        const authorFromDb = await ctx.prisma.author.findFirst({
-          where: {
-            name: author,
-          },
-        });
-
         const foundCollections: Collection[] = [];
 
         if (collections) {
@@ -340,6 +345,12 @@ export const recipeRouter = createTRPCRouter({
             }
           }
         }
+
+        const authorFromDb = await ctx.prisma.author.findFirst({
+          where: {
+            name: author,
+          },
+        });
 
         let createdAuthor: Author | null = null;
         if (!authorFromDb) {
@@ -443,6 +454,226 @@ export const recipeRouter = createTRPCRouter({
     }),
 
   updateRecipe: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        recipe: z.object({
+          name: z.string(),
+          description: z.string(),
+          directions: z.string(),
+          servingSize: z.string(),
+          cookingTime: z.union([z.number(), z.null(), z.string()]),
+          video: z.string(),
+          country: z.string(),
+          author: z.string(),
+          collections: z.array(
+            z.object({
+              value: z.string(),
+              label: z.string(),
+            })
+          ),
+          ingredients: z.array(
+            z.object({
+              value: z.string(),
+              label: z.string(),
+              quantity: z.string(),
+              unit: z.string(),
+            })
+          ),
+          publicationStatus: z.boolean(),
+        }),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id: userId } = ctx.session.user;
+      const {
+        id,
+        recipe: {
+          name,
+          description,
+          directions,
+          servingSize,
+          cookingTime,
+          video,
+          country,
+          author,
+          collections,
+          ingredients,
+          publicationStatus,
+        },
+      } = input;
+
+      try {
+        const oldRecipe = await ctx.prisma.recipe.findUnique({
+          where: {
+            id: id,
+          },
+          include: {
+            recipeIngredients: {
+              include: {
+                ingredient: true,
+              },
+            },
+          },
+        });
+
+        const recipeIngredients: {
+          name: string;
+          quantity: string;
+          unit: string;
+          ingredientId?: string;
+        }[] = [];
+
+        for (const ingredient of ingredients) {
+          const existingIngredient = oldRecipe?.recipeIngredients.find(
+            (oldIngredient) =>
+              oldIngredient.ingredient.name === ingredient.value
+          );
+          if (existingIngredient) {
+            const hasQuantityUpdated =
+              existingIngredient.quantity !== ingredient.quantity;
+            const hasUnitUpdated = existingIngredient.unit !== ingredient.unit;
+
+            if (hasQuantityUpdated || hasUnitUpdated) {
+              const updatedIngredient = {
+                ...existingIngredient,
+                quantity: hasQuantityUpdated
+                  ? ingredient.quantity
+                  : existingIngredient.quantity,
+                unit: hasUnitUpdated
+                  ? ingredient.unit
+                  : existingIngredient.unit,
+              };
+              await ctx.prisma.recipeIngredient.update({
+                where: {
+                  id: updatedIngredient.id,
+                },
+                data: {
+                  quantity: updatedIngredient.quantity,
+                  unit: updatedIngredient.unit,
+                },
+              });
+            }
+          } else {
+            const existingIngredient = await ctx.prisma.ingredient.findUnique({
+              where: {
+                name: ingredient.value,
+              },
+            });
+
+            if (existingIngredient) {
+              recipeIngredients.push({
+                name: ingredient.value,
+                quantity: ingredient.quantity,
+                unit: ingredient.unit,
+                ingredientId: existingIngredient.id,
+              });
+            } else {
+              const newIngredient = await ctx.prisma.ingredient.create({
+                data: {
+                  name: ingredient.value,
+                },
+              });
+
+              recipeIngredients.push({
+                name: ingredient.value,
+                quantity: ingredient.quantity,
+                unit: ingredient.unit,
+                ingredientId: newIngredient.id,
+              });
+            }
+          }
+        }
+
+        const foundCollections: Collection[] = [];
+
+        if (collections) {
+          for (const collection of collections) {
+            const collectionFromDb = await ctx.prisma.collection.findFirst({
+              where: {
+                id: collection?.value,
+              },
+            });
+
+            if (collectionFromDb) {
+              foundCollections.push(collectionFromDb);
+            }
+          }
+        }
+
+        const authorFromDb = await ctx.prisma.author.findFirst({
+          where: {
+            name: author,
+          },
+        });
+
+        let createdAuthor: Author | null = null;
+        if (!authorFromDb) {
+          createdAuthor = await ctx.prisma.author.create({
+            data: {
+              name: author,
+            },
+          });
+        }
+
+        const updateRecipe = await ctx.prisma.recipe.update({
+          data: {
+            name: name,
+            description: description,
+            directions: directions,
+            servingSize: servingSize,
+            cookingTime: cookingTime !== null ? +cookingTime : null,
+            video: video,
+            country: country,
+            authorId: authorFromDb?.id || createdAuthor?.id,
+            collections: {
+              create: foundCollections.map((collection) => ({
+                collection: {
+                  connect: {
+                    id: collection.id,
+                  },
+                },
+              })),
+            },
+            recipeIngredients: {
+              create: recipeIngredients.map((ingredient) => ({
+                quantity: ingredient.quantity,
+                unit: ingredient.unit,
+                ingredient: {
+                  connect: {
+                    id: ingredient.ingredientId,
+                  },
+                },
+              })),
+            },
+
+            publicationStatus: publicationStatus ? "unapproved" : "private",
+          },
+          where: {
+            id: id,
+          },
+        });
+
+        if (publicationStatus) {
+          await ctx.prisma.recipePublicationRequest.create({
+            data: {
+              recipeId: updateRecipe.id,
+              userId: userId,
+            },
+          });
+        }
+
+        return {
+          status: "success",
+          updateRecipe,
+        };
+      } catch (error) {
+        console.warn(error);
+        throw error;
+      }
+    }),
+
+  updateRecipeName: protectedProcedure
     .input(
       z.object({
         id: z.string(),

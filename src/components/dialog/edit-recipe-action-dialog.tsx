@@ -29,7 +29,7 @@ const EditRecipeActionDialog: React.FC<editRecipeActionDialogProps> = ({
     },
   });
 
-  const { mutate: updateCollection } = api.recipe.updateRecipe.useMutation({
+  const { mutate: updateCollection } = api.recipe.updateRecipeName.useMutation({
     onSuccess() {
       setEditActionOpen(false);
     },
