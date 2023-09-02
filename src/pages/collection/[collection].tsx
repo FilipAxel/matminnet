@@ -21,7 +21,7 @@ const CollectionPage = () => {
   const id = query.collection as string;
 
   const { data: recipes, isLoading } =
-    api.recipe.getRecipeWithCollectionId.useQuery(
+    api.recipe.getRecipesOnCollection.useQuery(
       { id },
       { enabled: !!session?.user }
     );

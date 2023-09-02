@@ -1,34 +1,18 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  deleteIngredientOnRecipe,
+  getAllIngredients,
+} from "~/server/controller/Ingredient.controller";
 
 export const ingredientRouter = createTRPCRouter({
-  getAllIngredients: protectedProcedure.query(async ({ ctx }) => {
-    try {
-      const ingredients = await ctx.prisma.ingredient.findMany({
-        select: {
-          name: true,
-        },
-      });
-      return ingredients;
-    } catch (error) {
-      throw error;
-    }
-  }),
+  getAllIngredients: protectedProcedure.query(
+    async ({ ctx }) => await getAllIngredients(ctx)
+  ),
 
-  deleteIngredient: protectedProcedure
+  deleteIngredientOnRecipe: protectedProcedure
     .input(z.object({ id: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      try {
-        await ctx.prisma.recipeIngredient.delete({
-          where: {
-            id: input.id,
-          },
-        });
-        return {
-          status: "Success",
-        };
-      } catch (error) {
-        throw error;
-      }
-    }),
+    .mutation(
+      async ({ input, ctx }) => await deleteIngredientOnRecipe(input, ctx)
+    ),
 });
