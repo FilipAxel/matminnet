@@ -86,7 +86,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               getPresignedUrl: () => Promise.resolve(presignedUrlResponse), // Pass the response here
               file,
             });
-            void utils.recipe.getAllRecipes.invalidate();
+            void utils.recipe.getAllRecipesForUser.invalidate();
           })
         );
 

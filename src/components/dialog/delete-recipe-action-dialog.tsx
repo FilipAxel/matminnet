@@ -18,7 +18,7 @@ const DeleteRecipeActionDialog: React.FC<DeleteRecipeActionDialogProps> = ({
 
   const { mutate: deleteRecipe } = api.recipe.deleteRecipeWithId.useMutation({
     onSuccess() {
-      void utils.recipe.getAllRecipes.invalidate();
+      void utils.recipe.getAllRecipesForUser.invalidate();
       setDeleteActioOpen(false);
     },
   });

@@ -12,22 +12,20 @@ export const processPublicationRequests = async (
     };
   }
   try {
-    for (const id of input.recipeIds) {
-      await ctx.prisma.recipePublicationRequest.update({
-        data: {
-          status: input.action === "approve" ? "approved" : "declined",
-          recipe: {
-            update: {
-              publicationStatus:
-                input.action === "approve" ? "published" : "private",
-            },
+    await ctx.prisma.recipePublicationRequest.update({
+      data: {
+        status: input.action === "approve" ? "approved" : "declined",
+        recipe: {
+          update: {
+            publicationStatus:
+              input.action === "approve" ? "published" : "private",
           },
         },
-        where: {
-          id: id,
-        },
-      });
-    }
+      },
+      where: {
+        id: input.recipeId,
+      },
+    });
   } catch (error) {}
 };
 
@@ -36,9 +34,7 @@ export const getPendingPublications = async (ctx: {
   session: Session;
 }) => {
   if (!ctx.session.user.isAdmin) {
-    return {
-      message: "Authentication is required",
-    };
+    return;
   }
   try {
     const recipes = await ctx.prisma.recipePublicationRequest.findMany({
@@ -59,9 +55,6 @@ export const getPendingPublications = async (ctx: {
       },
     });
 
-    return {
-      message: "",
-      recipes: recipes,
-    };
+    return recipes;
   } catch (error) {}
 };

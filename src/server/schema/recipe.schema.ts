@@ -38,12 +38,12 @@ export const idSchema = z.object({
   id: z.string(),
 });
 
-export const actionSchema = z.enum(["approve", "decline"]);
 export const recipesIds = z.array(z.string());
 
+export const actionSchema = z.enum(["approve", "decline"]);
 export const publicationRequestInputSchema = z.object({
   action: actionSchema,
-  recipeIds: recipesIds,
+  recipeId: z.string(),
 });
 
 export type PublicationRequestInput = z.TypeOf<

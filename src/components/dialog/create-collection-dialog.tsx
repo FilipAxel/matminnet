@@ -50,11 +50,13 @@ const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
     api.collection.createCollection.useMutation({
       onSuccess: async (data, _variables, _context) => {
         if (data.status === "success" && file) {
+          const presignedUrlResponse =
+            await createPresignedUrlMutation.mutateAsync({
+              id: data.response.collection.id,
+            });
+
           await uploadFileToS3({
-            getPresignedUrl: () =>
-              createPresignedUrlMutation.mutateAsync({
-                id: data.response.collection.id,
-              }),
+            getPresignedUrl: () => Promise.resolve(presignedUrlResponse), // Pass the response here
             file,
           });
           void utils.collection.getCollections.invalidate();
@@ -104,8 +106,8 @@ const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
               control={control}
               rules={{
                 required: true,
-                maxLength: 20,
-                minLength: 3,
+                maxLength: 50,
+                minLength: 2,
               }}
               render={({ field }) => (
                 <Input
@@ -115,7 +117,7 @@ const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
                     errors?.name?.type === "required"
                       ? "Input is required"
                       : "" || errors?.name?.type === "maxLength"
-                      ? "name must not exceed 100 characters"
+                      ? "name must not exceed 50 characters"
                       : ""
                   }
                   helperColor={

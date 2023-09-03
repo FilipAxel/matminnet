@@ -10,7 +10,8 @@ const columns = [
 ];
 
 const SettingsTable = () => {
-  const { data: recipes, isLoading } = api.recipe.getAllRecipes.useQuery();
+  const { data: recipes, isLoading } =
+    api.recipe.getAllRecipesForUser.useQuery();
 
   return (
     <>
