@@ -16,12 +16,14 @@ import {
   type IngredientOption,
   type FormValues,
   type CollectionOption,
+  TagOption,
 } from "../create-recipe-from/from-interface";
 import { api } from "~/utils/api";
 import CollectionController from "../create-recipe-from/collection-controller";
 import QuillEditor from "../quill/quill-editor";
 import IngredientsController from "../create-recipe-from/ingredients-controller";
 import { useEffect, useState } from "react";
+import TagsController from "../create-recipe-from/tags.controller";
 
 interface UpdateRecipeDialogProps {
   id: string;
@@ -47,6 +49,8 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
 
   const { mutate: deleteRecipeOnCollection } =
     api.collection.deleteRecipeOnCollection.useMutation();
+
+  const { mutate: deleteTagOnRecipe } = api.tag.deleteTagOnRecipe.useMutation();
 
   const { mutate: updateRecipe, isLoading: loadingUpdatedRecipe } =
     api.recipe.updateRecipe.useMutation({
@@ -78,6 +82,7 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
       video: "",
       country: "",
       author: "",
+      tags: [],
       ingredients: [],
       collections: [],
       publicationStatus: false,
@@ -148,8 +153,33 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
     });
   };
 
+  const filterChangedTags = (tags: TagOption[]) => {
+    const existingTags = recipe?.tags || [];
+
+    const tagsToDelete = existingTags.filter(
+      (existingTag) =>
+        !tags.some((newTag) => existingTag.tag.name === newTag.value)
+    );
+
+    // Delete tags that are no longer selected
+    for (const tagToDelete of tagsToDelete) {
+      deleteTagOnRecipe({
+        id: tagToDelete.id,
+      });
+    }
+
+    const filteredTags = tags.filter((tag) => {
+      return !existingTags.some(
+        (existingTag) => existingTag.tag.name === tag.value
+      );
+    });
+
+    return filteredTags;
+  };
+
   const onSubmit: SubmitHandler<FormValues> = (formData) => {
     formData.publicationStatus = isPublished;
+    formData.tags = filterChangedTags(formData.tags);
     formData.ingredients = filterChangedIngredients(formData.ingredients);
     formData.collections = filterChangedCollections(formData.collections);
     formData.cookingTime = Number(formData.cookingTime);
@@ -174,6 +204,13 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
       setValue("author", recipe?.author?.name || "");
 
       setQuillContent(recipe?.directions || "");
+
+      const tagValues = recipe.tags.map((tag) => ({
+        value: tag.tag.name,
+        label: tag.tag.name,
+      }));
+
+      setValue("tags", tagValues);
 
       const ingredientValues = recipe.recipeIngredients.map((ingredient) => ({
         quantity: ingredient.quantity || "",
@@ -305,6 +342,22 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
                 />
               </div>
               <Spacer y={4} />
+              <label className="mb-2" htmlFor="tags">
+                Tags
+              </label>
+              <Spacer y={0.2} />
+              <Controller
+                name="tags"
+                render={({ field }) => {
+                  const currentValue = getValues("tags") || [];
+                  return (
+                    <TagsController field={field} currentValue={currentValue} />
+                  );
+                }}
+                control={control}
+              />
+
+              <Spacer y={1} />
               <Controller
                 name="servingSize"
                 control={control}

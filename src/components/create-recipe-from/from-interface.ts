@@ -2,6 +2,7 @@ export interface FormValues {
   name: string;
   description: string;
   directions: string;
+  tags: TagOption[];
   ingredients: IngredientOption[];
   servingSize: string;
   cookingTime: string | number | null;
@@ -13,6 +14,11 @@ export interface FormValues {
 }
 
 export interface CollectionOption {
+  value: string;
+  label: string;
+}
+
+export interface TagOption {
   value: string;
   label: string;
 }

@@ -80,14 +80,23 @@ model VerificationToken {
 }
 
 model Tag {
-    id       String  @id @default(cuid())
-    name     String
-    Recipe   Recipe? @relation(fields: [recipeId], references: [id])
-    recipeId String?
+    id         String       @id @default(cuid())
+    name       String       @unique
+    recipeTags RecipeTags[]
+    created_at DateTime     @default(now())
+    updated_at DateTime     @updatedAt
+}
 
+model RecipeTags {
+    id         String   @id @default(cuid())
+    tag        Tag      @relation(fields: [tagid], references: [id])
+    tagid      String
+    recipe     Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId   String
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
+    @@index([tagid])
     @@index([recipeId])
 }
 
@@ -125,7 +134,7 @@ model Recipe {
     name                     String
     collections              RecipeOnCollection[]
     recipeIngredients        RecipeIngredient[]
-    tags                     Tag[]
+    tags                     RecipeTags[]
     servingSize              String?
     description              String?                    @db.Text
     cookingTime              Int?

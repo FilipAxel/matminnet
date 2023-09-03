@@ -10,6 +10,7 @@ import { createIngredients, updatedIngredient } from "./Ingredient.controller";
 import { type Session } from "next-auth";
 import { deleteImageFromAws, getSignedUrlAws } from "./aws.controller";
 import { TRPCError } from "@trpc/server";
+import { createTags } from "./tag.controller";
 
 export const createPublicationRequest = async (
   recipeId: string,
@@ -65,6 +66,7 @@ export const createRecipe = async (
     country,
     description,
     directions,
+    tags,
     ingredients,
     name,
     servingSize,
@@ -76,6 +78,7 @@ export const createRecipe = async (
   const foundCollections = await findCollections(collections, ctx);
   const author = await createdAuthor(authorName, ctx);
   const recipeIngredients = await createIngredients(ingredients, ctx);
+  const foundTags = await createTags(tags, ctx);
 
   try {
     const createdRecipe = await ctx.prisma.recipe.create({
@@ -94,6 +97,15 @@ export const createRecipe = async (
             collection: {
               connect: {
                 id: collection.id,
+              },
+            },
+          })),
+        },
+        tags: {
+          create: foundTags?.map((tag) => ({
+            tag: {
+              connect: {
+                id: tag.tagId,
               },
             },
           })),
@@ -167,6 +179,11 @@ export const getRecipeWithId = async (
         recipeIngredients: {
           include: {
             ingredient: true,
+          },
+        },
+        tags: {
+          include: {
+            tag: true,
           },
         },
         collections: {
@@ -284,6 +301,7 @@ export const updateRecipe = async (
       cookingTime,
       video,
       country,
+      tags,
       author: authorName,
       collections,
       publicationStatus,
@@ -293,6 +311,7 @@ export const updateRecipe = async (
   const recipeIngredients = await updatedIngredient(input, ctx);
   const foundCollections = await findCollections(collections, ctx);
   const author = await createdAuthor(authorName, ctx);
+  const foundTags = await createTags(tags, ctx);
 
   const updateRecipe = await ctx.prisma.recipe.update({
     data: {
@@ -309,6 +328,15 @@ export const updateRecipe = async (
           collection: {
             connect: {
               id: collection.id,
+            },
+          },
+        })),
+      },
+      tags: {
+        create: foundTags?.map((tag) => ({
+          tag: {
+            connect: {
+              id: tag.tagId,
             },
           },
         })),

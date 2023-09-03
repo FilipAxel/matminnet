@@ -1,6 +1,9 @@
 import { type PrismaClient } from "@prisma/client";
 import { type ingredients } from "~/server/schema/ingridients.schema";
-import { UpdateRecipeSchema, type IdSchema } from "../schema/recipe.schema";
+import {
+  type UpdateRecipeSchema,
+  type IdSchema,
+} from "../schema/recipe.schema";
 import { getRecipeAndIngridients } from "./recipe.controller";
 
 export const createIngredients = async (

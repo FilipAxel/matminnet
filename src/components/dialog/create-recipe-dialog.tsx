@@ -24,6 +24,7 @@ import IngredientsControler from "../create-recipe-from/ingredients-controller";
 import ImageController from "../create-recipe-from/image-controller";
 import CollectionController from "../create-recipe-from/collection-controller";
 import QuillEditor from "../quill/quill-editor";
+import TagsController from "../create-recipe-from/tags.controller";
 
 interface createRecipeDialogProps {
   collectionName?: string;
@@ -61,6 +62,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
       directions: "",
       servingSize: "",
       cookingTime: null,
+      tags: [],
       video: "",
       country: "",
       author: "",
@@ -219,6 +221,22 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
             </div>
 
             <Spacer y={4} />
+
+            <label className="mb-2" htmlFor="tags">
+              Tags
+            </label>
+            <Spacer y={0.2} />
+            <Controller
+              name="tags"
+              render={({ field }) => {
+                const currentValue = getValues("tags") || [];
+                return (
+                  <TagsController field={field} currentValue={currentValue} />
+                );
+              }}
+              control={control}
+            />
+            <Spacer y={1} />
             <Controller
               name="servingSize"
               control={control}

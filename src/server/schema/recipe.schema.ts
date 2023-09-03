@@ -3,6 +3,12 @@ export const recipeFields = {
   name: z.string(),
   description: z.string(),
   directions: z.string(),
+  tags: z.array(
+    z.object({
+      value: z.string(),
+      label: z.string(),
+    })
+  ),
   servingSize: z.string(),
   cookingTime: z.union([z.number(), z.null(), z.string()]),
   video: z.string(),
