@@ -1,26 +1,26 @@
 import React from "react";
-import { Card, Grid } from "@nextui-org/react"; // Replace with appropriate imports
+import { Card, CardBody, CardFooter } from "@nextui-org/react"; // Replace with appropriate imports
 import { MdAccessTime } from "react-icons/md";
 import { PiBowlFoodDuotone } from "react-icons/pi";
 
 const SkeletonRecipeCard = () => {
   return (
-    <Grid className="w-full bg-transparent xs:w-auto">
+    <div className="grid w-full bg-transparent xs:w-auto">
       <Card
         isPressable
         className="sm:w-[210px] h-[260px] w-full bg-transparent xs:h-[240px] xs:w-[175px]"
       >
-        <Card.Body css={{ p: 0 }}>
+        <CardBody className="p-0">
           <div className="h-full w-full animate-pulse bg-gray-400"></div>
-        </Card.Body>
-        <Card.Footer
+        </CardBody>
+        <CardFooter
           className="flex h-full  flex-col-reverse items-start bg-gradient-to-t from-black via-transparent to-transparent"
-          css={{
+          /*    css={{
             position: "absolute",
             bottom: 0,
             top: 0,
             zIndex: 1,
-          }}
+          }} */
         >
           <div className="z-30 w-full">
             <div className="mb-2 h-6 w-[80%] animate-pulse rounded bg-gray-300 font-semibold text-white"></div>
@@ -35,9 +35,9 @@ const SkeletonRecipeCard = () => {
               </div>
             </div>
           </div>
-        </Card.Footer>
+        </CardFooter>
       </Card>
-    </Grid>
+    </div>
   );
 };
 

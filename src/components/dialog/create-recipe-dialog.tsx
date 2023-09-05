@@ -3,14 +3,14 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import {
   Button,
-  Grid,
   Input,
   Modal,
   Spacer,
   Switch,
-  type SwitchEvent,
-  Text,
   Textarea,
+  ModalHeader,
+  ModalBody,
+  ModalContent,
 } from "@nextui-org/react";
 import { type SubmitHandler, useForm, Controller } from "react-hook-form";
 import { api } from "~/utils/api";
@@ -54,6 +54,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
     handleSubmit,
     reset,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -74,7 +75,11 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
     },
   });
 
-  const { mutate: createRecipe } = api.recipe.createRecipe.useMutation({
+  const {
+    mutate: createRecipe,
+    isLoading: loadingCreateddRecipe,
+    isSuccess,
+  } = api.recipe.createRecipe.useMutation({
     onSuccess: async (data, _variables, _context) => {
       if (data.status === "success" && imageFiles.length > 0) {
         await Promise.all(
@@ -83,16 +88,18 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               await createPresignedUrlMutation.mutateAsync({
                 id: data.createdRecipe.id,
               });
-
             await uploadFileToS3({
               getPresignedUrl: () => Promise.resolve(presignedUrlResponse), // Pass the response here
               file,
             });
             void utils.recipe.getAllRecipesForUser.invalidate();
+            closeHandler();
           })
         );
 
         reset(); // Reset the form after successful submission
+      } else if (data.status === "success") {
+        closeHandler();
       }
     },
   });
@@ -104,28 +111,27 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
     if (uploadError?.length) return;
     formData.cookingTime = Number(formData.cookingTime);
     formData.directions = quillContent;
-    setIsOpen(false);
-    setImageFiles([]);
     createRecipe({
       recipe: formData,
     });
   };
 
   return (
-    <div>
-      <Modal
-        closeButton
-        aria-labelledby="Create Recipe"
-        fullScreen
-        open={isOpen}
-        onClose={closeHandler}
-      >
-        <Modal.Header>
-          <Text size={30} weight="bold" h1 id="create recipe">
+    <Modal
+      closeButton
+      aria-labelledby="Create Recipe"
+      size="full"
+      isOpen={isOpen}
+      onClose={closeHandler}
+      scrollBehavior="inside"
+    >
+      <ModalContent className="h-full w-full">
+        <ModalHeader className="justify-center">
+          <h1 className="text-center font-bold text-[30xpx]" id="create recipe">
             Create Recipe
-          </Text>
-        </Modal.Header>
-        <Modal.Body className="mx-2 mb-3">
+          </h1>
+        </ModalHeader>
+        <ModalBody className="mx-2 mb-3">
           <form
             className="m-auto max-w-[800px]"
             onSubmit={handleSubmit(onSubmit)}
@@ -140,24 +146,21 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               }}
               render={({ field }) => (
                 <Input
-                  size="xl"
-                  clearable
-                  bordered
-                  helperText={
+                  size="lg"
+                  isClearable
+                  radius="sm"
+                  variant="faded"
+                  isRequired
+                  errorMessage={
                     errors?.name?.type === "required"
                       ? "Name is required"
                       : "" || errors?.name?.type === "maxLength"
                       ? "name must not exceed 40 characters"
                       : ""
                   }
-                  helperColor={
-                    errors.name?.type === "required"
-                      ? "error"
-                      : "primary" || errors?.name?.type === "maxLength"
-                      ? "error"
-                      : "primary"
+                  color={
+                    errors.name?.type === "required" ? "danger" : "default"
                   }
-                  color={errors.name?.type === "required" ? "error" : "default"}
                   aria-label={field.name}
                   label="Name"
                   fullWidth
@@ -165,7 +168,7 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 />
               )}
             />
-            <Spacer y={1} />
+            <Spacer y={5} />
 
             <ImageController
               imageFiles={imageFiles}
@@ -174,15 +177,15 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               setUploadError={setUploadError}
             />
 
-            <Spacer y={1} />
+            <Spacer y={5} />
 
             <Controller
               name="description"
               control={control}
               render={({ field }) => (
                 <Textarea
-                  bordered
                   label="Description"
+                  variant="faded"
                   aria-label={field.name}
                   fullWidth
                   {...field}
@@ -192,11 +195,11 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 />
               )}
             />
-            <Spacer y={1} />
+            <Spacer y={5} />
             <label className="mb-2" htmlFor="ingredients">
               Ingredients
             </label>
-            <Spacer y={0.2} />
+            <Spacer y={0.5} />
             <Controller
               name="ingredients"
               render={({ field }) => {
@@ -210,9 +213,9 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               }}
               control={control}
             />
-            <Spacer y={1} />
+            <Spacer y={5} />
             <label htmlFor="directions">Directions</label>
-            <Spacer y={0.2} />
+            <Spacer y={0.5} />
             <div id="directions">
               <QuillEditor
                 quillContent={quillContent}
@@ -220,12 +223,12 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               />
             </div>
 
-            <Spacer y={4} />
+            <Spacer y={14} />
 
             <label className="mb-2" htmlFor="tags">
               Tags
             </label>
-            <Spacer y={0.2} />
+            <Spacer y={0.5} />
             <Controller
               name="tags"
               render={({ field }) => {
@@ -236,13 +239,14 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               }}
               control={control}
             />
-            <Spacer y={1} />
+            <Spacer y={5} />
             <Controller
               name="servingSize"
               control={control}
               render={({ field }) => (
                 <Input
-                  bordered
+                  radius="sm"
+                  variant="faded"
                   aria-label={field.name}
                   fullWidth
                   label="Serving Size"
@@ -252,19 +256,26 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 />
               )}
             />
-            <Spacer y={1} />
+            <Spacer y={10} />
             <Controller
               name="cookingTime"
               control={control}
               render={({ field }) => (
                 <Input
-                  bordered
+                  radius="sm"
+                  variant="faded"
+                  isClearable
                   aria-label={field.name}
                   fullWidth
+                  labelPlacement="outside"
                   label="Cooking Time"
-                  labelRight="Min"
+                  endContent={
+                    <div className="pointer-events-none flex items-center">
+                      <span className="text-small text-default-400">Min</span>
+                    </div>
+                  }
                   type="number"
-                  value={field.value !== null ? field.value : ""}
+                  /* value={field.value !== null ? field.value : null} */
                   onChange={(e) => {
                     // Handle both numeric and string inputs
                     const newValue = e.target.value;
@@ -275,16 +286,18 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 />
               )}
             />
-            <Spacer y={1} />
+            <Spacer y={5} />
             <Controller
               name="video"
               control={control}
               render={({ field }) => (
                 <Input
-                  clearable
-                  bordered
+                  isClearable
+                  radius="sm"
+                  variant="faded"
                   aria-label={field.name + "url"}
                   label="Youtube Link"
+                  placeholder="https://www.youtube.com"
                   fullWidth
                   type="url"
                   {...field}
@@ -292,9 +305,9 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 />
               )}
             />
-            <Spacer y={1} />
+            <Spacer y={5} />
             <label htmlFor="collections">Collections</label>
-            <Spacer y={0.2} />
+            <Spacer y={0.5} />
             <Controller
               name="collections"
               render={({ field }) => {
@@ -309,14 +322,15 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
               control={control}
             />
 
-            <Spacer y={1} />
+            <Spacer y={5} />
             <Controller
               name="country"
               control={control}
               render={({ field }) => (
                 <Input
-                  clearable
-                  bordered
+                  isClearable
+                  radius="sm"
+                  variant="faded"
                   label="Country"
                   aria-label={field.name}
                   fullWidth
@@ -325,14 +339,15 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 />
               )}
             />
-            <Spacer y={1} />
+            <Spacer y={5} />
             <Controller
               name="author"
               control={control}
               render={({ field }) => (
                 <Input
-                  clearable
-                  bordered
+                  isClearable
+                  radius="sm"
+                  variant="faded"
                   label="Author"
                   aria-label={field.name}
                   fullWidth
@@ -341,20 +356,20 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
                 />
               )}
             />
-            <Spacer y={1.6} />
+            <Spacer y={5} />
 
             <div className="flex items-center">
               <Controller
                 name="publicationStatus"
                 control={control}
-                render={({ field }) => (
+                render={() => (
                   <Switch
-                    {...field}
-                    shadow
+                    isSelected={getValues("publicationStatus") || false}
+                    aria-label="Share with Community"
                     color="success"
-                    onChange={(e: SwitchEvent) => {
-                      field.onChange(e.target.checked);
-                      setIsPublished(e.target.checked);
+                    onValueChange={(value) => {
+                      setValue("publicationStatus", value);
+                      setIsPublished(value);
                     }}
                   />
                 )}
@@ -365,39 +380,41 @@ const CreateRecipeDialog: React.FC<createRecipeDialogProps> = ({
             </div>
 
             {isPublished && (
-              <Text size="$xs" color="#858585" className="mt-5 max-w-[60ch]">
+              <p className="mt-5 max-w-[60ch] text-[#858585]">
                 By choosing to publish your recipe, you&apos;re sending it to
                 our administrators for review. After approval, your recipe will
                 be featured on the discovery page, making it accessible to
                 everyone.
-              </Text>
+              </p>
             )}
 
-            <Spacer y={0.5} />
-            <Grid.Container gap={2} justify="flex-end" className="mb-4">
-              <Grid>
+            <Spacer y={1} />
+            <div className="container mb-4 grid justify-end gap-2">
+              {/*  <div className="grid">
+                      <Button
+                        type="button"
+                        onPress={() => reset()}
+                        color="primary"
+                      >
+                        Clear
+                      </Button>
+                    </div> */}
+
+              <div className="grid">
                 <Button
-                  type="button"
-                  onPress={() => reset()}
-                  auto
-                  flat
+                  isLoading={loadingCreateddRecipe && !isSuccess}
+                  type="submit"
                   color="primary"
                 >
-                  Clear
-                </Button>
-              </Grid>
-
-              <Grid>
-                <Button type="submit" auto flat color="primary">
                   Create
                 </Button>
-              </Grid>
-            </Grid.Container>
+              </div>
+            </div>
           </form>
-          <Spacer y={2.4} />
-        </Modal.Body>
-      </Modal>
-    </div>
+          <Spacer y={2.5} />
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 

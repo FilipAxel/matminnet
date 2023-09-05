@@ -1,4 +1,4 @@
-import { Spacer, Grid, Loading } from "@nextui-org/react";
+import { Spacer, Spinner } from "@nextui-org/react";
 import { useState } from "react";
 import SearchRecipe from "~/components/recipe/recipe-search";
 import { api } from "~/utils/api";
@@ -18,18 +18,15 @@ const Discover = () => {
       ) : null}
       <Spacer y={1} />
       {isLoading ? (
-        <Grid className="grid h-screen place-items-center">
-          <Loading className="mb-10" size="xl" type="points-opacity" />
-        </Grid>
+        <div className="grid h-screen place-items-center">
+          <Spinner className="mb-10" size="lg" />
+        </div>
       ) : null}
-      <Grid.Container
-        className="mx-auto flex w-full max-w-[1200px] justify-center"
-        gap={1}
-      >
+      <div className="container mx-auto flex w-full max-w-[1200px] justify-center gap-1">
         {searchResults.map((recipe) => (
           <RecipeList key={recipe.id} recipe={recipe} />
         ))}
-      </Grid.Container>
+      </div>
     </>
   );
 };

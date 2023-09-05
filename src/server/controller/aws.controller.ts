@@ -11,7 +11,7 @@ import { env } from "process";
 import { v4 as uuidv4 } from "uuid";
 import { getCollection, updateCollectionImage } from "./collection.controller";
 import { type Session } from "next-auth";
-import { IdSchema } from "../schema/recipe.schema";
+import { type IdSchema } from "../schema/recipe.schema";
 
 export const bucketName = env.AWS_BUCKET_NAME || "";
 export const cloudFrontUrl = env.CLOUDFRONT_URL || "";

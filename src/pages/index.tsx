@@ -1,4 +1,3 @@
-import { Grid } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import CollectionCard from "~/components/collection/collection-card";
@@ -21,42 +20,31 @@ export default function Home() {
   }
 
   if (status === "loading" || isLoading) {
-    <Grid.Container
-      className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center p-0 xs:max-w-[97%] xs:justify-normal"
-      gap={1}
-    >
+    <div className="mx-auto mb-10 mt-2 flex flex-wrap justify-center gap-1 p-0 xs:max-w-[97%] xs:justify-normal md:justify-normal">
       {numberOfSkeletonsCards.map((n) => {
         return <SkeletoncollectionCard key={n} />;
       })}
-    </Grid.Container>;
+    </div>;
   }
 
   if (status === "authenticated" || !isLoading) {
     return (
       <>
         {isLoading ? (
-          <Grid.Container
-            className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center p-0 xs:max-w-[97%] xs:justify-normal media428:max-w-[88%]"
-            gap={1}
-          >
+          <div className="mx-auto mb-10 mt-2 flex flex-wrap justify-center gap-5 p-0 xs:max-w-[97%] xs:justify-normal media428:max-w-[88%] md:justify-normal">
             {numberOfSkeletonsCards.map((n) => {
               return <SkeletoncollectionCard key={n} />;
             })}
-          </Grid.Container>
+          </div>
         ) : (
           <div className="flex flex-col items-center justify-center gap-4">
-            <div className="flex w-full justify-center">
-              <Grid.Container
-                className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center p-0 xs:max-w-[97%] xs:justify-normal media428:max-w-[88%]"
-                gap={1}
-              >
-                <Grid className="w-full xs:w-auto">
-                  <CreateCollection />
-                </Grid>
-                {collections?.map((collection) => (
-                  <CollectionCard key={collection.id} collection={collection} />
-                ))}
-              </Grid.Container>
+            <div className="mx-auto mb-10 mt-2 flex flex-wrap justify-center gap-5 p-0 xs:max-w-[97%] xs:justify-normal media428:max-w-[88%] md:justify-normal">
+              <div className="w-full xs:w-auto">
+                <CreateCollection />
+              </div>
+              {collections?.map((collection) => (
+                <CollectionCard key={collection.id} collection={collection} />
+              ))}
             </div>
           </div>
         )}

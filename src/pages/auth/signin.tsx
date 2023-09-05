@@ -7,7 +7,6 @@ import { getProviders, signIn } from "next-auth/react";
 import Image from "next/image";
 import { authOptions } from "~/server/auth";
 import { FcGoogle } from "react-icons/fc";
-import { Text } from "@nextui-org/react";
 
 const SignIn = ({
   providers,
@@ -26,11 +25,7 @@ const SignIn = ({
     <>
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
-          {/*    <button onClick={() => void handleSignIn(provider.id)}>
-            Sign in with {provider.name} or just filip can fix it
-          </button> */}
-
-          <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+          <div className="lg:px-8 flex min-h-full flex-1 flex-col justify-center px-6 py-12">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
               <Image
                 width={100}
@@ -39,9 +34,9 @@ const SignIn = ({
                 src="/icon-512x512.png"
                 alt="Mat Minne"
               />
-              <Text className="mt-10 text-center text-2xl font-semibold leading-9 tracking-tight text-gray-900">
+              <h1 className="mt-10 text-center text-2xl font-semibold leading-9 tracking-tight text-gray-900">
                 Sign in to your account
-              </Text>
+              </h1>
             </div>
 
             <div className="mx-auto mt-6 flex w-[300px] items-center justify-center">
@@ -53,19 +48,17 @@ const SignIn = ({
                 <span className="mr-4">
                   <FcGoogle className="text-2xl" />
                 </span>
-                <Text b className="text-white">
-                  Continue with Google
-                </Text>
+                <h1 className="font-bold text-white">Continue with Google</h1>
               </button>
             </div>
             <div className="mt-5 flex items-center justify-center text-center">
-              <Text className="text-gray-600">Don&apos;t have an account?</Text>
-              <Text
+              <h3 className="text-gray-600">Don&apos;t have an account?</h3>
+              <h3
                 onClick={() => void handleSignIn(provider.id)}
                 className="ml-1 font-semibold"
               >
                 Sign up
-              </Text>
+              </h3>
             </div>
           </div>
         </div>

@@ -4,8 +4,6 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import { Analytics } from "@vercel/analytics/react";
 import "~/styles/globals.css";
-
-// 1. import `NextUIProvider` component
 import { NextUIProvider, Spacer } from "@nextui-org/react";
 import NavigationBar from "~/components/navigation/navigation-bar";
 

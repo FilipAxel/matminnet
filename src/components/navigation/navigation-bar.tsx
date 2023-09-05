@@ -1,41 +1,47 @@
 /* eslint-disable react/jsx-no-undef */
 import {
   Navbar,
-  Dropdown,
-  Avatar,
-  Text,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
   Link,
   Button,
+  DropdownItem,
+  DropdownMenu,
+  NavbarMenuToggle,
+  Dropdown,
+  DropdownTrigger,
+  Avatar,
+  NavbarMenu,
+  NavbarMenuItem,
+  DropdownSection,
+  cn,
 } from "@nextui-org/react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { MdOutlineLogout } from "react-icons/md";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { MdLogout } from "react-icons/md";
 
 type Key = string | number;
 
 const NavigationBar = () => {
   const { data: session, status } = useSession();
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const iconClasses = "text-xl pointer-events-none flex-shrink-0";
   const router = useRouter();
 
-  const collapseItems = [
-    { name: "Collections", path: "/" },
-    { name: "Recipes", path: "/recipes" },
-    { name: "Discover", path: "/discover" },
-  ];
-
-  const handleDropDownAction = async (option: Key) => {
+  const handleDropDownAction = (option: Key) => {
     switch (option) {
       case "logout":
         try {
-          await signOut();
+          void signOut();
         } catch (error) {
           console.warn(error);
           throw error;
         }
         break;
       case "settings":
-        await router.push("/settings").catch((error) => {
+        void router.push("/settings").catch((error) => {
           console.warn(error);
           throw error;
         });
@@ -45,134 +51,125 @@ const NavigationBar = () => {
     }
   };
 
+  const menuItems = [
+    { name: "Collections", path: "/" },
+    { name: "Recipes", path: "/recipes" },
+    { name: "Discover", path: "/discover" },
+    { name: "My Settings", path: "/settings" },
+  ];
+
   return (
-    <>
-      <Navbar isBordered variant="floating">
-        <Navbar.Toggle showIn="xs" />
-        <Navbar.Brand
-          css={{
-            "@xs": {
-              w: "12%",
-            },
-          }}
-        >
-          <Text b color="inherit" hideIn="xs">
+    <Navbar isBordered onMenuOpenChange={setIsMenuOpen}>
+      <NavbarContent>
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="sm:hidden"
+        />
+        <NavbarBrand>
+          <Link href="/" className="font-bold text-inherit">
             MatMinnet
-          </Text>
-        </Navbar.Brand>
-        <Navbar.Content
-          enableCursorHighlight
-          activeColor="primary"
-          hideIn="xs"
-          variant="highlight"
-        >
-          <Navbar.Link isActive={router.pathname === "/"} href="/">
+          </Link>
+        </NavbarBrand>
+      </NavbarContent>
+
+      <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+        <NavbarItem isActive={router.pathname === "/"}>
+          <Link color="foreground" href="/">
             Collections
-          </Navbar.Link>
-          <Navbar.Link
-            isActive={router.pathname === "/recipes"}
-            href="/recipes"
-          >
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive={router.pathname === "/recipes"}>
+          <Link color="foreground" href="/recipes" aria-current="page">
             Recipes
-          </Navbar.Link>
-          <Navbar.Link
-            isActive={router.pathname === "/discover"}
-            href="/discover"
-          >
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive={router.pathname === "/discover"}>
+          <Link color="foreground" href="/discover">
             Discover
-          </Navbar.Link>
-        </Navbar.Content>
-        <Navbar.Content
-          css={{
-            "@xs": {
-              w: "12%",
-              jc: "flex-end",
-            },
-          }}
-        >
-          {status === "authenticated" || status === "loading" ? (
-            <Dropdown placement="bottom-right">
-              <Navbar.Item>
-                <Dropdown.Trigger>
-                  <Avatar
-                    className="cursor-pointer"
-                    src={session?.user?.image as string}
-                    text={session?.user?.name as string}
-                    size="md"
-                  />
-                </Dropdown.Trigger>
-              </Navbar.Item>
-              <Dropdown.Menu
-                disabledKeys={["profile"]}
+          </Link>
+        </NavbarItem>
+      </NavbarContent>
+
+      {status === "authenticated" || status === "loading" ? (
+        <NavbarContent as="div" justify="end">
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
                 color="secondary"
-                aria-label="Avatar Actions"
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                onAction={handleDropDownAction}
-              >
-                <Dropdown.Item
-                  textValue="profile"
-                  key="profile"
-                  css={{ height: "$18" }}
-                >
-                  <Text b color="inherit" css={{ d: "flex", color: "Black" }}>
-                    Signed in as
-                  </Text>
-                  <Text b color="inherit" css={{ d: "flex", color: "Black" }}>
-                    {session?.user?.email}
-                  </Text>
-                </Dropdown.Item>
-                <Dropdown.Item
-                  textValue="settings"
-                  withDivider
-                  key="settings"
-                  css={{ height: "$18" }}
-                >
-                  <Text b color="inherit" css={{ d: "flex" }}>
-                    Settings
-                  </Text>
-                </Dropdown.Item>
-                <Dropdown.Item
-                  textValue="logout"
-                  key="logout"
-                  color="error"
-                  withDivider
-                  icon={<MdOutlineLogout size={22} fill="currentColor" />}
-                >
-                  Log Out
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          ) : (
-            <>
-              <Navbar.Item>
-                <Button onPress={() => void signIn()} auto flat>
-                  Sign Up
-                </Button>
-              </Navbar.Item>
-            </>
-          )}
-        </Navbar.Content>
-        <Navbar.Collapse>
-          {collapseItems.map((item) => (
-            <Navbar.CollapseItem
-              key={item.name}
-              activeColor="primary"
-              isActive={router.pathname === item.path}
+                name=""
+                size="sm"
+                src={session?.user.image || ""}
+              />
+            </DropdownTrigger>
+            <DropdownMenu
+              onAction={(key) => handleDropDownAction(key)}
+              aria-label="Profile Actions"
+              variant="flat"
             >
-              <Link
-                color="inherit"
-                css={{
-                  minWidth: "100%",
-                }}
-                href={item.path}
-              >
-                {item.name}
-              </Link>
-            </Navbar.CollapseItem>
-          ))}
-        </Navbar.Collapse>
-      </Navbar>
-    </>
+              <DropdownSection>
+                <DropdownItem key="profile" className="h-14 gap-2">
+                  <p className="font-semibold">Signed in as</p>
+                  <p className="font-semibold">{session?.user.email}</p>
+                </DropdownItem>
+                <DropdownItem key="settings">My Settings</DropdownItem>
+              </DropdownSection>
+
+              <DropdownSection>
+                <DropdownItem
+                  key="logout"
+                  className="text-danger"
+                  color="danger"
+                  startContent={
+                    <MdLogout className={cn(iconClasses, "text-black")} />
+                  }
+                >
+                  Logout
+                </DropdownItem>
+              </DropdownSection>
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarContent>
+      ) : (
+        <NavbarContent justify="end">
+          <NavbarItem className="hidden lg:flex">
+            <Button
+              color="primary"
+              variant="flat"
+              onClick={() => void void signIn()}
+            >
+              Login
+            </Button>
+          </NavbarItem>
+          <NavbarItem>
+            <Button
+              onClick={() => void void signIn()}
+              color="primary"
+              variant="flat"
+            >
+              Sign Up
+            </Button>
+          </NavbarItem>
+        </NavbarContent>
+      )}
+
+      <NavbarMenu>
+        {menuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item.name}-${index}`}>
+            <Link
+              color="foreground"
+              className="my-2 w-full"
+              href={item.path}
+              size="lg"
+            >
+              {item.name}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
+    </Navbar>
   );
 };
 export default NavigationBar;

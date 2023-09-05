@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { Card, Text } from "@nextui-org/react";
+import { Card, CardBody } from "@nextui-org/react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import CreateRecipeDialog from "../dialog/create-recipe-dialog";
@@ -16,16 +16,13 @@ const CreateRecipe: React.FC<createRecipeProps> = ({ name }) => {
         onPress={() => setIsOpen(true)}
         isPressable
         isHoverable
-        variant="bordered"
         className="sm:w-[210px] h-[260px] w-full bg-transparent xs:h-[240px] xs:w-[175px]"
       >
-        <Card.Body className="flex items-center justify-center">
-          <Text className="text-center text-2xl text-gray-800">
-            Create Recipe
-          </Text>
+        <CardBody className="flex items-center justify-center">
+          <h1 className="text-center text-2xl text-gray-800">Create Recipe</h1>
 
           <FaPlus className="mt-5 text-xl text-gray-800" />
-        </Card.Body>
+        </CardBody>
       </Card>
 
       {isOpen ? (

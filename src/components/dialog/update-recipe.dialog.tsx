@@ -1,22 +1,21 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import {
   Button,
-  Grid,
   Input,
   Modal,
   Spacer,
   Switch,
-  type SwitchEvent,
-  Text,
   Textarea,
-  Loading,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
 } from "@nextui-org/react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import {
   type IngredientOption,
   type FormValues,
   type CollectionOption,
-  TagOption,
+  type TagOption,
 } from "../create-recipe-from/from-interface";
 import { api } from "~/utils/api";
 import CollectionController from "../create-recipe-from/collection-controller";
@@ -245,268 +244,267 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
       <div>
         <Modal
           closeButton
-          aria-labelledby="Create Recipe"
-          fullScreen
-          open={isOpen}
+          aria-labelledby="Update Recipe"
+          scrollBehavior="inside"
+          size="full"
+          isOpen={isOpen}
           onClose={closeHandler}
         >
-          <Modal.Header>
-            <Text size={30} weight="bold" h1 id="create recipe">
-              Update Recipe
-            </Text>
-          </Modal.Header>
-          <Modal.Body className="mx-2 mb-3">
-            <form
-              className="m-auto max-w-[800px]"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <Controller
-                name="name"
-                control={control}
-                rules={{
-                  required: true,
-                  maxLength: 40,
-                  minLength: 3,
-                }}
-                render={({ field }) => (
-                  <Input
-                    size="xl"
-                    clearable
-                    bordered
-                    helperText={
-                      errors?.name?.type === "required"
-                        ? "Name is required"
-                        : "" || errors?.name?.type === "maxLength"
-                        ? "name must not exceed 40 characters"
-                        : ""
-                    }
-                    helperColor={
-                      errors.name?.type === "required"
-                        ? "error"
-                        : "primary" || errors?.name?.type === "maxLength"
-                        ? "error"
-                        : "primary"
-                    }
-                    color={
-                      errors.name?.type === "required" ? "error" : "default"
-                    }
-                    aria-label={field.name}
-                    label="Name"
-                    fullWidth
-                    {...field}
-                  />
-                )}
-              />
-              <Spacer y={1} />
-              <Controller
-                name="description"
-                control={control}
-                render={({ field }) => (
-                  <Textarea
-                    bordered
-                    label="Description"
-                    aria-label={field.name}
-                    fullWidth
-                    {...field}
-                    size="lg"
-                    minRows={2}
-                    maxRows={8}
-                  />
-                )}
-              />
-              <Spacer y={1} />
-              <label className="mb-2" htmlFor="ingredients">
-                Ingredients
-              </label>
-              <Spacer y={0.2} />
-              <Controller
-                name="ingredients"
-                render={({ field }) => {
-                  const currentValue = getValues("ingredients") || [];
-                  return (
-                    <IngredientsController
-                      field={field}
-                      currentValue={currentValue}
-                    />
-                  );
-                }}
-                control={control}
-              />
-              <Spacer y={1} />
-              <label htmlFor="directions">Directions</label>
-              <Spacer y={0.2} />
-              <div id="directions">
-                <QuillEditor
-                  quillContent={quillContent}
-                  setQuillContent={setQuillContent}
-                />
-              </div>
-              <Spacer y={4} />
-              <label className="mb-2" htmlFor="tags">
-                Tags
-              </label>
-              <Spacer y={0.2} />
-              <Controller
-                name="tags"
-                render={({ field }) => {
-                  const currentValue = getValues("tags") || [];
-                  return (
-                    <TagsController field={field} currentValue={currentValue} />
-                  );
-                }}
-                control={control}
-              />
-
-              <Spacer y={1} />
-              <Controller
-                name="servingSize"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    bordered
-                    aria-label={field.name}
-                    fullWidth
-                    label="Serving Size"
-                    type="text"
-                    {...field}
-                    size="lg"
-                  />
-                )}
-              />
-              <Spacer y={1} />
-              <Controller
-                name="cookingTime"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    bordered
-                    aria-label={field.name}
-                    fullWidth
-                    label="Cooking Time"
-                    labelRight="Min"
-                    type="number"
-                    value={field.value !== null ? field.value : ""}
-                    onChange={(e) => {
-                      const newValue = e.target.value;
-                      field.onChange(newValue !== "" ? Number(newValue) : null);
-                    }}
-                    onBlur={field.onBlur}
-                    size="lg"
-                  />
-                )}
-              />
-              <Spacer y={1} />
-              <Controller
-                name="video"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    clearable
-                    bordered
-                    aria-label={field.name + "url"}
-                    label="Youtube Link"
-                    fullWidth
-                    type="url"
-                    {...field}
-                    size="lg"
-                  />
-                )}
-              />
-              <Spacer y={1} />
-              <label htmlFor="collections">Collections</label>
-              <Spacer y={0.2} />
-              <Controller
-                name="collections"
-                render={({ field }) => {
-                  const currentValue = getValues("collections") || [];
-                  return (
-                    <CollectionController
-                      field={field}
-                      currentValue={currentValue}
-                    />
-                  );
-                }}
-                control={control}
-              />
-              <Spacer y={1} />
-              <Controller
-                name="country"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    clearable
-                    bordered
-                    label="Country"
-                    aria-label={field.name}
-                    fullWidth
-                    {...field}
-                    size="lg"
-                  />
-                )}
-              />
-              <Spacer y={1} />
-              <Controller
-                name="author"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    clearable
-                    bordered
-                    label="Author"
-                    aria-label={field.name}
-                    fullWidth
-                    {...field}
-                    size="lg"
-                  />
-                )}
-              />
-              <Spacer y={1.6} />
-
-              <div className="flex items-center">
-                <Switch
-                  checked={isPublished}
-                  shadow
-                  color="success"
-                  onChange={(e: SwitchEvent) => {
-                    setIsPublished(e.target.checked);
+          <ModalContent>
+            <ModalHeader className="justify-center">
+              <h1 className="text-[30px] font-bold" id="create recipe">
+                Update Recipe
+              </h1>
+            </ModalHeader>
+            <ModalBody className="mx-2 mb-3">
+              <form
+                className="m-auto max-w-[800px]"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <Controller
+                  name="name"
+                  control={control}
+                  rules={{
+                    required: true,
+                    maxLength: 40,
+                    minLength: 3,
                   }}
+                  render={({ field }) => (
+                    <Input
+                      size="lg"
+                      isClearable
+                      radius="sm"
+                      isRequired
+                      variant="faded"
+                      errorMessage={
+                        errors?.name?.type === "required"
+                          ? "Name is required"
+                          : "" || errors?.name?.type === "maxLength"
+                          ? "name must not exceed 40 characters"
+                          : ""
+                      }
+                      color={
+                        errors.name?.type === "required" ? "danger" : "default"
+                      }
+                      aria-label={field.name}
+                      label="Name"
+                      fullWidth
+                      {...field}
+                    />
+                  )}
+                />
+                <Spacer y={5} />
+                <Controller
+                  name="description"
+                  control={control}
+                  render={({ field }) => (
+                    <Textarea
+                      label="Description"
+                      aria-label={field.name}
+                      fullWidth
+                      {...field}
+                      size="lg"
+                      minRows={2}
+                      maxRows={8}
+                    />
+                  )}
+                />
+                <Spacer y={5} />
+                <label className="mb-2" htmlFor="ingredients">
+                  Ingredients
+                </label>
+                <Spacer y={1} />
+                <Controller
+                  name="ingredients"
+                  render={({ field }) => {
+                    const currentValue = getValues("ingredients") || [];
+                    return (
+                      <IngredientsController
+                        field={field}
+                        currentValue={currentValue}
+                      />
+                    );
+                  }}
+                  control={control}
+                />
+                <Spacer y={5} />
+                <label htmlFor="directions">Directions</label>
+                <Spacer y={1} />
+                <div id="directions">
+                  <QuillEditor
+                    quillContent={quillContent}
+                    setQuillContent={setQuillContent}
+                  />
+                </div>
+                <Spacer y={20} />
+                <label className="mb-2" htmlFor="tags">
+                  Tags
+                </label>
+                <Spacer y={1} />
+                <Controller
+                  name="tags"
+                  render={({ field }) => {
+                    const currentValue = getValues("tags") || [];
+                    return (
+                      <TagsController
+                        field={field}
+                        currentValue={currentValue}
+                      />
+                    );
+                  }}
+                  control={control}
                 />
 
-                <label className="ml-2" htmlFor="publicationStatus">
-                  Share with Community
-                </label>
-              </div>
-              {isPublished && (
-                <Text size="$xs" color="#858585" className="mt-5 max-w-[60ch]">
-                  By choosing to publish your recipe, you&apos;re sending it to
-                  our administrators for review. After approval, your recipe
-                  will be featured on the discovery page, making it accessible
-                  to everyone.
-                </Text>
-              )}
-              <Spacer y={0.5} />
-              <Grid.Container gap={2} justify="flex-end" className="mb-4">
-                <Grid>
-                  <Button
-                    type="button"
-                    onPress={() => reset()}
-                    auto
-                    flat
-                    color="primary"
-                  >
-                    Clear
-                  </Button>
-                </Grid>
+                <Spacer y={5} />
+                <Controller
+                  name="servingSize"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      radius="sm"
+                      variant="faded"
+                      isClearable
+                      aria-label={field.name}
+                      fullWidth
+                      label="Serving Size"
+                      type="text"
+                      {...field}
+                      size="lg"
+                    />
+                  )}
+                />
+                <Spacer y={5} />
+                <Controller
+                  name="cookingTime"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      radius="sm"
+                      variant="faded"
+                      isClearable
+                      aria-label={field.name}
+                      fullWidth
+                      label="Cooking Time"
+                      labelPlacement="outside"
+                      endContent={
+                        <div className="pointer-events-none flex items-center">
+                          <span className="text-small text-default-400">
+                            Min/
+                          </span>
+                        </div>
+                      }
+                      onBlur={field.onBlur}
+                      size="lg"
+                    />
+                  )}
+                />
+                <Spacer y={5} />
+                <Controller
+                  name="video"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      radius="sm"
+                      variant="faded"
+                      isClearable
+                      aria-label={field.name + "url"}
+                      label="Youtube Link"
+                      fullWidth
+                      type="url"
+                      {...field}
+                      size="lg"
+                    />
+                  )}
+                />
+                <Spacer y={5} />
+                <label htmlFor="collections">Collections</label>
+                <Spacer y={1} />
+                <Controller
+                  name="collections"
+                  render={({ field }) => {
+                    const currentValue = getValues("collections") || [];
+                    return (
+                      <CollectionController
+                        field={field}
+                        currentValue={currentValue}
+                      />
+                    );
+                  }}
+                  control={control}
+                />
+                <Spacer y={5} />
+                <Controller
+                  name="country"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      radius="sm"
+                      variant="faded"
+                      isClearable
+                      label="Country"
+                      aria-label={field.name}
+                      fullWidth
+                      {...field}
+                      size="lg"
+                    />
+                  )}
+                />
+                <Spacer y={5} />
+                <Controller
+                  name="author"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      radius="sm"
+                      variant="faded"
+                      isClearable
+                      label="Author"
+                      aria-label={field.name}
+                      fullWidth
+                      {...field}
+                      size="lg"
+                    />
+                  )}
+                />
+                <Spacer y={5} />
 
-                <Grid>
-                  <Button type="submit" auto flat color="primary">
-                    {loadingUpdatedRecipe ? <Loading size={"md"} /> : "Update"}
-                  </Button>
-                </Grid>
-              </Grid.Container>
-            </form>
-            <Spacer y={2.4} />
-          </Modal.Body>
+                <div className="flex items-center">
+                  <Switch
+                    isSelected={isPublished}
+                    color="success"
+                    onValueChange={(value) => {
+                      setIsPublished(value);
+                    }}
+                  />
+
+                  <label className="ml-2" htmlFor="publicationStatus">
+                    Share with Community
+                  </label>
+                </div>
+                {isPublished && (
+                  <p className="mt-5 max-w-[60ch] text-[#858585]">
+                    By choosing to publish your recipe, you&apos;re sending it
+                    to our administrators for review. After approval, your
+                    recipe will be featured on the discovery page, making it
+                    accessible to everyone.
+                  </p>
+                )}
+                <Spacer y={5} />
+                <div className="container mb-4 grid justify-end gap-2">
+                  <div className="grid">
+                    <Button
+                      type="submit"
+                      color="primary"
+                      isLoading={loadingUpdatedRecipe}
+                    >
+                      Update
+                    </Button>
+                  </div>
+                </div>
+              </form>
+              <Spacer y={2.5} />
+            </ModalBody>
+          </ModalContent>
         </Modal>
       </div>
     );

@@ -1,4 +1,12 @@
-import { Table, Grid, Loading } from "@nextui-org/react";
+import {
+  Table,
+  TableColumn,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableCell,
+  Spinner,
+} from "@nextui-org/react";
 import RenderCell from "./cell";
 import { api } from "~/utils/api";
 import { type RecipeWithImage } from "~/pages/recipes";
@@ -16,41 +24,38 @@ const SettingsTable = () => {
   return (
     <>
       {isLoading ? (
-        <Grid className="grid h-screen place-items-center">
-          <Loading className="mb-10" size="xl" type="points-opacity" />
-        </Grid>
+        <div className="grid h-screen place-items-center">
+          <Spinner className="mb-10" size="lg" />
+        </div>
       ) : (
         <Table
           selectionMode="single"
-          aria-label="Example table with custom cells"
-          css={{
-            height: "auto",
-            minWidth: "100%",
-          }}
+          aria-label="recipe overview"
+          className="h-auto min-w-full"
         >
-          <Table.Header columns={columns}>
+          <TableHeader columns={columns}>
             {(column) => (
-              <Table.Column
+              <TableColumn
                 key={column.uid}
                 hideHeader={column.uid === "actions"}
                 align={column.uid === "actions" ? "center" : "start"}
               >
                 {column.name}
-              </Table.Column>
+              </TableColumn>
             )}
-          </Table.Header>
+          </TableHeader>
 
-          <Table.Body items={recipes}>
+          <TableBody emptyContent={"No rows to display."} items={recipes}>
             {(recipe: RecipeWithImage) => (
-              <Table.Row>
+              <TableRow>
                 {(columnKey) => (
-                  <Table.Cell>
+                  <TableCell>
                     {<RenderCell recipe={recipe} columnKey={columnKey} />}
-                  </Table.Cell>
+                  </TableCell>
                 )}
-              </Table.Row>
+              </TableRow>
             )}
-          </Table.Body>
+          </TableBody>
         </Table>
       )}
     </>

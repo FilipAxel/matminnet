@@ -1,4 +1,11 @@
-import { Dropdown, Input } from "@nextui-org/react";
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
+} from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { type RecipeWithImage } from "~/pages/recipes";
@@ -58,8 +65,8 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
         render={({ field }) => (
           <Input
             aria-label={field.name}
-            bordered
-            className="sm:w-full w-[300px] pr-2 xs:w-full media428:w-[300px]"
+            variant="faded"
+            className="mr-5 w-[200px] md:w-[350px]"
             placeholder={"Search..."}
             {...field}
             size="md"
@@ -68,16 +75,19 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
       />
 
       <Dropdown>
-        <Dropdown.Button className="bg-[#b195d2]" color="primary" auto>
-          {sortOrder}
-        </Dropdown.Button>
-        <Dropdown.Menu
-          onAction={(option) => handleSortChange(option)}
+        <DropdownTrigger className="bg-[#b195d2]">
+          <Button className="text-white" variant="bordered">
+            {sortOrder}
+          </Button>
+        </DropdownTrigger>
+
+        <DropdownMenu
+          onAction={(key) => handleSortChange(key)}
           aria-label="Static Actions"
         >
-          <Dropdown.Item key="A-Z">A-Z</Dropdown.Item>
-          <Dropdown.Item key="Z-A">Z-A</Dropdown.Item>
-        </Dropdown.Menu>
+          <DropdownItem key="A-Z">A-Z</DropdownItem>
+          <DropdownItem key="Z-A">Z-A</DropdownItem>
+        </DropdownMenu>
       </Dropdown>
     </form>
   );

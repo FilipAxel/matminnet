@@ -1,4 +1,4 @@
-import { Card, Row, Text, Col, Grid } from "@nextui-org/react";
+import { Card, Image, CardFooter } from "@nextui-org/react";
 import { type Recipe } from "@prisma/client";
 import { useRouter } from "next/router";
 import { MdAccessTime } from "react-icons/md";
@@ -21,61 +21,45 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
 
   return (
     <>
-      <Grid className="w-full bg-transparent xs:w-auto">
-        <Card
-          isPressable
-          className="sm:w-[210px] h-[260px] w-full bg-transparent xs:h-[240px] xs:w-[175px]"
-          onClick={() => handleRoute()}
-        >
-          <Card.Body css={{ p: 0 }}>
-            <Card.Image
-              src={imageUrl}
-              onError={(event) => {
-                const imgElement = event.currentTarget as HTMLImageElement;
-                imgElement.src = "/recipe-placeholder.webp";
-              }}
-              objectFit="cover"
-              width="100%"
-              height="100%"
-              alt="Relaxing app background"
-            />
-          </Card.Body>
-          <Card.Footer
-            className="flex h-full flex-col-reverse bg-gradient-to-t from-black via-transparent to-transparent"
-            css={{
-              position: "absolute",
-              bottom: 0,
-              top: 0,
-              zIndex: 1,
-            }}
-          >
-            <Row>
-              <Col className="z-30">
-                <Text className="font-semibold text-white" size={20}>
-                  {recipe.name}
-                </Text>
-                <Row>
-                  <Row>
-                    <div className="flex items-center">
-                      <MdAccessTime className="mr-1 text-[#d1d1d1]" />
-                      <Text className="mr-3 text-white" size={11}>
-                        {recipe.cookingTime} min
-                      </Text>
-                    </div>
+      <Card
+        isPressable
+        isHoverable
+        onClick={() => handleRoute()}
+        className="h-[260px] w-full bg-transparent xs:h-[240px] xs:w-[175px] sm:w-[210px]"
+      >
+        <Image
+          removeWrapper
+          alt="recipe"
+          width={100}
+          height={100}
+          className="z-0 h-full w-full object-cover"
+          src={imageUrl}
+        />
+        <CardFooter className="absolute top-0 h-full flex-col items-start justify-end bg-gradient-to-t from-black via-transparent to-transparent">
+          <div className="z-30 w-full">
+            <h2 className="mb-2 text-left text-[18px] font-semibold text-white">
+              {recipe.name}
+            </h2>
+            <div>
+              <div className="flex justify-start">
+                <div className="flex items-center">
+                  <MdAccessTime className="mr-1 text-[#d1d1d1]" />
+                  <h3 className="mr-3 text-[11px] text-white">
+                    {recipe.cookingTime} min
+                  </h3>
+                </div>
 
-                    <div className="flex items-center">
-                      <PiBowlFoodDuotone className="mr-1 text-[#d1d1d1]" />
-                      <Text className="text-white" size={11}>
-                        {recipe.servingSize} Servings
-                      </Text>
-                    </div>
-                  </Row>
-                </Row>
-              </Col>
-            </Row>
-          </Card.Footer>
-        </Card>
-      </Grid>
+                <div className="flex items-center">
+                  <PiBowlFoodDuotone className="mr-1 text-[#d1d1d1]" />
+                  <h3 className="text-[11px] text-white">
+                    {recipe.servingSize} Servings
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardFooter>
+      </Card>
     </>
   );
 };
