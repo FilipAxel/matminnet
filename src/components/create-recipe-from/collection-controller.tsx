@@ -1,7 +1,8 @@
 import { type CollectionOption, type FormValues } from "./from-interface";
 import { type ControllerRenderProps } from "react-hook-form";
-import Select, { type ActionMeta } from "react-select";
+import Select, { type ActionMeta, type MultiValue } from "react-select";
 import { api } from "~/utils/api";
+import { selectCustomStyle } from "../utils/form-utils";
 
 interface CollectionControllerProps {
   field: ControllerRenderProps<FormValues, "collections">;
@@ -12,6 +13,7 @@ const CollectionController: React.FC<CollectionControllerProps> = ({
   field,
   currentValue,
 }) => {
+  const customSelectStyles = selectCustomStyle<CollectionOption>();
   const { data: collections } = api.collection.getCollections.useQuery();
   const { onChange } = field;
 
@@ -22,7 +24,7 @@ const CollectionController: React.FC<CollectionControllerProps> = ({
     })) ?? [];
 
   const handleInputChange = (
-    newValue: CollectionOption[],
+    newValue: MultiValue<CollectionOption>,
     actionMeta: ActionMeta<CollectionOption>
   ) => {
     if (actionMeta.action === "create-option") {
@@ -40,20 +42,23 @@ const CollectionController: React.FC<CollectionControllerProps> = ({
       const updatedValue = [...currentValue, newCollection];
       onChange(updatedValue);
     } else {
-      onChange(newValue);
+      onChange(newValue as CollectionOption[]);
     }
   };
 
   return (
-    <Select
-      {...field}
-      isMulti
-      classNamePrefix="select"
-      isClearable={true}
-      isSearchable={true}
-      options={collectionOptions}
-      onChange={handleInputChange}
-    />
+    <div className="w-full">
+      <Select
+        {...field}
+        isMulti
+        classNamePrefix="select"
+        styles={customSelectStyles}
+        isClearable={true}
+        isSearchable={true}
+        options={collectionOptions}
+        onChange={handleInputChange}
+      />
+    </div>
   );
 };
 

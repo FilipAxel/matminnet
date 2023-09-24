@@ -6,6 +6,8 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
 });
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 module.exports = (phase, { defaultConfig }) => {
   /**
    * @type {import('next').NextConfig}

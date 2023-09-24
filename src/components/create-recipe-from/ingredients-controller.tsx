@@ -1,11 +1,12 @@
-import React, { Fragment } from "react";
+import React, { type ChangeEvent, Fragment } from "react";
 import { type ControllerRenderProps } from "react-hook-form";
-import { type ActionMeta } from "react-select";
+import { type ActionMeta, type MultiValue } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { api } from "~/utils/api";
 
 import { Input } from "@nextui-org/react";
 import { type FormValues } from "./from-interface";
+import { selectCustomStyle } from "../utils/form-utils";
 
 interface IngredientOption {
   value: string;
@@ -23,6 +24,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
   field,
   currentValue,
 }) => {
+  const customSelectStyles = selectCustomStyle<IngredientOption>();
   const { data: ingredients } = api.ingredient.getAllIngredients.useQuery();
   const { onChange } = field;
   const ingredientOptions: IngredientOption[] =
@@ -34,7 +36,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
     })) ?? [];
 
   const handleInputChange = (
-    newValue: IngredientOption[],
+    newValue: MultiValue<IngredientOption[] | IngredientOption>,
     actionMeta: ActionMeta<IngredientOption>
   ) => {
     if (actionMeta.action === "create-option") {
@@ -54,7 +56,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
       const updatedValue = [...currentValue, newIngredient];
       onChange(updatedValue);
     } else {
-      onChange(newValue);
+      onChange(newValue as IngredientOption[] | ChangeEvent<Element>);
     }
   };
 
@@ -74,10 +76,11 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
   };
 
   return (
-    <>
+    <div className="w-full">
       <CreatableSelect
         {...field}
         isMulti
+        styles={customSelectStyles}
         aria-label={"ingredients"}
         options={ingredientOptions}
         isClearable={true}
@@ -137,7 +140,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

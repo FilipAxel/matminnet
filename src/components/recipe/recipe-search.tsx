@@ -44,6 +44,8 @@ const SearchRecipe: React.FC<SearchRecipeProps> = ({
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const handleChange = (event) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const newSearchTerm: string = event.target.value;

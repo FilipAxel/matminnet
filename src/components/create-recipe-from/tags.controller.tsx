@@ -2,25 +2,25 @@ import { type ControllerRenderProps } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
 import { api } from "~/utils/api";
 import { type TagOption, type FormValues } from "./from-interface";
-import { useState } from "react";
-import { type ActionMeta } from "react-select";
+import { type ChangeEvent, useState } from "react";
+import { type ActionMeta, type MultiValue } from "react-select";
+import { selectCustomStyle } from "../utils/form-utils";
 
-interface TagsControllerrProps {
+interface TagsControllerProps {
   field: ControllerRenderProps<FormValues, "tags">;
   currentValue: TagOption[];
 }
-
-const TagsController: React.FC<TagsControllerrProps> = ({
+const TagsController: React.FC<TagsControllerProps> = ({
   field,
   currentValue,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const customSelectStyles = selectCustomStyle<TagOption>();
   const { data: tags } = api.tag.getAllTags.useQuery();
   const { onChange } = field;
 
   const handleCreate = (
-    newValue: TagOption[],
+    newValue: MultiValue<TagOption | TagOption[]>,
     actionMeta: ActionMeta<TagOption>
   ) => {
     setIsLoading(true);
@@ -41,7 +41,7 @@ const TagsController: React.FC<TagsControllerrProps> = ({
       const updatedValue = [...currentValue, newTag];
       onChange(updatedValue);
     } else {
-      onChange(newValue);
+      onChange(newValue as TagOption[] | ChangeEvent<Element>);
     }
 
     setTimeout(() => {
@@ -60,6 +60,7 @@ const TagsController: React.FC<TagsControllerrProps> = ({
       <CreatableSelect
         {...field}
         isMulti
+        styles={customSelectStyles}
         isLoading={isLoading}
         aria-label={"tags"}
         options={tagOptions}

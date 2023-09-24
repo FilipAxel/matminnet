@@ -12,7 +12,10 @@ const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
 }) => {
   const [isDeleteActionOpen, setDeleteActioOpen] = useState(false);
   const [editActionIsOpen, setEditActionIsOpen] = useState(false);
-  const cellValue: string = recipe[columnKey] as string;
+  const cellValue: string = recipe[
+    columnKey as keyof RecipeWithImage
+  ] as string;
+
   const imageUrl = recipe?.images?.[0]?.name ?? "/recipe-placeholder.webp";
 
   switch (columnKey) {

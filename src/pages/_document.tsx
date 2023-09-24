@@ -8,7 +8,6 @@ import Document, {
   type DocumentContext,
 } from "next/document";
 
-
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const initialProps = await Document.getInitialProps(ctx);
@@ -72,7 +71,7 @@ class MyDocument extends Document {
             content="https://matminne.com/icons/apple-touch-icon.png"
           />
         </Head>
-        <body className="overflow-y-scroll">
+        <body className="h-full overflow-y-scroll">
           <Main />
           <NextScript />
         </body>

@@ -138,7 +138,6 @@ model Recipe {
     servingSize              String?
     description              String?                    @db.Text
     cookingTime              Int?
-    directions               String?                    @db.Text
     country                  String?
     images                   Image[]
     video                    String?
@@ -146,6 +145,8 @@ model Recipe {
     authorId                 String?
     publicationStatus        String                     @default("private") // Add a field to track publication status: "private", "published", "unapproved"
     RecipePublicationRequest RecipePublicationRequest[]
+
+    directions Direction[]
 
     User   User?   @relation(fields: [userId], references: [id])
     userId String?
@@ -155,6 +156,44 @@ model Recipe {
 
     @@index([authorId])
     @@index([userId])
+}
+
+model Direction {
+    id            String    @id @default(cuid())
+    recipeId      String
+    mainStepValue String
+    mainStepIndex Int
+    subSteps      SubStep[]
+    time          Time?     @relation(fields: [timeId], references: [id])
+    timeId        String?
+
+    Recipe Recipe @relation(fields: [recipeId], references: [id])
+
+    @@index([recipeId])
+    @@index([timeId])
+}
+
+model SubStep {
+    id           String    @id @default(cuid())
+    directionId  String
+    subStepValue String
+    subStepIndex Int
+    time         Time?     @relation(fields: [timeId], references: [id])
+    timeId       String?
+    Direction    Direction @relation(fields: [directionId], references: [id])
+
+    @@index([directionId])
+    @@index([timeId])
+}
+
+model Time {
+    id         String      @id @default(cuid())
+    timeValue  Int
+    unit       String
+    created_at DateTime    @default(now())
+    updated_at DateTime    @updatedAt
+    Direction  Direction[]
+    SubStep    SubStep[]
 }
 
 model RecipePublicationRequest {

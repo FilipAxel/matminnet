@@ -1,12 +1,9 @@
 import { Card, CardBody, Chip, Image } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import BackButton from "~/components/shered/back-button";
+import BackButton from "~/components/shared/back-button";
 import SkeletonRecipe from "~/components/skeleton/recipe-skeleton";
 import { api } from "~/utils/api";
-import dynamic from "next/dynamic";
-const DynamicReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import "react-quill/dist/quill.bubble.css";
 
 const Recipe = () => {
   const router = useRouter();
@@ -17,7 +14,6 @@ const Recipe = () => {
   const { data: recipe, isLoading } = api.recipe.getRecipeWithId.useQuery({
     id,
   });
-  const directions = recipe?.directions || "";
   if (!recipe && !isLoading) {
     void router.push("/404");
   }
@@ -109,13 +105,6 @@ const Recipe = () => {
         </div>
 
         <h2 className="ml-4 mt-5 text-[25px] font-bold">Directions</h2>
-
-        <DynamicReactQuill
-          className="mx-5 mb-[60px] mt-5 max-w-[350px]"
-          value={directions}
-          readOnly={true}
-          theme={"bubble"}
-        />
 
         {recipe?.video && (
           <div className="aspect-h-9 aspect-w-16 m-5 flex justify-center">

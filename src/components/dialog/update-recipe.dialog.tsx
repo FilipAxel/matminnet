@@ -19,7 +19,6 @@ import {
 } from "../create-recipe-from/from-interface";
 import { api } from "~/utils/api";
 import CollectionController from "../create-recipe-from/collection-controller";
-import QuillEditor from "../quill/quill-editor";
 import IngredientsController from "../create-recipe-from/ingredients-controller";
 import { useEffect, useState } from "react";
 import TagsController from "../create-recipe-from/tags.controller";
@@ -35,7 +34,6 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
   isOpen,
   setIsOpen,
 }) => {
-  const [quillContent, setQuillContent] = useState("");
   const [isPublished, setIsPublished] = useState(false);
 
   const utils = api.useContext();
@@ -75,7 +73,6 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
     defaultValues: {
       name: "",
       description: "",
-      directions: "",
       servingSize: "",
       cookingTime: null,
       video: "",
@@ -182,7 +179,6 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
     formData.ingredients = filterChangedIngredients(formData.ingredients);
     formData.collections = filterChangedCollections(formData.collections);
     formData.cookingTime = Number(formData.cookingTime);
-    formData.directions = quillContent;
     updateRecipe({ id, recipe: formData });
   };
 
@@ -195,14 +191,12 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
     if (!isLoading && recipe) {
       setValue("name", recipe.name || "");
       setValue("description", recipe.description || "");
-      setValue("directions", recipe.directions || "");
+
       setValue("servingSize", recipe.servingSize || "");
       setValue("cookingTime", recipe.cookingTime || null);
       setValue("video", recipe.video || "");
       setValue("country", recipe.country || "");
       setValue("author", recipe?.author?.name || "");
-
-      setQuillContent(recipe?.directions || "");
 
       const tagValues = recipe.tags.map((tag) => ({
         value: tag.tag.name,
@@ -327,16 +321,8 @@ const UpdateRecipeDialog: React.FC<UpdateRecipeDialogProps> = ({
                   }}
                   control={control}
                 />
-                <Spacer y={5} />
-                <label htmlFor="directions">Directions</label>
+
                 <Spacer y={1} />
-                <div id="directions">
-                  <QuillEditor
-                    quillContent={quillContent}
-                    setQuillContent={setQuillContent}
-                  />
-                </div>
-                <Spacer y={20} />
                 <label className="mb-2" htmlFor="tags">
                   Tags
                 </label>

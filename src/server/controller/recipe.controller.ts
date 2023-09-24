@@ -59,13 +59,13 @@ export const createRecipe = async (
   ctx: { prisma: PrismaClient; session: Session }
 ) => {
   const { id } = ctx.session.user;
-  const { recipe } = input;
+  const { recipe, direction } = input;
+  console.log(direction);
   const {
     author: authorName,
     collections,
     country,
     description,
-    directions,
     tags,
     ingredients,
     name,
@@ -85,10 +85,43 @@ export const createRecipe = async (
       data: {
         name: name,
         description: description,
-        directions: directions,
         country: country,
         servingSize: servingSize,
         cookingTime: cookingTime !== null ? +cookingTime : null,
+        directions: {
+          create: direction.map((step) => ({
+            time:
+              step.timer &&
+              step.timer.timeValue !== null &&
+              step.timer.timeValue !== undefined
+                ? {
+                    create: {
+                      timeValue: step.timer.timeValue,
+                      unit: step.timer.unit ?? null,
+                    },
+                  }
+                : undefined,
+            mainStepValue: step.mainStepValue,
+            mainStepIndex: step.mainStepIndex,
+            subSteps: {
+              create: step.subSteps.map((subStep) => ({
+                time:
+                  subStep.timer &&
+                  subStep.timer.timeValue !== null &&
+                  subStep.timer.timeValue !== undefined
+                    ? {
+                        create: {
+                          timeValue: +subStep.timer.timeValue,
+                          unit: subStep.timer.unit ?? null,
+                        },
+                      }
+                    : undefined,
+                subStepValue: subStep.subStepValue,
+                subStepIndex: subStep.subStepIndex,
+              })),
+            },
+          })),
+        },
         video: video,
         authorId: author?.id,
         userId: id,
@@ -176,6 +209,7 @@ export const getRecipeWithId = async (
             name: true,
           },
         },
+        directions: true,
         recipeIngredients: {
           include: {
             ingredient: true,
@@ -296,7 +330,6 @@ export const updateRecipe = async (
     recipe: {
       name,
       description,
-      directions,
       servingSize,
       cookingTime,
       video,
@@ -317,7 +350,6 @@ export const updateRecipe = async (
     data: {
       name: name,
       description: description,
-      directions: directions,
       servingSize: servingSize,
       cookingTime: cookingTime !== null ? +cookingTime : null,
       video: video,

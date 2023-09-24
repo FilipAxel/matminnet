@@ -1,5 +1,5 @@
 import { z } from "zod";
-export const recipeFields = {
+/* export const recipeFields = {
   name: z.string(),
   description: z.string(),
   directions: z.string(),
@@ -29,10 +29,66 @@ export const recipeFields = {
     })
   ),
   publicationStatus: z.boolean(),
+}; */
+
+export const recipeFields = {
+  name: z.string(),
+  description: z.string(),
+  tags: z.array(
+    z.object({
+      value: z.string(),
+      label: z.string(),
+    })
+  ),
+  servingSize: z.string(),
+  cookingTime: z.union([z.number(), z.null(), z.string()]),
+  video: z.string(),
+  country: z.string(),
+  author: z.string(),
+  collections: z.array(
+    z.object({
+      value: z.string(),
+      label: z.string(),
+    })
+  ),
+  ingredients: z.array(
+    z.object({
+      value: z.string(),
+      label: z.string(),
+      quantity: z.string(),
+      unit: z.string(),
+    })
+  ),
+  publicationStatus: z.boolean(),
 };
+
+// Define the Direction schema
+const DirectionSchema = z.object({
+  mainStepValue: z.string(),
+  mainStepIndex: z.number(),
+  timer: z
+    .object({
+      timeValue: z.number(),
+      unit: z.string(),
+    })
+    .nullable(),
+  subSteps: z.array(
+    z.object({
+      subStepValue: z.string(),
+      subStepIndex: z.number(),
+      timer: z
+        .object({
+          timeValue: z.number(),
+          unit: z.string(),
+        })
+        .nullable(),
+    })
+  ),
+});
 
 export const createRecipeSchema = z.object({
   recipe: z.object(recipeFields),
+  direction: z.array(DirectionSchema),
 });
 
 export const updateRecipeSchema = z.object({

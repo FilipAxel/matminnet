@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import PublicationList from "~/components/admin/publication-list";
 
-import BackButton from "~/components/shered/back-button";
+import BackButton from "~/components/shared/back-button";
 
 const Admin = () => {
   const { data: session } = useSession();
