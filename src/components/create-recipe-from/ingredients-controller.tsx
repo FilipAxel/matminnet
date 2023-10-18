@@ -5,7 +5,6 @@ import CreatableSelect from "react-select/creatable";
 import { api } from "~/utils/api";
 
 import { Input } from "@nextui-org/react";
-import { type FormValues } from "./from-interface";
 import { selectCustomStyle } from "../utils/form-utils";
 
 interface IngredientOption {
@@ -15,8 +14,12 @@ interface IngredientOption {
   unit: string;
 }
 
+export interface FormIngredients {
+  ingredients: IngredientOption[];
+}
+
 interface IngredientsControllerProps {
-  field: ControllerRenderProps<FormValues, "ingredients">;
+  field: ControllerRenderProps<FormIngredients, "ingredients">;
   currentValue: IngredientOption[];
 }
 
@@ -53,7 +56,9 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
         quantity: "1",
         unit: "st",
       };
+
       const updatedValue = [...currentValue, newIngredient];
+
       onChange(updatedValue);
     } else {
       onChange(newValue as IngredientOption[] | ChangeEvent<Element>);
@@ -78,12 +83,15 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
   return (
     <div className="w-full">
       <CreatableSelect
-        {...field}
         isMulti
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         styles={customSelectStyles}
         aria-label={"ingredients"}
         options={ingredientOptions}
         isClearable={true}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         onChange={handleInputChange}
       />
       {currentValue.length > 0 && (

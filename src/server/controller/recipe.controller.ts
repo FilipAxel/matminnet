@@ -1,12 +1,11 @@
 import { type PrismaClient } from "@prisma/client";
 import {
-  type UpdateRecipeSchema,
   type CreateRecipeSchema,
   type IdSchema,
 } from "../schema/recipe.schema";
 import { findCollections } from "./collection.controller";
 import { createdAuthor } from "./author.controller";
-import { createIngredients, updatedIngredient } from "./Ingredient.controller";
+import { createIngredients } from "./Ingredient.controller";
 import { type Session } from "next-auth";
 import { deleteImageFromAws, getSignedUrlAws } from "./aws.controller";
 import { TRPCError } from "@trpc/server";
@@ -59,15 +58,13 @@ export const createRecipe = async (
   ctx: { prisma: PrismaClient; session: Session }
 ) => {
   const { id } = ctx.session.user;
-  const { recipe, direction } = input;
-  console.log(direction);
+  const { recipe, direction, ingredients } = input;
   const {
     author: authorName,
     collections,
     country,
     description,
     tags,
-    ingredients,
     name,
     servingSize,
     cookingTime,
@@ -75,11 +72,11 @@ export const createRecipe = async (
     publicationStatus,
   } = recipe;
 
+  const recipeIngredients = await createIngredients(ingredients, ctx);
   const foundCollections = await findCollections(collections, ctx);
   const author = await createdAuthor(authorName, ctx);
-  const recipeIngredients = await createIngredients(ingredients, ctx);
-  const foundTags = await createTags(tags, ctx);
 
+  const foundTags = await createTags(tags, ctx);
   try {
     const createdRecipe = await ctx.prisma.recipe.create({
       data: {
@@ -96,7 +93,7 @@ export const createRecipe = async (
               step.timer.timeValue !== undefined
                 ? {
                     create: {
-                      timeValue: step.timer.timeValue,
+                      timeValue: +step.timer.timeValue,
                       unit: step.timer.unit ?? null,
                     },
                   }
@@ -143,21 +140,24 @@ export const createRecipe = async (
             },
           })),
         },
-        recipeIngredients: {
+        ingredientsSection: {
           create: recipeIngredients.map((ingredient) => ({
-            quantity: ingredient.quantity,
-            unit: ingredient.unit,
-            ingredient: {
-              connect: {
-                id: ingredient.ingredientId,
-              },
+            name: ingredient.name,
+            ingredients: {
+              create: ingredient.ingredients.map((ingredientDetail) => ({
+                quantity: ingredientDetail.quantity,
+                unit: ingredientDetail.unit,
+                ingredient: {
+                  connect: {
+                    id: ingredientDetail.ingredientId,
+                  },
+                },
+              })),
             },
           })),
         },
+
         publicationStatus: publicationStatus ? "unapproved" : "private",
-      },
-      include: {
-        recipeIngredients: true,
       },
     });
 
@@ -167,7 +167,6 @@ export const createRecipe = async (
 
     return {
       status: "success",
-      createdRecipe,
     };
   } catch (error) {
     throw error;
@@ -183,9 +182,13 @@ export const getRecipeAndIngridients = async (
       id: input.id,
     },
     include: {
-      recipeIngredients: {
+      ingredientsSection: {
         include: {
-          ingredient: true,
+          ingredients: {
+            include: {
+              ingredient: true,
+            },
+          },
         },
       },
     },
@@ -209,10 +212,39 @@ export const getRecipeWithId = async (
             name: true,
           },
         },
-        directions: true,
-        recipeIngredients: {
+        directions: {
           include: {
-            ingredient: true,
+            subSteps: {
+              select: {
+                subStepIndex: true,
+                subStepValue: true,
+                time: {
+                  select: {
+                    timeValue: true,
+                    unit: true,
+                  },
+                },
+              },
+            },
+            time: {
+              select: {
+                timeValue: true,
+                unit: true,
+              },
+            },
+          },
+        },
+        ingredientsSection: {
+          include: {
+            ingredients: {
+              include: {
+                ingredient: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
           },
         },
         tags: {
@@ -236,7 +268,11 @@ export const getRecipeWithId = async (
       user.id === recipe?.userId
     ) {
       if (recipe?.images) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         recipe.images.forEach((image) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
           image.name = getSignedUrlAws(image.name);
         });
       }
@@ -321,7 +357,7 @@ export const deleteRecipeWithId = async (
   };
 };
 
-export const updateRecipe = async (
+/* export const updateRecipe = async (
   input: UpdateRecipeSchema,
   ctx: { prisma: PrismaClient; session: Session }
 ) => {
@@ -373,7 +409,7 @@ export const updateRecipe = async (
           },
         })),
       },
-      recipeIngredients: {
+         recipeIngredients: {
         create: recipeIngredients.map((ingredient) => ({
           quantity: ingredient.quantity,
           unit: ingredient.unit,
@@ -400,4 +436,4 @@ export const updateRecipe = async (
     status: "success",
     updateRecipe,
   };
-};
+}; */

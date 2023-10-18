@@ -8,20 +8,17 @@ import SetTimer from "./setTimer";
 import { useState } from "react";
 
 interface StepProps {
-  step: {
-    mainStepIndex: number;
-    mainStepValue: string;
-    timer?: { timeValue: number; unit: string } | null;
-    subSteps: {
-      subStepIndex: number;
-      subStepValue: string;
-      timer?: { timeValue: number; unit: string } | null;
-    }[];
-  };
+  step: StepInterface;
   updateStep: (index: number, newStep: string | StepInterface) => void;
   updateSubStepValue: (
     stepIndex: number,
-    newValue: string,
+    newSubStep: string,
+    subStepIndex: number
+  ) => void;
+
+  updateSubStepTime: (
+    stepIndex: number,
+    time: { timeValue: number; unit: string },
     subStepIndex: number
   ) => void;
   deleteTask: (taskIndex: number) => void;
@@ -32,9 +29,11 @@ const Step: React.FC<StepProps> = ({
   updateStep,
   updateSubStepValue,
   deleteTask,
+  updateSubStepTime,
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isOpenToolTip, setIsOpenToolTip] = useState(false);
+
   const addSubStep = () => {
     if (!step.mainStepValue.trim()) {
       setIsOpenToolTip(true);
@@ -80,11 +79,8 @@ const Step: React.FC<StepProps> = ({
       ...step,
       timer: newTimer,
     };
-    console.log(updatedStep);
     const updatedStepTyped: StepInterface = updatedStep;
     updateStep(step.mainStepIndex, updatedStepTyped);
-    console.log("Timer Value:", timerValue);
-    console.log("Selected Option:", selectedOption);
   };
 
   return (
@@ -124,6 +120,7 @@ const Step: React.FC<StepProps> = ({
             subStep={subStep}
             removeSubTask={removeSubTask}
             updateSubStepValue={updateSubStepValue}
+            updateSubStepTime={updateSubStepTime}
           />
         ))}
         <div className="w-[85%]">

@@ -1,35 +1,4 @@
 import { z } from "zod";
-/* export const recipeFields = {
-  name: z.string(),
-  description: z.string(),
-  directions: z.string(),
-  tags: z.array(
-    z.object({
-      value: z.string(),
-      label: z.string(),
-    })
-  ),
-  servingSize: z.string(),
-  cookingTime: z.union([z.number(), z.null(), z.string()]),
-  video: z.string(),
-  country: z.string(),
-  author: z.string(),
-  collections: z.array(
-    z.object({
-      value: z.string(),
-      label: z.string(),
-    })
-  ),
-  ingredients: z.array(
-    z.object({
-      value: z.string(),
-      label: z.string(),
-      quantity: z.string(),
-      unit: z.string(),
-    })
-  ),
-  publicationStatus: z.boolean(),
-}; */
 
 export const recipeFields = {
   name: z.string(),
@@ -51,6 +20,11 @@ export const recipeFields = {
       label: z.string(),
     })
   ),
+  publicationStatus: z.boolean(),
+};
+
+const IngredientSchema = z.object({
+  sectionName: z.string(),
   ingredients: z.array(
     z.object({
       value: z.string(),
@@ -59,8 +33,7 @@ export const recipeFields = {
       unit: z.string(),
     })
   ),
-  publicationStatus: z.boolean(),
-};
+});
 
 // Define the Direction schema
 const DirectionSchema = z.object({
@@ -68,20 +41,22 @@ const DirectionSchema = z.object({
   mainStepIndex: z.number(),
   timer: z
     .object({
-      timeValue: z.number(),
+      timeValue: z.union([z.number(), z.string()]),
       unit: z.string(),
     })
-    .nullable(),
+    .nullable()
+    .optional(),
   subSteps: z.array(
     z.object({
       subStepValue: z.string(),
       subStepIndex: z.number(),
       timer: z
         .object({
-          timeValue: z.number(),
+          timeValue: z.union([z.number(), z.string()]),
           unit: z.string(),
         })
-        .nullable(),
+        .nullable()
+        .optional(),
     })
   ),
 });
@@ -89,6 +64,7 @@ const DirectionSchema = z.object({
 export const createRecipeSchema = z.object({
   recipe: z.object(recipeFields),
   direction: z.array(DirectionSchema),
+  ingredients: z.array(IngredientSchema),
 });
 
 export const updateRecipeSchema = z.object({
@@ -115,3 +91,4 @@ export type RecipesIds = z.TypeOf<typeof recipesIds>;
 export type IdSchema = z.TypeOf<typeof idSchema>;
 export type CreateRecipeSchema = z.TypeOf<typeof createRecipeSchema>;
 export type UpdateRecipeSchema = z.TypeOf<typeof updateRecipeSchema>;
+export type IngredientSchema = z.TypeOf<typeof IngredientSchema>;

@@ -23,11 +23,9 @@ const SetTimer: React.FC<SetTimerProps> = ({
 }) => {
   const { control, handleSubmit, reset } = useForm<{ timer: number }>();
   const [selectedOption, setSelectedOption] = useState<string>("min");
-  // Function to handle form submission
+
   const handleFormSubmit = (data: { timer: number }) => {
-    // Call the parent component's onSubmit function with the timer value
     onSubmit(data.timer, selectedOption);
-    // Close the modal and reset the form
     onOpenChange();
     reset();
   };

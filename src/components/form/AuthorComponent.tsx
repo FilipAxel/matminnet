@@ -13,7 +13,6 @@ const AuthorComponent: React.FC<AuthorProps> = ({ control }) => {
       control={control}
       render={({ field }) => (
         <Input
-          isClearable
           radius="none"
           variant="faded"
           label="Author"

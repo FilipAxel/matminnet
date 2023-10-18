@@ -26,7 +26,7 @@ const LoginActionDialog: React.FC<LoginActionDialogProps> = ({ pageName }) => {
       <Modal
         onClose={handleClose}
         className="mx-5"
-        placeholder="center"
+        placement="center"
         isOpen={true}
         aria-labelledby="login"
       >

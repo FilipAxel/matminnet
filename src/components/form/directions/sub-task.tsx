@@ -2,14 +2,20 @@ import { Input, useDisclosure } from "@nextui-org/react";
 
 import StepDropDown from "./step-dropdown";
 import SetTimer from "./setTimer";
+import { type subStepInterface } from "./DirectionComponent";
 
 interface SubTaskProps {
-  subStep: { subStepIndex: number; subStepValue: string };
+  subStep: subStepInterface;
   mainStepIndex: number;
   removeSubTask: (subStepIndex: number) => void;
   updateSubStepValue: (
     stepIndex: number,
     newValue: string,
+    subStepIndex: number
+  ) => void;
+  updateSubStepTime: (
+    stepIndex: number,
+    time: { timeValue: number; unit: string },
     subStepIndex: number
   ) => void;
 }
@@ -19,13 +25,13 @@ const SubTask: React.FC<SubTaskProps> = ({
   mainStepIndex,
   removeSubTask,
   updateSubStepValue,
+  updateSubStepTime,
 }) => {
   const onDelete = () => removeSubTask(subStep.subStepIndex);
 
   const onTimerSubmit = (timerValue: number, selectedOption: string) => {
-    // Handle timer submission here in the parent component
-    console.log("Timer Value:", timerValue);
-    console.log("Selected Option:", selectedOption);
+    const newTimer = { timeValue: timerValue, unit: selectedOption };
+    updateSubStepTime(mainStepIndex, newTimer, subStep.subStepIndex);
   };
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

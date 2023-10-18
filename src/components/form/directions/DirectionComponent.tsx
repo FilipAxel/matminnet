@@ -7,11 +7,13 @@ export interface StepInterface {
   mainStepIndex: number;
   mainStepValue: string;
   timer?: { timeValue: number; unit: string } | null;
-  subSteps: {
-    subStepIndex: number;
-    subStepValue: string;
-    timer?: { timeValue: number; unit: string } | null;
-  }[];
+  subSteps: subStepInterface[];
+}
+
+export interface subStepInterface {
+  subStepIndex: number;
+  subStepValue: string;
+  timer?: { timeValue: number; unit: string } | null;
 }
 
 interface DirectionsProps {
@@ -34,8 +36,6 @@ const DirectionComponent: React.FC<DirectionsProps> = ({
       mainStepValue: "",
       subSteps: [],
     };
-    console.log(newStep);
-    console.log(directionsSteps);
     setDirectionsSteps([...directionsSteps, newStep]);
   };
 
@@ -45,12 +45,12 @@ const DirectionComponent: React.FC<DirectionsProps> = ({
     subStepIndex: number
   ) => {
     const updatedSteps = [...directionsSteps];
-    const step = updatedSteps.find((s) => s.mainStepIndex === stepIndex);
+    const step = updatedSteps.find((step) => step.mainStepIndex === stepIndex);
 
     if (step) {
       if (subStepIndex !== undefined) {
         const subStep = step.subSteps.find(
-          (ss) => ss.subStepIndex === subStepIndex
+          (subStep) => subStep.subStepIndex === subStepIndex
         );
 
         if (subStep) {
@@ -61,6 +61,25 @@ const DirectionComponent: React.FC<DirectionsProps> = ({
       }
 
       setDirectionsSteps(updatedSteps);
+    }
+  };
+
+  const updateSubStepTime = (
+    stepIndex: number,
+    time: { timeValue: number; unit: string },
+    subStepIndex: number
+  ) => {
+    const updatedSteps = [...directionsSteps];
+    const step = updatedSteps.find((step) => step.mainStepIndex === stepIndex);
+    if (step) {
+      if (subStepIndex !== undefined) {
+        const subStep = step.subSteps.find(
+          (subStep) => subStep.subStepIndex === subStepIndex
+        );
+        if (subStep) {
+          subStep.timer = time;
+        }
+      }
     }
   };
 
@@ -123,6 +142,7 @@ const DirectionComponent: React.FC<DirectionsProps> = ({
           key={step.mainStepIndex}
           updateStep={updateStep}
           updateSubStepValue={updateSubStepValue}
+          updateSubStepTime={updateSubStepTime}
           deleteTask={deleteTask}
           step={step}
         />

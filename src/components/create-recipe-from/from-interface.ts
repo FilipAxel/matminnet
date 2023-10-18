@@ -3,7 +3,9 @@ export interface FormValues {
   description: string;
   directions: string;
   tags: TagOption[];
-  ingredients: IngredientOption[];
+  ingredients: {
+    ingredients: IngredientOption[];
+  }[];
   servingSize: string;
   cookingTime: string | number | null;
   video: string;

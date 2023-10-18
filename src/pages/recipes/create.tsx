@@ -20,7 +20,6 @@ import DirectionComponent, {
   type StepInterface,
 } from "~/components/form/directions/DirectionComponent";
 import UploadImageComponent from "~/components/form/UploadImageComponent";
-import IngredientsComponent from "~/components/form/IngredientsComponent";
 import NameComponent from "~/components/form/NameComponent";
 import PublicationComponent from "~/components/form/PublicationComponent";
 import ServingSizeComponent from "~/components/form/ServingSizeComponent";
@@ -30,11 +29,21 @@ import { uploadFileToS3 } from "~/components/utils/s3";
 import { api } from "~/utils/api";
 import CreateRecipeLoader from "~/components/shared/create-recipe-loading";
 import PaginationButtons from "~/components/pagination/pagination-buttons";
+import IngredientsStepComponent, {
+  type IngredientInterface,
+} from "~/components/form/ingredients/IngredientsStepComponent";
 
 type CreateRecipeWithDataFunction = (
   submitedForm: FormValues | null,
   filteredDirectionsSteps: StepInterface[]
 ) => void;
+
+interface RecipeData {
+  status: string;
+  createdRecipe: {
+    id: string;
+  };
+}
 
 const Create = () => {
   const { activePage, range, setPage, onNext, onPrevious } = usePagination({
@@ -53,6 +62,15 @@ const Create = () => {
   };
   const [showComponent, setShowComponent] = useState(false);
   const [imageFiles, setImageFiles] = useState<ImageFile[]>([]);
+  const [ingredientSection, setIngredientSection] = useState<
+    IngredientInterface[]
+  >([
+    {
+      mainStepIndex: 1,
+      sectionName: "",
+      ingredients: [],
+    },
+  ]);
   const [directionsSteps, setDirectionsSteps] = useState<StepInterface[]>([
     {
       mainStepIndex: 1,
@@ -79,7 +97,6 @@ const Create = () => {
       country: "",
       author: "",
       collections: [],
-      ingredients: [],
       publicationStatus: false,
     },
   });
@@ -87,13 +104,11 @@ const Create = () => {
   const createPresignedUrlMutation =
     api.recipe.createPresignedUrl.useMutation();
 
-  const {
-    mutate: createRecipe,
-    isLoading: loadingCreateddRecipe,
-    isSuccess,
-  } = api.recipe.createRecipe.useMutation({
-    onSuccess: async (data, _variables, _context) => {
-      if (data.status === "success" && imageFiles.length > 0) {
+  const { mutate: createRecipe } = api.recipe.createRecipe.useMutation({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    onSuccess: async (data: RecipeData, _variables, _context) => {
+      if (data && data.status === "success" && imageFiles.length > 0) {
         await Promise.all(
           imageFiles.map(async ({ file }) => {
             const presignedUrlResponse =
@@ -116,7 +131,7 @@ const Create = () => {
     if (showComponent) {
       setTimeout(() => {
         void router.push("/recipes");
-      }, 6000);
+      }, 7450);
     }
   }, [showComponent, router]);
 
@@ -168,13 +183,12 @@ const Create = () => {
     filteredDirectionsSteps
   ) => {
     if (submitedForm && filteredDirectionsSteps) {
-      console.log(filteredDirectionsSteps);
-      console.log(submitedForm);
       setShowComponent(true);
-      /*  createRecipe({
+      createRecipe({
         recipe: submitedForm,
         direction: filteredDirectionsSteps,
-      }); */
+        ingredients: ingredientSection,
+      });
     }
   };
 
@@ -248,7 +262,10 @@ const Create = () => {
           )}
 
           {activePage === 2 && (
-            <IngredientsComponent control={control} getValues={getValues} />
+            <IngredientsStepComponent
+              ingredientSection={ingredientSection}
+              setIngredientSection={setIngredientSection}
+            />
           )}
 
           {activePage === 3 && (
