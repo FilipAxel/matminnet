@@ -16,7 +16,7 @@ const AddIngredients: React.FC<SubTaskProps> = ({
   mainStepIndex,
   updateSubStepValue,
 }) => {
-  const { control, reset, getValues, watch } = useForm<FormIngredients>({
+  const { control, getValues, watch } = useForm<FormIngredients>({
     defaultValues: {
       ingredients: [...ingredients],
     },
@@ -26,6 +26,7 @@ const AddIngredients: React.FC<SubTaskProps> = ({
     const subscription = watch((value) =>
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       updateSubStepValue(mainStepIndex, value.ingredients)
     );
     return () => subscription.unsubscribe();

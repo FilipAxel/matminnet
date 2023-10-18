@@ -37,7 +37,7 @@ const IngredientsStepComponent: React.FC<IngredientsStepProps> = ({
     stepIndex: number,
     newValue: IngredientOption[]
   ) => {
-    const updatedStep = ingredientSection.map((step, i) => {
+    const updatedStep = ingredientSection.map((step) => {
       if (step.mainStepIndex === stepIndex) {
         step.ingredients = newValue;
         return step;
