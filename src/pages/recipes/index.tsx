@@ -54,13 +54,13 @@ const Recipes = () => {
       )}
       <Spacer y={1} />
       {isLoading ? (
-        <div className="container mx-auto mb-10 mt-4 flex flex-wrap justify-center gap-5 p-0  xs:max-w-[97%]  xs:justify-normal media428:max-w-[88%]  md:justify-normal">
+        <div className="container mx-auto mb-10 mt-4 flex flex-wrap justify-center gap-5 p-0  xs:max-w-[90%]  xs:justify-normal media428:max-w-[88%]  md:justify-normal">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => {
             return <SkeletonRecipeCard key={n} />;
           })}
         </div>
       ) : (
-        <div className="mx-auto mb-10 mt-4 flex flex-wrap justify-center gap-5 p-0  xs:max-w-[97%]  xs:justify-normal media428:max-w-[88%]  md:justify-normal">
+        <div className="mx-auto mb-10 mt-4 flex flex-wrap justify-center gap-5 p-0  xs:max-w-[90%]  xs:justify-normal media428:max-w-[88%]  md:justify-normal">
           <div className="w-full xs:w-auto">
             <CreateRecipe />
           </div>

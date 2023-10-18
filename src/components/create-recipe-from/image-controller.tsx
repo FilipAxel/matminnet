@@ -46,35 +46,33 @@ const ImageController: React.FC<ImageControllerProps> = ({
   };
 
   return (
-    <div>
-      <label
-        htmlFor="fileInput"
-        className="font-semibol mb-2 block text-sm text-black"
-      >
-        Upload images for display (up to 3 images, with the first selected image
-        serving as the thumbnail)
-      </label>
+    <div className="w-full">
       <input
         aria-label="Upload images"
         onChange={handleFileChange}
-        className="focus:shadow-te-primary relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 duration-300 ease-in-out transition file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:duration-150 file:ease-in-out file:transition file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+        className="focus:shadow-te-primary hover:file:[#066FEE] relative m-0 block w-full min-w-0 flex-auto rounded border border-solid
+         border-neutral-300
+          px-3 py-[0.32rem] text-base font-normal
+           text-neutral-700 duration-300 ease-in-out
+            transition file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 
+            file:border-solid file:border-inherit file:bg-[#066FEE] file:px-3 file:py-[0.32rem] file:text-white
+             file:duration-150 file:ease-in-out file:transition file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] 
+             focus:border-primary focus:text-neutral-700 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
         accept="image/*"
         type="file"
         multiple
       />
       {uploadError && <p className="text-red-500">{uploadError}</p>}
-
-      <div className="container mt-5 flex h-full justify-start gap-5">
+      <div className="flex flex-wrap items-center justify-start gap-5 pt-5">
         {imageFiles.map(({ previewUrl }, index) => (
-          <div key={index}>
-            <Image
-              src={previewUrl}
-              alt={`Image Preview ${index}`}
-              width={100}
-              className="h-full bg-gray-600"
-              height={0}
-            />
-          </div>
+          <Image
+            key={index}
+            width={100}
+            height={100}
+            className="h-[120px] max-h-[120px] max-w-[120px] rounded-none border-1"
+            src={previewUrl}
+            alt={`Image Preview ${index}`}
+          />
         ))}
       </div>
     </div>

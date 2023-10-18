@@ -11,13 +11,8 @@ import {
   getAllRecipesForUser,
   getApprovedPublication,
   getRecipeWithId,
-  updateRecipe,
 } from "~/server/controller/recipe.controller";
-import {
-  createRecipeSchema,
-  idSchema,
-  updateRecipeSchema,
-} from "~/server/schema/recipe.schema";
+import { createRecipeSchema, idSchema } from "~/server/schema/recipe.schema";
 import { createPresignedUrlForRecipe } from "~/server/controller/aws.controller";
 
 export const recipeRouter = createTRPCRouter({
@@ -47,10 +42,10 @@ export const recipeRouter = createTRPCRouter({
     .input(createRecipeSchema)
     .mutation(async ({ input, ctx }) => await createRecipe(input, ctx)),
 
-  updateRecipe: protectedProcedure
+  /*  updateRecipe: protectedProcedure
     .input(updateRecipeSchema)
     .mutation(async ({ input, ctx }) => updateRecipe(input, ctx)),
-
+ */
   deleteImagesFromAws: protectedProcedure
     .input(idSchema)
     .mutation(async ({ input, ctx }) => findImageToDelete(input, ctx)),

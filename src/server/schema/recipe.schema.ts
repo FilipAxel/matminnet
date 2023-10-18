@@ -1,8 +1,8 @@
 import { z } from "zod";
+
 export const recipeFields = {
   name: z.string(),
   description: z.string(),
-  directions: z.string(),
   tags: z.array(
     z.object({
       value: z.string(),
@@ -20,6 +20,11 @@ export const recipeFields = {
       label: z.string(),
     })
   ),
+  publicationStatus: z.boolean(),
+};
+
+const IngredientSchema = z.object({
+  sectionName: z.string(),
   ingredients: z.array(
     z.object({
       value: z.string(),
@@ -28,11 +33,38 @@ export const recipeFields = {
       unit: z.string(),
     })
   ),
-  publicationStatus: z.boolean(),
-};
+});
+
+// Define the Direction schema
+const DirectionSchema = z.object({
+  mainStepValue: z.string(),
+  mainStepIndex: z.number(),
+  timer: z
+    .object({
+      timeValue: z.union([z.number(), z.string()]),
+      unit: z.string(),
+    })
+    .nullable()
+    .optional(),
+  subSteps: z.array(
+    z.object({
+      subStepValue: z.string(),
+      subStepIndex: z.number(),
+      timer: z
+        .object({
+          timeValue: z.union([z.number(), z.string()]),
+          unit: z.string(),
+        })
+        .nullable()
+        .optional(),
+    })
+  ),
+});
 
 export const createRecipeSchema = z.object({
   recipe: z.object(recipeFields),
+  direction: z.array(DirectionSchema),
+  ingredients: z.array(IngredientSchema),
 });
 
 export const updateRecipeSchema = z.object({
@@ -59,3 +91,4 @@ export type RecipesIds = z.TypeOf<typeof recipesIds>;
 export type IdSchema = z.TypeOf<typeof idSchema>;
 export type CreateRecipeSchema = z.TypeOf<typeof createRecipeSchema>;
 export type UpdateRecipeSchema = z.TypeOf<typeof updateRecipeSchema>;
+export type IngredientSchema = z.TypeOf<typeof IngredientSchema>;

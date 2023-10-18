@@ -1,51 +1,62 @@
 import { type PrismaClient } from "@prisma/client";
-import { type ingredients } from "~/server/schema/ingridients.schema";
-import {
-  type UpdateRecipeSchema,
-  type IdSchema,
-} from "../schema/recipe.schema";
-import { getRecipeAndIngridients } from "./recipe.controller";
+import { type IdSchema, type IngredientSchema } from "../schema/recipe.schema";
 
-export const createIngredients = async (
-  ingredients: ingredients,
-  ctx: { prisma: PrismaClient }
-) => {
-  const recipeIngredients: {
+type ingredientStepType = {
+  name: string;
+  ingredients: {
     name: string;
     quantity: string;
     unit: string;
     ingredientId: string;
-  }[] = [];
-  for (const ingredient of ingredients) {
-    const existingIngredient = await ctx.prisma.ingredient.findUnique({
-      where: {
-        name: ingredient.value,
-      },
-    });
+  }[];
+};
 
-    if (existingIngredient) {
-      recipeIngredients.push({
-        name: ingredient.value,
-        quantity: ingredient.quantity,
-        unit: ingredient.unit,
-        ingredientId: existingIngredient.id,
-      });
-    } else {
-      const newIngredient = await ctx.prisma.ingredient.create({
-        data: {
+export const createIngredients = async (
+  ingredients: IngredientSchema[],
+  ctx: { prisma: PrismaClient }
+) => {
+  const recipeIngredients: ingredientStepType[] = [];
+
+  for (const ingredientSection of ingredients) {
+    recipeIngredients.push({
+      name: ingredientSection.sectionName,
+      ingredients: [],
+    });
+    for (const ingredient of ingredientSection.ingredients) {
+      const existingIngredient = await ctx.prisma.ingredient.findUnique({
+        where: {
           name: ingredient.value,
         },
       });
+      if (existingIngredient) {
+        const foundStep = recipeIngredients.find(
+          (e) => e.name === ingredientSection.sectionName
+        );
+        foundStep?.ingredients.push({
+          name: ingredient.value,
+          quantity: ingredient.quantity,
+          unit: ingredient.unit,
+          ingredientId: existingIngredient.id,
+        });
+      } else {
+        const newIngredient = await ctx.prisma.ingredient.create({
+          data: {
+            name: ingredient.value,
+          },
+        });
 
-      recipeIngredients.push({
-        name: ingredient.value,
-        quantity: ingredient.quantity,
-        unit: ingredient.unit,
-        ingredientId: newIngredient.id,
-      });
+        const foundStep = recipeIngredients.find(
+          (step) => step.name === ingredientSection.sectionName
+        );
+        foundStep?.ingredients.push({
+          name: ingredient.value,
+          quantity: ingredient.quantity,
+          unit: ingredient.unit,
+          ingredientId: newIngredient.id,
+        });
+      }
     }
   }
-
   return recipeIngredients;
 };
 
@@ -80,7 +91,7 @@ export const deleteIngredientOnRecipe = async (
   }
 };
 
-export const updatedIngredient = async (
+/* export const updatedIngredient = async (
   input: UpdateRecipeSchema,
   ctx: { prisma: PrismaClient }
 ) => {
@@ -155,3 +166,4 @@ export const updatedIngredient = async (
   }
   return recipeIngredients;
 };
+ */

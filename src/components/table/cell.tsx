@@ -3,7 +3,6 @@ import { useState, type Key } from "react";
 import DeleteRecipeActionDialog from "../dialog/delete-recipe-action-dialog";
 
 import { type RecipeWithImage } from "~/pages/recipes";
-import UpdateRecipeDialog from "../dialog/update-recipe.dialog";
 import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
 
 const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
@@ -12,7 +11,10 @@ const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
 }) => {
   const [isDeleteActionOpen, setDeleteActioOpen] = useState(false);
   const [editActionIsOpen, setEditActionIsOpen] = useState(false);
-  const cellValue: string = recipe[columnKey] as string;
+  const cellValue: string = recipe[
+    columnKey as keyof RecipeWithImage
+  ] as string;
+
   const imageUrl = recipe?.images?.[0]?.name ?? "/recipe-placeholder.webp";
 
   switch (columnKey) {
@@ -73,13 +75,7 @@ const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
               setDeleteActioOpen={setDeleteActioOpen}
             />
           )}
-          {editActionIsOpen ? (
-            <UpdateRecipeDialog
-              id={recipe.id}
-              isOpen={editActionIsOpen}
-              setIsOpen={setEditActionIsOpen}
-            />
-          ) : null}
+          {editActionIsOpen ? null : null}
         </>
       );
 

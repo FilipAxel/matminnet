@@ -133,12 +133,12 @@ model Recipe {
     id                       String                     @id @default(cuid())
     name                     String
     collections              RecipeOnCollection[]
-    recipeIngredients        RecipeIngredient[]
+    ingredientsSection       IngredientSection[]
+    directions               Direction[]
     tags                     RecipeTags[]
     servingSize              String?
     description              String?                    @db.Text
     cookingTime              Int?
-    directions               String?                    @db.Text
     country                  String?
     images                   Image[]
     video                    String?
@@ -155,6 +155,44 @@ model Recipe {
 
     @@index([authorId])
     @@index([userId])
+}
+
+model Direction {
+    id            String    @id @default(cuid())
+    recipeId      String
+    mainStepValue String
+    mainStepIndex Int
+    subSteps      SubStep[]
+    time          Time?     @relation(fields: [timeId], references: [id], onDelete: Cascade)
+    timeId        String?
+
+    Recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+    @@index([recipeId])
+    @@index([timeId])
+}
+
+model SubStep {
+    id           String    @id @default(cuid())
+    directionId  String
+    subStepValue String
+    subStepIndex Int
+    time         Time?     @relation(fields: [timeId], references: [id], onDelete: Cascade)
+    timeId       String?
+    Direction    Direction @relation(fields: [directionId], references: [id], onDelete: Cascade)
+
+    @@index([directionId])
+    @@index([timeId])
+}
+
+model Time {
+    id         String      @id @default(cuid())
+    timeValue  Int
+    unit       String
+    created_at DateTime    @default(now())
+    updated_at DateTime    @updatedAt
+    Direction  Direction[]
+    SubStep    SubStep[]
 }
 
 model RecipePublicationRequest {
@@ -180,20 +218,33 @@ model Ingredient {
     updated_at DateTime           @updatedAt
 }
 
+model IngredientSection {
+    id          String             @id @default(cuid())
+    name        String
+    ingredients RecipeIngredient[]
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    Recipe     Recipe?  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId   String?
+
+    @@index([recipeId])
+}
+
 model RecipeIngredient {
     id           String     @id @default(cuid())
     quantity     String?
     unit         String?
     ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
     ingredientId String
-    recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-    recipeId     String
 
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+    created_at          DateTime           @default(now())
+    updated_at          DateTime           @updatedAt
+    IngredientSection   IngredientSection? @relation(fields: [ingredientSectionId], references: [id], onDelete: Cascade)
+    ingredientSectionId String?
 
     @@index([ingredientId])
-    @@index([recipeId])
+    @@index([ingredientSectionId])
 }
 
 model Image {

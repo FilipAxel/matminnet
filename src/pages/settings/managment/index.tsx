@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import BackButton from "~/components/shered/back-button";
+import BackButton from "~/components/shared/back-button";
 import SettingsTable from "~/components/table/table";
 
 const Managment = () => {

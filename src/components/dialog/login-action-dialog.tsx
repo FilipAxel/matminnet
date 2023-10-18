@@ -7,8 +7,13 @@ import {
 } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import React from "react";
 
-const LoginActionDialog = ({ pageName }) => {
+interface LoginActionDialogProps {
+  pageName: string;
+}
+
+const LoginActionDialog: React.FC<LoginActionDialogProps> = ({ pageName }) => {
   const router = useRouter(); // Get the router instance
 
   const handleClose = () => {
@@ -21,6 +26,7 @@ const LoginActionDialog = ({ pageName }) => {
       <Modal
         onClose={handleClose}
         className="mx-5"
+        placement="center"
         isOpen={true}
         aria-labelledby="login"
       >

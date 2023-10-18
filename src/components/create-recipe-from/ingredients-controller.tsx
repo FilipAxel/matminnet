@@ -1,11 +1,11 @@
-import React, { Fragment } from "react";
+import React, { type ChangeEvent, Fragment } from "react";
 import { type ControllerRenderProps } from "react-hook-form";
-import { type ActionMeta } from "react-select";
+import { type ActionMeta, type MultiValue } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { api } from "~/utils/api";
 
 import { Input } from "@nextui-org/react";
-import { type FormValues } from "./from-interface";
+import { selectCustomStyle } from "../utils/form-utils";
 
 interface IngredientOption {
   value: string;
@@ -14,8 +14,12 @@ interface IngredientOption {
   unit: string;
 }
 
+export interface FormIngredients {
+  ingredients: IngredientOption[];
+}
+
 interface IngredientsControllerProps {
-  field: ControllerRenderProps<FormValues, "ingredients">;
+  field: ControllerRenderProps<FormIngredients, "ingredients">;
   currentValue: IngredientOption[];
 }
 
@@ -23,6 +27,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
   field,
   currentValue,
 }) => {
+  const customSelectStyles = selectCustomStyle<IngredientOption>();
   const { data: ingredients } = api.ingredient.getAllIngredients.useQuery();
   const { onChange } = field;
   const ingredientOptions: IngredientOption[] =
@@ -34,7 +39,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
     })) ?? [];
 
   const handleInputChange = (
-    newValue: IngredientOption[],
+    newValue: MultiValue<IngredientOption[] | IngredientOption>,
     actionMeta: ActionMeta<IngredientOption>
   ) => {
     if (actionMeta.action === "create-option") {
@@ -51,10 +56,12 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
         quantity: "1",
         unit: "st",
       };
+
       const updatedValue = [...currentValue, newIngredient];
+
       onChange(updatedValue);
     } else {
-      onChange(newValue);
+      onChange(newValue as IngredientOption[] | ChangeEvent<Element>);
     }
   };
 
@@ -74,13 +81,17 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
   };
 
   return (
-    <>
+    <div className="w-full">
       <CreatableSelect
-        {...field}
         isMulti
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        styles={customSelectStyles}
         aria-label={"ingredients"}
         options={ingredientOptions}
         isClearable={true}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         onChange={handleInputChange}
       />
       {currentValue.length > 0 && (
@@ -137,7 +148,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 
