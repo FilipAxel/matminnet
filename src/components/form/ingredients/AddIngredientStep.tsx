@@ -19,8 +19,8 @@ const AddIngredientStep: React.FC<AddStepProps> = ({
     <Button
       variant="solid"
       color="primary"
-      disabled={stepCount >= 20}
-      isDisabled={stepCount >= 20}
+      disabled={stepCount >= 12}
+      isDisabled={stepCount >= 12}
       className="h-[40px] w-full text-xl font-bold"
       onClick={handleAddStepClick}
       startContent={<MdAdd className="text-2xl" />}

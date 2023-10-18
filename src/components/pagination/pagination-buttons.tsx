@@ -22,7 +22,7 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({
 }) => {
   return (
     <div className="fixed bottom-0 right-0 z-50 w-full border-t-1 border-gray-300 bg-white p-3">
-      <div className="flex items-center justify-end gap-3">
+      <div className="mr-4 flex items-center justify-end gap-3">
         {activePage !== 1 && (
           <Button
             onPress={() => onPrevious()}

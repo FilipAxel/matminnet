@@ -150,7 +150,7 @@ const Recipe = () => {
                           label: "data-[selected=true]:truncate",
                         }}
                       >
-                        <p className="text-left font-normal">
+                        <p className="ml-1 text-left font-normal">
                           {direction.mainStepValue}
                         </p>
                       </Checkbox>
@@ -187,7 +187,7 @@ const Recipe = () => {
                         <CardBody>
                           {direction.subSteps.map((step) => {
                             return (
-                              <>
+                              <div className="p-[6px]" key={step.subStepIndex}>
                                 <Checkbox
                                   lineThrough
                                   color="primary"
@@ -195,7 +195,6 @@ const Recipe = () => {
                                     base: "data-[selected=true]:truncate",
                                     label: "data-[selected=true]:truncate",
                                   }}
-                                  key={step.subStepIndex}
                                   radius="none"
                                   size="lg"
                                 >
@@ -230,7 +229,7 @@ const Recipe = () => {
                                     )}
                                   </>
                                 )}
-                              </>
+                              </div>
                             );
                           })}
                         </CardBody>

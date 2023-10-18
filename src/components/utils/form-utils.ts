@@ -6,6 +6,13 @@ export const selectCustomStyle = <T>(): CustomStyles<T> => ({
   control: (provided, _state) => ({
     ...provided,
     // custom styles
-    height: "70px",
+    minHeight: "70px",
+    padding: "5px",
+  }),
+  menu: (provided, _state) => ({
+    ...provided,
+    // custom styles for the dropdown menu
+
+    zIndex: 100,
   }),
 });

@@ -114,7 +114,7 @@ const IngredientsStepComponent: React.FC<IngredientsStepProps> = ({
         <AddIngredientStep
           stepCount={ingredientSection.length}
           onAddStepClick={addStep}
-          text={"Add Step"}
+          text={"Add Ingredient List"}
         />
       </div>
     </div>

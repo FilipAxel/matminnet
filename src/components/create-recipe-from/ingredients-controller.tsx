@@ -1,4 +1,4 @@
-import React, { type ChangeEvent, Fragment } from "react";
+import React, { type ChangeEvent, Fragment, useState } from "react";
 import { type ControllerRenderProps } from "react-hook-form";
 import { type ActionMeta, type MultiValue } from "react-select";
 import CreatableSelect from "react-select/creatable";
@@ -12,6 +12,7 @@ interface IngredientOption {
   label: string;
   quantity: string;
   unit: string;
+  error?: string;
 }
 
 export interface FormIngredients {
@@ -71,7 +72,15 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
     value: string
   ) => {
     const updatedIngredients = [...currentValue];
-    if (updatedIngredients[index]) {
+    const updatedIngredientsIndex = updatedIngredients[index];
+    if (updatedIngredientsIndex) {
+      if (value.length > 15) {
+        updatedIngredientsIndex.error =
+          "Input can be at most 15 characters long.";
+      } else {
+        updatedIngredientsIndex.error = "";
+      }
+
       updatedIngredients[index] = {
         ...updatedIngredients[index],
         [field]: value,
@@ -81,21 +90,17 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
   };
 
   return (
-    <div className="w-full">
+    <div className="z-50 w-full">
       <CreatableSelect
         isMulti
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         styles={customSelectStyles}
         aria-label={"ingredients"}
         options={ingredientOptions}
         isClearable={true}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         onChange={handleInputChange}
       />
       {currentValue.length > 0 && (
-        <div className="m-0 flex w-full flex-wrap rounded-b-lg bg-gray-500  p-2">
+        <div className="m-0 flex w-full flex-wrap rounded-b-lg bg-gray-700 p-2">
           {currentValue.map((option, index) => (
             <Fragment key={option.value}>
               <div className="m-3 flex w-full justify-around gap-5">
@@ -104,6 +109,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                     aria-labelledby={option.label}
                     aria-label={option.label}
                     size="sm"
+                    color="primary"
                     value={option.label}
                     radius="sm"
                     variant="faded"
@@ -119,6 +125,14 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                     aria-labelledby={"quantity"}
                     aria-label={"quantity"}
                     size="sm"
+                    color="primary"
+                    endContent={
+                      <div className="pointer-events-none flex items-center">
+                        <span className="text-small text-default-400">
+                          Quantity
+                        </span>
+                      </div>
+                    }
                     radius="sm"
                     variant="faded"
                     value={option.quantity}
@@ -134,12 +148,26 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                     aria-labelledby={option.unit}
                     size="sm"
                     radius="sm"
+                    color={option.error ? "danger" : "primary"}
+                    isInvalid={option.error ? true : false}
+                    errorMessage={option.error}
                     variant="faded"
                     aria-label={option.unit}
                     value={option.unit}
+                    endContent={
+                      <div className="pointer-events-none flex items-center">
+                        <span className="text-small text-default-400">
+                          Unit
+                        </span>
+                      </div>
+                    }
                     type="text"
                     onChange={(e) =>
-                      handleIngredientChange(index, "unit", e.target.value)
+                      handleIngredientChange(
+                        index,
+                        "unit",
+                        e.target.value.toLowerCase()
+                      )
                     }
                   />
                 </div>

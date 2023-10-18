@@ -54,10 +54,10 @@ const DirectionComponent: React.FC<DirectionsProps> = ({
         );
 
         if (subStep) {
-          subStep.subStepValue = newValue;
+          subStep.subStepValue = newValue.trim();
         }
       } else {
-        step.mainStepValue = newValue;
+        step.mainStepValue = newValue.trim();
       }
 
       setDirectionsSteps(updatedSteps);
@@ -89,7 +89,7 @@ const DirectionComponent: React.FC<DirectionsProps> = ({
       const targetStep = updatedSteps[index - 1];
       if (typeof newValue === "string") {
         if (targetStep) {
-          targetStep.mainStepValue = newValue;
+          targetStep.mainStepValue = newValue.trim();
         }
       } else {
         updatedSteps[index - 1] = newValue;
