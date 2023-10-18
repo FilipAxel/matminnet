@@ -15,6 +15,11 @@ datasource db {
     relationMode = "prisma"
 }
 
+enum UserRole {
+    USER
+    SUPER_USER
+}
+
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
@@ -56,6 +61,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     isAdmin       Boolean      @default(false)
+    role          UserRole     @default(USER)
 
     created_at               DateTime                   @default(now())
     updated_at               DateTime                   @updatedAt
@@ -118,9 +124,9 @@ model Collection {
 model RecipeOnCollection {
     id           String     @id @default(cuid())
     recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-    recipeId     String // relation scalar field (used in the `@relation` attribute above)
+    recipeId     String
     collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-    collectionId String // relation scalar field (used in the `@relation` attribute above)
+    collectionId String
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
@@ -201,7 +207,7 @@ model RecipePublicationRequest {
     recipeId String
     user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId   String
-    status   String @default("pending") // Use this field to track the status: "pending", "approved", "declined"
+    status   String @default("pending")
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
@@ -211,11 +217,13 @@ model RecipePublicationRequest {
 }
 
 model Ingredient {
-    id         String             @id @default(cuid())
-    name       String             @unique
-    recipes    RecipeIngredient[]
-    created_at DateTime           @default(now())
-    updated_at DateTime           @updatedAt
+    id          String             @id @default(cuid())
+    name        String             @unique
+    description String
+    images      Image[]
+    recipes     RecipeIngredient[]
+    created_at  DateTime           @default(now())
+    updated_at  DateTime           @updatedAt
 }
 
 model IngredientSection {
@@ -255,9 +263,12 @@ model Image {
     collection   Collection? @relation(fields: [collectionId], references: [id], onDelete: Cascade)
     collectionId String?
 
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+    created_at   DateTime    @default(now())
+    updated_at   DateTime    @updatedAt
+    Ingredient   Ingredient? @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+    ingredientId String?
 
     @@index([recipeId])
     @@index([collectionId])
+    @@index([ingredientId])
 }
