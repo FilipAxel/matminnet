@@ -1,6 +1,6 @@
 import { type PrismaClient } from "@prisma/client";
 import { type Tags } from "../schema/tag.schema";
-import { IdSchema, idSchema } from "../schema/recipe.schema";
+import { type IdSchema } from "../schema/recipe.schema";
 
 export const getAllTags = async (ctx: { prisma: PrismaClient }) => {
   try {

@@ -1,4 +1,11 @@
-import { Button, Modal } from "@nextui-org/react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@nextui-org/react";
 import { api } from "~/utils/api";
 
 interface DeleteActionDialogProps {
@@ -27,28 +34,27 @@ const DeleteActionDialog: React.FC<DeleteActionDialogProps> = ({
     <div>
       <Modal
         closeButton
+        placement="auto"
         className="mx-5"
-        aria-labelledby="modal-title"
-        open={isDeleteActionOpen}
+        aria-labelledby="Delete Catalog"
+        isOpen={isDeleteActionOpen}
         onClose={() => setDeleteActioOpen(false)}
       >
-        <Modal.Header className="text-2xl">Delete {name}?</Modal.Header>
-        <Modal.Body>
-          Are you sure you want to delete {name}? This action cannot be undone.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            auto
-            flat
-            color="primary"
-            onPress={() => setDeleteActioOpen(false)}
-          >
-            Cancel
-          </Button>
-          <Button auto flat color="error" onPress={() => handleDelete()}>
-            Yes, Delete
-          </Button>
-        </Modal.Footer>
+        <ModalContent>
+          <ModalHeader className="text-2xl">Delete {name}?</ModalHeader>
+          <ModalBody>
+            Are you sure you want to delete {name}? This action cannot be
+            undone.
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onPress={() => setDeleteActioOpen(false)}>
+              Cancel
+            </Button>
+            <Button color="danger" onPress={() => handleDelete()}>
+              Yes, Delete
+            </Button>
+          </ModalFooter>
+        </ModalContent>
       </Modal>
     </div>
   );

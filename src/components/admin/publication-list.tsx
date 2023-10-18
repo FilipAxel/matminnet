@@ -1,4 +1,4 @@
-import { Grid, Card, Text, Button } from "@nextui-org/react";
+import { Card, Button, CardBody, CardHeader } from "@nextui-org/react";
 import { api } from "~/utils/api";
 
 const PublicationList = () => {
@@ -24,41 +24,37 @@ const PublicationList = () => {
 
   if (publications && !isLoading) {
     return (
-      <Grid.Container gap={2} justify="center">
+      <div className="container flex justify-center gap-5">
         {publications && !isLoading
           ? publications.map((publication, index) => (
-              <Grid key={index} xs={4}>
-                <Card css={{ mw: "600px" }}>
-                  <Card.Body>
-                    <Text>{publication.recipe.name}</Text>
-                    <Button
-                      type="button"
-                      onPress={() =>
-                        handlePublication(publication.id, "approve")
-                      }
-                      auto
-                      flat
-                      color="primary"
-                    >
-                      Approve
-                    </Button>
-                    <Button
-                      type="button"
-                      onPress={() =>
-                        handlePublication(publication.id, "decline")
-                      }
-                      auto
-                      flat
-                      color="primary"
-                    >
-                      Decline
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Grid>
+              <Card key={index} className="h-[250px] w-[250px] max-w-[600px]">
+                <CardHeader className="flex flex-wrap">
+                  <h1>{publication.recipe.name}</h1>
+                  <h2>{publication.user.name}</h2>
+                  <p>{publication.userId}</p>
+                </CardHeader>
+                <CardBody className="mt-5 flex gap-2">
+                  <Button
+                    type="button"
+                    onPress={() => handlePublication(publication.id, "approve")}
+                    variant="solid"
+                    color="primary"
+                  >
+                    Approve
+                  </Button>
+                  <Button
+                    type="button"
+                    onPress={() => handlePublication(publication.id, "decline")}
+                    variant="solid"
+                    color="primary"
+                  >
+                    Decline
+                  </Button>
+                </CardBody>
+              </Card>
             ))
           : null}
-      </Grid.Container>
+      </div>
     );
   }
 };

@@ -1,4 +1,4 @@
-import { Grid, Spacer, Text } from "@nextui-org/react";
+import { Spacer } from "@nextui-org/react";
 import { type Recipe } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -29,15 +29,15 @@ const Recipes = () => {
     return (
       <div className="grid h-[60vh] place-items-center ">
         <div className="mx-2">
-          <Text weight="bold" size={25} h1 className="text-center">
+          <h1 className="text-center font-bold">
             Oh no! It seems like you haven&apos;t added any recipes yet.
-          </Text>
-          <Text h2 className="mt-3 text-center">
+          </h1>
+          <h2 className="mt-3 max-w-[50ch] text-center">
             Don&apos;t miss out on the fun! Our recipe app is all about
             discovering and sharing delicious dishes. Click below to add your
             very first recipe and become a part of our thriving culinary
             community.
-          </Text>
+          </h2>
 
           <div className="mt-5 flex justify-center">
             <CreateRecipe />
@@ -54,26 +54,20 @@ const Recipes = () => {
       )}
       <Spacer y={1} />
       {isLoading ? (
-        <Grid.Container
-          className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center  p-0  xs:max-w-[97%] xs:justify-normal media428:max-w-[88%]"
-          gap={1}
-        >
+        <div className="container mx-auto mb-10 mt-4 flex flex-wrap justify-center gap-5 p-0  xs:max-w-[97%]  xs:justify-normal media428:max-w-[88%]  md:justify-normal">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => {
             return <SkeletonRecipeCard key={n} />;
           })}
-        </Grid.Container>
+        </div>
       ) : (
-        <Grid.Container
-          className="md:justify-normal mx-auto mb-10 mt-2 flex justify-center  p-0  xs:max-w-[97%] xs:justify-normal  media428:max-w-[88%]"
-          gap={1}
-        >
-          <Grid className="w-full xs:w-auto">
+        <div className="mx-auto mb-10 mt-4 flex flex-wrap justify-center gap-5 p-0  xs:max-w-[97%]  xs:justify-normal media428:max-w-[88%]  md:justify-normal">
+          <div className="w-full xs:w-auto">
             <CreateRecipe />
-          </Grid>
+          </div>
           {searchResults.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}
-        </Grid.Container>
+        </div>
       )}
     </>
   );

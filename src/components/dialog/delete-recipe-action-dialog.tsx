@@ -1,4 +1,11 @@
-import { Button, Modal } from "@nextui-org/react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@nextui-org/react";
 import { api } from "~/utils/api";
 
 interface DeleteRecipeActionDialogProps {
@@ -33,33 +40,29 @@ const DeleteRecipeActionDialog: React.FC<DeleteRecipeActionDialogProps> = ({
   };
 
   return (
-    <div>
-      <Modal
-        closeButton
-        className="mx-5"
-        aria-labelledby="modal-title"
-        open={isDeleteActionOpen}
-        onClose={() => setDeleteActioOpen(false)}
-      >
-        <Modal.Header className="text-2xl">Delete {name}?</Modal.Header>
-        <Modal.Body>
+    <Modal
+      placement="auto"
+      closeButton
+      className="mx-5"
+      aria-labelledby="Delete Recipe"
+      isOpen={isDeleteActionOpen}
+      onClose={() => setDeleteActioOpen(false)}
+    >
+      <ModalContent>
+        <ModalHeader className="text-2xl">Delete {name}?</ModalHeader>
+        <ModalBody>
           Are you sure you want to delete {name}? This action cannot be undone.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            auto
-            flat
-            color="primary"
-            onPress={() => setDeleteActioOpen(false)}
-          >
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onPress={() => setDeleteActioOpen(false)}>
             Cancel
           </Button>
-          <Button auto flat color="error" onPress={() => handleDelete()}>
+          <Button color="danger" onPress={() => handleDelete()}>
             Yes, Delete
           </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

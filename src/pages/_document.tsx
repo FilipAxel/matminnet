@@ -7,7 +7,7 @@ import Document, {
   NextScript,
   type DocumentContext,
 } from "next/document";
-import { CssBaseline } from "@nextui-org/react";
+
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -22,7 +22,6 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          {CssBaseline.flush()}
           <link rel="manifest" href="/manifest.json" />
           <link rel="apple-touch-icon" href="/icon.png"></link>
           <title>Matminne</title>

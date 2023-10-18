@@ -1,12 +1,10 @@
-import { User, Col, Row, Tooltip } from "@nextui-org/react";
-import { IconButton } from "./actions/IconButton";
+import { User, Chip } from "@nextui-org/react";
 import { useState, type Key } from "react";
-import { EditIcon } from "./actions/EditIcon";
-import { DeleteIcon } from "./actions/DeleteIcon";
 import DeleteRecipeActionDialog from "../dialog/delete-recipe-action-dialog";
-import { StyledBadge } from "./actions/StyledBadge";
+
 import { type RecipeWithImage } from "~/pages/recipes";
 import UpdateRecipeDialog from "../dialog/update-recipe.dialog";
+import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
 
 const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
   recipe,
@@ -21,45 +19,51 @@ const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
     case "name":
       return (
         <User
-          src={imageUrl}
+          className="p-0"
+          avatarProps={{
+            src: imageUrl,
+          }}
           onErrorCapture={(event) => {
             const imgElement = event.currentTarget as HTMLImageElement;
             imgElement.src = "/recipe-placeholder.webp";
           }}
-          squared
           name={cellValue}
-          css={{ p: 0 }}
         >
           {recipe?.name}
         </User>
       );
 
     case "publicationStatus":
-      return <StyledBadge type="private">{cellValue}</StyledBadge>;
+      return (
+        <Chip
+          className="capitalize"
+          color={
+            recipe.publicationStatus === "published" ? "success" : "primary"
+          }
+          size="sm"
+          variant="flat"
+        >
+          {cellValue}
+        </Chip>
+      );
 
     case "actions":
       return (
         <>
-          <Row justify="center" align="center">
-            <Col css={{ d: "flex" }}>
-              <Tooltip content="Edit Recipe">
-                <IconButton onClick={() => setEditActionIsOpen(true)}>
-                  <EditIcon size={20} fill="#979797" />
-                </IconButton>
-              </Tooltip>
-            </Col>
-            <Col css={{ d: "flex" }}>
-              <Tooltip
-                content="Delete Recipe"
-                color="error"
+          <div className=" flex items-center justify-center gap-5">
+            <div className="flex cursor-pointer">
+              <MdModeEditOutline
+                onClick={() => setEditActionIsOpen(true)}
+                className="text-2xl text-green-600"
+              />
+            </div>
+            <div className="flex cursor-pointer">
+              <MdDeleteForever
                 onClick={() => setDeleteActioOpen(true)}
-              >
-                <IconButton>
-                  <DeleteIcon size={20} fill="#FF0080" />
-                </IconButton>
-              </Tooltip>
-            </Col>
-          </Row>
+                className="text-2xl text-red-700"
+              />
+            </div>
+          </div>
 
           {isDeleteActionOpen && (
             <DeleteRecipeActionDialog

@@ -1,4 +1,4 @@
-import { Card, Grid, Text } from "@nextui-org/react";
+import { Card, CardBody } from "@nextui-org/react";
 import {
   MdKeyboardArrowRight,
   MdOutlineMenuBook,
@@ -49,31 +49,27 @@ const Settings = () => {
 
   if (status !== "loading") {
     return (
-      <Grid.Container className="mt-4" gap={1} justify="center">
+      <div className="container mt-4 flex flex-wrap justify-center gap-5">
         {SettingsList.map((setting, index) => (
-          <Grid xs={11} key={index}>
-            <Link
-              className="w-full"
-              color="primary"
-              href={`/settings/${setting?.path}`}
-            >
-              <Card isPressable css={{ mw: "400px" }} variant="flat">
-                <Card.Body className="flex flex-row items-center justify-between">
-                  <Text className="flex items-center" weight="normal" h2>
+          <div className="mx-8 w-full" key={index}>
+            <Link color="primary" href={`/settings/${setting?.path}`}>
+              <Card isPressable className="max-h-96 w-full max-w-sm">
+                <CardBody className="flex flex-row items-center justify-between">
+                  <h2 className="flex items-center">
                     {setting.icon && (
                       <div className={cn(`mr-2 text-xl`, ...setting.styles)}>
                         <setting.icon />
                       </div>
                     )}
                     {setting.name}
-                  </Text>
+                  </h2>
                   <MdKeyboardArrowRight className="text-xl" />
-                </Card.Body>
+                </CardBody>
               </Card>
             </Link>
-          </Grid>
+          </div>
         ))}
-      </Grid.Container>
+      </div>
     );
   }
 };

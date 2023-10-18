@@ -4,7 +4,7 @@ import { type ActionMeta } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { api } from "~/utils/api";
 
-import { Grid, Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import { type FormValues } from "./from-interface";
 
 interface IngredientOption {
@@ -84,52 +84,58 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
         onChange={handleInputChange}
       />
       {currentValue.length > 0 && (
-        <Grid.Container
-          className="m-0 w-full rounded-b-lg bg-gray-500"
-          gap={1}
-          justify="center"
-        >
+        <div className="m-0 flex w-full flex-wrap rounded-b-lg bg-gray-500  p-2">
           {currentValue.map((option, index) => (
             <Fragment key={option.value}>
-              <Grid xs={4}>
-                <Input
-                  aria-labelledby={option.label}
-                  aria-label={option.label}
-                  size="sm"
-                  value={option.label}
-                  type="text"
-                  onChange={(e) =>
-                    handleIngredientChange(index, "label", e.target.value)
-                  }
-                />
-              </Grid>
-              <Grid xs={4}>
-                <Input
-                  aria-labelledby={"quantity"}
-                  aria-label={"quantity"}
-                  size="sm"
-                  value={option.quantity}
-                  type="number"
-                  onChange={(e) =>
-                    handleIngredientChange(index, "quantity", e.target.value)
-                  }
-                />
-              </Grid>
-              <Grid xs={4}>
-                <Input
-                  aria-labelledby={option.unit}
-                  size="sm"
-                  aria-label={option.unit}
-                  value={option.unit}
-                  type="text"
-                  onChange={(e) =>
-                    handleIngredientChange(index, "unit", e.target.value)
-                  }
-                />
-              </Grid>
+              <div className="m-3 flex w-full justify-around gap-5">
+                <div className="w-full">
+                  <Input
+                    aria-labelledby={option.label}
+                    aria-label={option.label}
+                    size="sm"
+                    value={option.label}
+                    radius="sm"
+                    variant="faded"
+                    type="text"
+                    onChange={(e) =>
+                      handleIngredientChange(index, "label", e.target.value)
+                    }
+                  />
+                </div>
+
+                <div className="w-full">
+                  <Input
+                    aria-labelledby={"quantity"}
+                    aria-label={"quantity"}
+                    size="sm"
+                    radius="sm"
+                    variant="faded"
+                    value={option.quantity}
+                    type="number"
+                    onChange={(e) =>
+                      handleIngredientChange(index, "quantity", e.target.value)
+                    }
+                  />
+                </div>
+
+                <div className="w-full">
+                  <Input
+                    aria-labelledby={option.unit}
+                    size="sm"
+                    radius="sm"
+                    variant="faded"
+                    aria-label={option.unit}
+                    value={option.unit}
+                    type="text"
+                    onChange={(e) =>
+                      handleIngredientChange(index, "unit", e.target.value)
+                    }
+                  />
+                </div>
+              </div>
             </Fragment>
           ))}
-        </Grid.Container>
+        </div>
       )}
     </>
   );

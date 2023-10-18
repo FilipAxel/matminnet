@@ -1,4 +1,4 @@
-import { Grid, Loading, Spacer } from "@nextui-org/react";
+import { Spacer, Spinner } from "@nextui-org/react";
 import { type Recipe } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -49,18 +49,15 @@ const CollectionPage = () => {
         <Spacer y={1} />
 
         {isLoading ? (
-          <Grid className="grid h-screen place-items-center">
-            <Loading className="mb-10" size="xl" type="points-opacity" />
-          </Grid>
+          <div className="grid h-screen place-items-center">
+            <Spinner size="lg" className="mb-10" />
+          </div>
         ) : null}
-        <Grid.Container
-          className="mx-auto flex w-full max-w-[1200px] justify-start"
-          gap={2}
-        >
+        <div className="mx-auto mb-10 mt-4 flex flex-wrap justify-center gap-5 p-0  xs:max-w-[97%]  xs:justify-normal media428:max-w-[88%]  md:justify-normal">
           {collection && !isLoadingCollection ? (
-            <Grid>
+            <div className="w-full xs:w-auto">
               <CreateRecipe name={collection?.name} />
-            </Grid>
+            </div>
           ) : null}
 
           {searchResults && !isLoading
@@ -68,7 +65,7 @@ const CollectionPage = () => {
                 <RecipeCard key={recipe.id} recipe={recipe} />
               ))
             : null}
-        </Grid.Container>
+        </div>
       </>
     );
   }
