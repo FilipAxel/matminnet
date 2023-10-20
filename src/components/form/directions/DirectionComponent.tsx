@@ -18,7 +18,7 @@ export interface subStepInterface {
 
 export interface TimerInterface {
   timeValue: number;
-  unit: string | null;
+  unit: string;
 }
 
 interface DirectionsProps {
