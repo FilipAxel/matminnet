@@ -9,20 +9,29 @@ import {
   Input,
 } from "@nextui-org/react";
 import { useForm, Controller } from "react-hook-form";
+import { type TimerInterface } from "./DirectionComponent";
 
 interface SetTimerProps {
   isOpen: boolean;
   onOpenChange: () => void;
   onSubmit: (timerValue: number, selectedOption: string) => void;
+  timer?: TimerInterface;
 }
 
 const SetTimer: React.FC<SetTimerProps> = ({
   isOpen,
   onOpenChange,
   onSubmit,
+  timer,
 }) => {
-  const { control, handleSubmit, reset } = useForm<{ timer: number }>();
-  const [selectedOption, setSelectedOption] = useState<string>("min");
+  const { control, handleSubmit, reset } = useForm<{ timer: number }>({
+    defaultValues: {
+      timer: timer?.timeValue,
+    },
+  });
+  const [selectedOption, setSelectedOption] = useState<string>(
+    timer?.unit || "min"
+  );
 
   const handleFormSubmit = (data: { timer: number }) => {
     onSubmit(data.timer, selectedOption);
@@ -75,8 +84,8 @@ const SetTimer: React.FC<SetTimerProps> = ({
                             className="border-0 bg-transparent text-small text-default-400 outline-none"
                             id="currency"
                             name="currency"
-                            onChange={handleOptionChange} // Handle option change
-                            value={selectedOption} // Set the selected option
+                            onChange={handleOptionChange}
+                            value={selectedOption}
                           >
                             <option value="sec">sec</option>
                             <option value="min">min</option>

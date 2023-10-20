@@ -1,4 +1,4 @@
-import React, { type ChangeEvent, Fragment, useState } from "react";
+import React, { type ChangeEvent, Fragment } from "react";
 import { type ControllerRenderProps } from "react-hook-form";
 import { type ActionMeta, type MultiValue } from "react-select";
 import CreatableSelect from "react-select/creatable";
@@ -73,10 +73,11 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
   ) => {
     const updatedIngredients = [...currentValue];
     const updatedIngredientsIndex = updatedIngredients[index];
+    console.log(field);
     if (updatedIngredientsIndex) {
-      if (value.length > 15) {
+      if (field === "unit" && value.length > 15) {
         updatedIngredientsIndex.error =
-          "Input can be at most 15 characters long.";
+          "Unit text can be at most 15 characters long.";
       } else {
         updatedIngredientsIndex.error = "";
       }
@@ -143,7 +144,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                   />
                 </div>
 
-                <div className="w-full">
+                <div className="w-[70%]">
                   <Input
                     aria-labelledby={option.unit}
                     size="sm"

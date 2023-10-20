@@ -105,8 +105,6 @@ const Create = () => {
     api.recipe.createPresignedUrl.useMutation();
 
   const { mutate: createRecipe } = api.recipe.createRecipe.useMutation({
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     onSuccess: async (data: RecipeData, _variables, _context) => {
       if (data && data.status === "success" && imageFiles.length > 0) {
         await Promise.all(
@@ -144,7 +142,7 @@ const Create = () => {
 
         const timer =
           step.timer?.timeValue === 0 || step.timer?.timeValue === undefined
-            ? null
+            ? undefined
             : step.timer;
         return {
           ...step,
@@ -154,7 +152,7 @@ const Create = () => {
             timer:
               subStep.timer?.timeValue === 0 ||
               subStep.timer?.timeValue === undefined
-                ? null
+                ? undefined
                 : subStep.timer,
           })),
           timer: timer,

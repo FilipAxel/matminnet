@@ -35,7 +35,7 @@ const AddIngredients: React.FC<SubTaskProps> = ({
   return (
     <>
       <div className="flex items-center gap-2">
-        <div className="w-[85%]">
+        <div className="w-full">
           <Controller
             name="ingredients"
             render={({ field }) => {

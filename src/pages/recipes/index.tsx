@@ -29,15 +29,9 @@ const Recipes = () => {
     return (
       <div className="grid h-[60vh] place-items-center ">
         <div className="mx-2">
-          <h1 className="text-center font-bold">
+          <h1 className="text-center font-normal">
             Oh no! It seems like you haven&apos;t added any recipes yet.
           </h1>
-          <h2 className="mt-3 max-w-[50ch] text-center">
-            Don&apos;t miss out on the fun! Our recipe app is all about
-            discovering and sharing delicious dishes. Click below to add your
-            very first recipe and become a part of our thriving culinary
-            community.
-          </h2>
 
           <div className="mt-5 flex justify-center">
             <CreateRecipe />

@@ -167,6 +167,7 @@ export const createRecipe = async (
 
     return {
       status: "success",
+      createdRecipe,
     };
   } catch (error) {
     throw error;

@@ -3,7 +3,7 @@ import { Input, Tooltip, useDisclosure } from "@nextui-org/react";
 import AddStep from "./add-step";
 import SubTask from "./sub-task";
 import StepDropDown from "./step-dropdown";
-import { type StepInterface } from "./DirectionComponent";
+import { type TimerInterface, type StepInterface } from "./DirectionComponent";
 import SetTimer from "./setTimer";
 import { useState } from "react";
 
@@ -18,7 +18,7 @@ interface StepProps {
 
   updateSubStepTime: (
     stepIndex: number,
-    time: { timeValue: number; unit: string },
+    time: TimerInterface,
     subStepIndex: number
   ) => void;
   deleteTask: (taskIndex: number) => void;
@@ -136,6 +136,7 @@ const Step: React.FC<StepProps> = ({
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           onSubmit={onTimerSubmit}
+          timer={step.timer}
         />
       )}
     </div>

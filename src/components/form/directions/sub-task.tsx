@@ -28,7 +28,6 @@ const SubTask: React.FC<SubTaskProps> = ({
   updateSubStepTime,
 }) => {
   const onDelete = () => removeSubTask(subStep.subStepIndex);
-
   const onTimerSubmit = (timerValue: number, selectedOption: string) => {
     const newTimer = { timeValue: timerValue, unit: selectedOption };
     updateSubStepTime(mainStepIndex, newTimer, subStep.subStepIndex);
@@ -65,6 +64,7 @@ const SubTask: React.FC<SubTaskProps> = ({
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             onSubmit={onTimerSubmit}
+            timer={subStep.timer}
           />
         )}
       </div>

@@ -6,14 +6,19 @@ import { ScrollShadow, cn } from "@nextui-org/react";
 export interface StepInterface {
   mainStepIndex: number;
   mainStepValue: string;
-  timer?: { timeValue: number; unit: string } | null;
+  timer?: TimerInterface;
   subSteps: subStepInterface[];
 }
 
 export interface subStepInterface {
   subStepIndex: number;
   subStepValue: string;
-  timer?: { timeValue: number; unit: string } | null;
+  timer?: TimerInterface;
+}
+
+export interface TimerInterface {
+  timeValue: number;
+  unit: string | null;
 }
 
 interface DirectionsProps {
@@ -66,7 +71,7 @@ const DirectionComponent: React.FC<DirectionsProps> = ({
 
   const updateSubStepTime = (
     stepIndex: number,
-    time: { timeValue: number; unit: string },
+    time: TimerInterface,
     subStepIndex: number
   ) => {
     const updatedSteps = [...directionsSteps];
