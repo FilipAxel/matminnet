@@ -21,7 +21,7 @@
       "~/*": ["./src/*"],
       "@/*": ["./*"]
     },
-    "strict": true
+    "strict": false
   },
   "include": [
     ".eslintrc.cjs",

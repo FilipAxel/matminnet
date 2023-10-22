@@ -51,21 +51,22 @@ model Session {
 }
 
 model User {
-    id            String       @id @default(cuid())
-    name          String?
-    email         String?      @unique
-    emailVerified DateTime?
-    image         String?
-    collection    Collection[]
-    recipe        Recipe[]
-    accounts      Account[]
-    sessions      Session[]
-    isAdmin       Boolean      @default(false)
-    role          UserRole     @default(USER)
-
-    created_at               DateTime                   @default(now())
-    updated_at               DateTime                   @updatedAt
+    id                       String                     @id @default(cuid())
+    name                     String?
+    email                    String?                    @unique
+    emailVerified            DateTime?
+    image                    String?
+    collection               Collection[]
+    recipe                   Recipe[]
+    accounts                 Account[]
+    sessions                 Session[]
+    isAdmin                  Boolean                    @default(false)
+    role                     UserRole                   @default(USER)
     RecipePublicationRequest RecipePublicationRequest[]
+    RecipeLikes              RecipeLike[]
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 }
 
 model Author {
@@ -135,6 +136,20 @@ model RecipeOnCollection {
     @@index([collectionId])
 }
 
+model RecipeLike {
+    id       String @id @default(cuid())
+    recipe   Recipe @relation(fields: [recipeId], references: [id])
+    recipeId String
+    user     User   @relation(fields: [userId], references: [id])
+    userId   String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@unique([recipeId, userId])
+    @@index([userId])
+}
+
 model Recipe {
     id                       String                     @id @default(cuid())
     name                     String
@@ -152,6 +167,7 @@ model Recipe {
     authorId                 String?
     publicationStatus        String                     @default("private") // Add a field to track publication status: "private", "published", "unapproved"
     RecipePublicationRequest RecipePublicationRequest[]
+    likes                    RecipeLike[]
 
     User   User?   @relation(fields: [userId], references: [id])
     userId String?
@@ -171,8 +187,10 @@ model Direction {
     subSteps      SubStep[]
     time          Time?     @relation(fields: [timeId], references: [id], onDelete: Cascade)
     timeId        String?
+    Recipe        Recipe    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
-    Recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 
     @@index([recipeId])
     @@index([timeId])
@@ -187,18 +205,22 @@ model SubStep {
     timeId       String?
     Direction    Direction @relation(fields: [directionId], references: [id], onDelete: Cascade)
 
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
     @@index([directionId])
     @@index([timeId])
 }
 
 model Time {
-    id         String      @id @default(cuid())
-    timeValue  Int
-    unit       String
-    created_at DateTime    @default(now())
-    updated_at DateTime    @updatedAt
-    Direction  Direction[]
-    SubStep    SubStep[]
+    id        String      @id @default(cuid())
+    timeValue Int
+    unit      String
+    Direction Direction[]
+    SubStep   SubStep[]
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 }
 
 model RecipePublicationRequest {
@@ -222,34 +244,35 @@ model Ingredient {
     description String?
     images      Image[]
     recipes     RecipeIngredient[]
-    created_at  DateTime           @default(now())
-    updated_at  DateTime           @updatedAt
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 }
 
 model IngredientSection {
     id          String             @id @default(cuid())
     name        String
     ingredients RecipeIngredient[]
+    Recipe      Recipe?            @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId    String?
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
-    Recipe     Recipe?  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-    recipeId   String?
 
     @@index([recipeId])
 }
 
 model RecipeIngredient {
-    id           String     @id @default(cuid())
-    quantity     String?
-    unit         String?
-    ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
-    ingredientId String
-
-    created_at          DateTime           @default(now())
-    updated_at          DateTime           @updatedAt
+    id                  String             @id @default(cuid())
+    quantity            String?
+    unit                String?
+    ingredient          Ingredient         @relation(fields: [ingredientId], references: [id])
+    ingredientId        String
     IngredientSection   IngredientSection? @relation(fields: [ingredientSectionId], references: [id], onDelete: Cascade)
     ingredientSectionId String?
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 
     @@index([ingredientId])
     @@index([ingredientSectionId])
@@ -262,11 +285,11 @@ model Image {
     recipeId     String?
     collection   Collection? @relation(fields: [collectionId], references: [id], onDelete: Cascade)
     collectionId String?
-
-    created_at   DateTime    @default(now())
-    updated_at   DateTime    @updatedAt
     Ingredient   Ingredient? @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
     ingredientId String?
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 
     @@index([recipeId])
     @@index([collectionId])

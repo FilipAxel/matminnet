@@ -15,7 +15,7 @@ const TagsController: React.FC<TagsControllerProps> = ({
   currentValue,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const customSelectStyles = selectCustomStyle<TagOption>();
+  const customSelectStyles = selectCustomStyle();
   const { data: tags } = api.tag.getAllTags.useQuery();
   const { onChange } = field;
 

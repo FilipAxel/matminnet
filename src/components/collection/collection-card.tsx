@@ -40,8 +40,8 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ collection }) => {
         <h1 className=" text-rightfont-semibold text-white">
           {collection.name}
         </h1>
-        <div className="flex items-baseline">
-          <MdOutlineMenuBook className="mr-1 flex items-baseline text-[#d1d1d1]" />
+        <div className="flex items-center">
+          <MdOutlineMenuBook className="mr-1 flex items-center text-[#d1d1d1]" />
           <p className="mr-3 text-white">{collection._count.recipes} Recipes</p>
         </div>
       </CardFooter>

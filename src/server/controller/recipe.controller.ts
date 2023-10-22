@@ -10,6 +10,8 @@ import { type Session } from "next-auth";
 import { deleteImageFromAws, getSignedUrlAws } from "./aws.controller";
 import { TRPCError } from "@trpc/server";
 import { createTags } from "./tag.controller";
+import { exclude } from "~/utils/prisma-utils";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export const createPublicationRequest = async (
   recipeId: string,
@@ -269,22 +271,20 @@ export const getRecipeWithId = async (
       user.id === recipe?.userId
     ) {
       if (recipe?.images) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         recipe.images.forEach((image) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
           image.name = getSignedUrlAws(image.name);
         });
       }
 
-      return recipe;
+      return {
+        recipe: exclude(recipe, ["userId"]),
+      };
     }
 
     return null;
   } catch (error) {
     console.error(error);
-    throw error; // Rethrow the error to propagate it up the call stack
+    throw error;
   }
 };
 
@@ -356,6 +356,124 @@ export const deleteRecipeWithId = async (
   return {
     status: "success",
   };
+};
+
+export const getLikes = async (
+  input: IdSchema,
+  ctx: { prisma: PrismaClient }
+) => {
+  try {
+    const foundLikes = await ctx.prisma.recipeLike.count({
+      where: {
+        recipeId: input.id,
+      },
+    });
+
+    return {
+      likes: foundLikes,
+    };
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return {
+          success: false,
+          error: "Recipe not found.",
+        };
+      } else {
+        return {
+          success: false,
+          error: "Prisma error: " + error.message,
+        };
+      }
+    } else {
+      return {
+        success: false,
+        error: "Unexpected error",
+      };
+    }
+  }
+};
+
+export const getUserRecipeLike = async (
+  input: IdSchema,
+  ctx: { prisma: PrismaClient; session: Session }
+) => {
+  const { id } = ctx.session.user;
+  try {
+    const userLikesRecipeQuery = await ctx.prisma.recipeLike.findFirst({
+      where: {
+        userId: id,
+        recipeId: input.id,
+      },
+    });
+    const userLikesRecipe = !!userLikesRecipeQuery;
+
+    return {
+      success: true,
+      userLikesRecipe,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addRecipeLike = async (
+  input: IdSchema,
+  ctx: { prisma: PrismaClient; session: Session }
+) => {
+  try {
+    const { id } = ctx.session.user;
+    const foundLike = await ctx.prisma.recipeLike.findFirst({
+      where: {
+        userId: id,
+        recipeId: input.id,
+      },
+    });
+
+    if (!!foundLike) {
+      await ctx.prisma.recipeLike.delete({
+        where: {
+          recipeId_userId: {
+            recipeId: foundLike.recipeId,
+            userId: id,
+          },
+        },
+      });
+
+      return {
+        success: true,
+        message: "Like removed",
+      };
+    } else {
+      await ctx.prisma.recipeLike.create({
+        data: {
+          recipeId: input.id,
+          userId: id,
+        },
+      });
+
+      return { success: true, message: "Like added" };
+    }
+  } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return {
+          success: false,
+          error: "Recipe not found.",
+        };
+      } else {
+        return {
+          success: false,
+          error: "Prisma error: " + error.message,
+        };
+      }
+    } else {
+      return {
+        success: false,
+        error: "Unexpected error",
+      };
+    }
+  }
 };
 
 /* export const updateRecipe = async (

@@ -53,7 +53,7 @@ const CreateRecipeLoader: React.FC = () => {
           />
         </div>
         <div className="pt-10 text-center">
-          <h1 className="text-2xl font-semibold">
+          <h1 className="px-4 text-2xl font-semibold">
             {content[currentImageIndex]?.title}
           </h1>
           <p> {content[currentImageIndex]?.subTitle}</p>

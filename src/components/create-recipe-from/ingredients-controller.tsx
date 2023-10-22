@@ -28,7 +28,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
   field,
   currentValue,
 }) => {
-  const customSelectStyles = selectCustomStyle<IngredientOption>();
+  const customSelectStyles = selectCustomStyle();
   const { data: ingredients } = api.ingredient.getAllIngredients.useQuery();
   const { onChange } = field;
   const ingredientOptions: IngredientOption[] =
