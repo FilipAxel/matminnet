@@ -1,6 +1,7 @@
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
+import { FaThumbsUp, FaRegThumbsUp } from "react-icons/fa6";
 import { api } from "~/utils/api";
 
 interface LikeButtonProps {
@@ -18,19 +19,15 @@ const LikeButton: React.FC<LikeButtonProps> = ({
   const [recipeLiked, setRecipeLiked] = useState(userLikedRecipe || false);
 
   const { mutate: addRecipeLike } = api.recipe.addRecipeLike.useMutation({
-    onSuccess: (data, _variables, _context) => {
-      if (data?.message !== "Like removed") {
-        setLikeCount(likeCount + 1);
-        setRecipeLiked(true);
-      } else {
-        setLikeCount(likeCount - 1);
-        setRecipeLiked(false);
-      }
+    onError: (data, _variables, _context) => {
+      console.log(data.message);
     },
   });
 
   const handleLike = () => {
     addRecipeLike({ id });
+    setLikeCount(recipeLiked ? likeCount - 1 : likeCount + 1);
+    setRecipeLiked(!recipeLiked);
   };
 
   return (
@@ -38,13 +35,19 @@ const LikeButton: React.FC<LikeButtonProps> = ({
       <div className="mt-5 text-center">
         <Button
           size="sm"
-          startContent={<AiFillHeart />}
+          startContent={
+            recipeLiked ? (
+              <FaThumbsUp className="text-lg" />
+            ) : (
+              <FaRegThumbsUp className="text-lg" />
+            )
+          }
           onClick={handleLike}
           className={`${
             recipeLiked ? "bg-[#ff5722]" : "bg-[#b195d2]"
           } text-white`}
         >
-          {likeCount} {recipeLiked ? "Liked" : "Like"}
+          {likeCount}
         </Button>
       </div>
     </>

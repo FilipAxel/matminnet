@@ -7,7 +7,7 @@ const ShareButton = () => {
       <Button
         size="sm"
         color="primary"
-        startContent={<MdIosShare />}
+        startContent={<MdIosShare className="text-lg" />}
         className="text-white"
       >
         Share
