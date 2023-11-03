@@ -21,19 +21,58 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <title>
+            Matminnet Recipe Builder - Share Your Culinary Creations
+          </title>
+          <meta
+            name="title"
+            content="Matminnet Recipe Builder - Share Your Culinary Creations"
+          />
+          <meta
+            name="description"
+            content="Matminnet Recipe Builder - Unleash Your Culinary Creativity! Design, craft, and share your unique recipes effortlessly. Say goodbye to that old recipe book and hello to a modern way of keeping your culinary creations organized. Share your passion for cooking with the world!"
+          />
+
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://matminne.com" />
+          <meta
+            property="og:title"
+            content="Matminnet Recipe Builder - Share Your Culinary Creations"
+          />
+          <meta
+            property="og:description"
+            content="Matminnet Recipe Builder - Unleash Your Culinary Creativity! Design, craft, and share your unique recipes effortlessly. Say goodbye to that old recipe book and hello to a modern way of keeping your culinary creations organized. Share your passion for cooking with the world!"
+          />
+          <meta
+            property="og:image"
+            content="https://metatags.io/images/meta-tags.png"
+          />
+
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:url" content="https://matminne.com" />
+          <meta
+            name="twitter:title"
+            content="Matminnet Recipe Builder - Share Your Culinary Creations"
+          />
+          <meta
+            name="twitter:description"
+            content="Matminnet Recipe Builder - Unleash Your Culinary Creativity! Design, craft, and share your unique recipes effortlessly. Say goodbye to that old recipe book and hello to a modern way of keeping your culinary creations organized. Share your passion for cooking with the world!"
+          />
+          <meta
+            name="twitter:image"
+            content="https://metatags.io/images/meta-tags.png"
+          />
+
           <link rel="manifest" href="/manifest.json" />
-          <link rel="apple-touch-icon" href="/icon.png"></link>
-          <title>Matminne</title>
+          <link rel="apple-touch-icon" href="/icon.png" />
+
           <meta name="robots" content="index, follow" />
           <meta name="author" content="Filip Johansson" />
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1"
           />
-          <meta
-            name="description"
-            content="Create and store delicious recipes with our Recipe Application. Find a variety of recipes and cooking tips to enhance your culinary skills."
-          />
+
           <meta
             name="keywords"
             content="recipe application, cooking, recipes, food, culinary, cooking tips"
@@ -65,10 +104,10 @@ class MyDocument extends Document {
             content="Create and store delicious recipes with our Recipe Application. Find a variety of recipes and cooking tips to enhance your culinary skills."
           />
           <meta property="og:site_name" content="Recipe Application" />
-          <meta property="og:url" content="https://matminne.com" />
+          <meta property="og:url" content="https://matminnet.vercel.app" />
           <meta
             property="og:image"
-            content="https://matminne.com/icons/apple-touch-icon.png"
+            content="https://matminnet.vercel.app/icons/apple-touch-icon.png"
           />
         </Head>
         <body className="h-full overflow-y-scroll">

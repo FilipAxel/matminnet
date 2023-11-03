@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.ql-editor ul li {
-  font-size: 24px !important;
-}
-
-.ql-editor ol li {
-  font-size: 24px !important;
+html {
+  font-family: var(--font-roboto-mono) !important;
 }

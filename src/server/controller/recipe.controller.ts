@@ -12,6 +12,7 @@ import { TRPCError } from "@trpc/server";
 import { createTags } from "./tag.controller";
 import { exclude } from "~/utils/prisma-utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { findUniqueCountry } from "./country.controller";
 
 export const createPublicationRequest = async (
   recipeId: string,
@@ -77,6 +78,7 @@ export const createRecipe = async (
   const recipeIngredients = await createIngredients(ingredients, ctx);
   const foundCollections = await findCollections(collections, ctx);
   const author = await createdAuthor(authorName, ctx);
+  const foundUniqueCountry = await findUniqueCountry(country, ctx);
 
   const foundTags = await createTags(tags, ctx);
   try {
@@ -84,7 +86,7 @@ export const createRecipe = async (
       data: {
         name: name,
         description: description,
-        country: country,
+        countryId: foundUniqueCountry?.id,
         servingSize: servingSize,
         cookingTime: cookingTime !== null ? +cookingTime : null,
         directions: {
@@ -474,6 +476,75 @@ export const addRecipeLike = async (
       };
     }
   }
+};
+
+export const getTopRatedRecipes = async (
+  input: IdSchema,
+  ctx: { prisma: PrismaClient }
+) => {
+  try {
+    const topRatedRecipes = await ctx.prisma.recipe.findMany({
+      take: +input.id,
+      orderBy: {
+        likes: {
+          _count: "desc",
+        },
+      },
+      /*  where: {
+        publicationStatus: {
+          not: "private",
+        },
+      }, */
+      include: {
+        likes: true,
+        images: {
+          take: 1,
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    interface filteredTopRated {
+      id: string;
+      name: string;
+      images: {
+        name: string;
+      }[];
+    }
+
+    const filteredTopRatedRecipes: filteredTopRated[] = topRatedRecipes.map(
+      (recipe) => {
+        return exclude(recipe, [
+          "authorId",
+          "cookingTime",
+          "countryId",
+          "created_at",
+          "updated_at",
+          "description",
+          "likes",
+          "publicationStatus",
+          "servingSize",
+          "userId",
+          "video",
+        ]);
+      }
+    ) as filteredTopRated[];
+
+    if (filteredTopRatedRecipes) {
+      filteredTopRatedRecipes.forEach((recipe) => {
+        if (recipe.images[0]?.name) {
+          recipe.images[0].name = getSignedUrlAws(recipe.images[0].name);
+        }
+      });
+    }
+
+    return {
+      success: true,
+      topRatedRecipes: filteredTopRatedRecipes,
+    };
+  } catch (error) {}
 };
 
 /* export const updateRecipe = async (

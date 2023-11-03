@@ -1,6 +1,5 @@
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
-import { AiFillHeart } from "react-icons/ai";
 import { FaThumbsUp, FaRegThumbsUp } from "react-icons/fa6";
 import { api } from "~/utils/api";
 

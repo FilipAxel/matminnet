@@ -160,7 +160,8 @@ model Recipe {
     servingSize              String?
     description              String?                    @db.Text
     cookingTime              Int?
-    country                  String?
+    country                  Country?                   @relation(fields: [countryId], references: [id])
+    countryId                String?
     images                   Image[]
     video                    String?
     author                   Author?                    @relation(fields: [authorId], references: [id])
@@ -177,6 +178,20 @@ model Recipe {
 
     @@index([authorId])
     @@index([userId])
+    @@index([countryId])
+}
+
+model Country {
+    id      String   @id @default(cuid())
+    name    String   @unique
+    Recipe  Recipe[]
+    image   Image?
+    imageId String?
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@index([imageId])
 }
 
 model Direction {
@@ -287,11 +302,13 @@ model Image {
     collectionId String?
     Ingredient   Ingredient? @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
     ingredientId String?
-
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+    country      Country?    @relation(fields: [countryId], references: [id], onDelete: Cascade)
+    countryId    String?     @unique
+    created_at   DateTime    @default(now())
+    updated_at   DateTime    @updatedAt
 
     @@index([recipeId])
     @@index([collectionId])
     @@index([ingredientId])
+    @@index([countryId])
 }

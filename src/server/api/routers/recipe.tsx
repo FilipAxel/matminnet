@@ -14,6 +14,7 @@ import {
   getApprovedPublication,
   getRecipeWithId,
   getUserRecipeLike,
+  getTopRatedRecipes,
 } from "~/server/controller/recipe.controller";
 import { createRecipeSchema, idSchema } from "~/server/schema/recipe.schema";
 import { createPresignedUrlForRecipe } from "~/server/controller/aws.controller";
@@ -68,4 +69,8 @@ export const recipeRouter = createTRPCRouter({
   getUserRecipeLike: protectedProcedure
     .input(idSchema)
     .query(async ({ input, ctx }) => getUserRecipeLike(input, ctx)),
+
+  getTopRatedRecipes: publicProcedure
+    .input(idSchema)
+    .query(async ({ input, ctx }) => getTopRatedRecipes(input, ctx)),
 });

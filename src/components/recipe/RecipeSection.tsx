@@ -1,4 +1,4 @@
-import { Button, Chip } from "@nextui-org/react";
+import { Chip } from "@nextui-org/react";
 import router from "next/router";
 import { api } from "~/utils/api";
 import BackButton from "../shared/back-button";

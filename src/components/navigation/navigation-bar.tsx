@@ -52,7 +52,8 @@ const NavigationBar = () => {
   };
 
   const menuItems = [
-    { name: "Collections", path: "/" },
+    { name: "Home", path: "/" },
+    { name: "Collections", path: "/collections" },
     { name: "Recipes", path: "/recipes" },
     { name: "Discover", path: "/discover" },
     { name: "My Settings", path: "/settings" },
@@ -66,7 +67,7 @@ const NavigationBar = () => {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <Link href="/" className="font-bold text-inherit">
+          <Link href="/" className="font-serif font-bold text-inherit">
             MatMinnet
           </Link>
         </NavbarBrand>
@@ -74,17 +75,27 @@ const NavigationBar = () => {
 
       <NavbarContent className="hidden gap-4 sm:flex" justify="center">
         <NavbarItem isActive={router.pathname === "/"}>
-          <Link color="foreground" href="/">
+          <Link className="font-serif" color="foreground" href="/">
+            Home
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive={router.pathname === "/collections"}>
+          <Link className="font-serif" color="foreground" href="/collections">
             Collections
           </Link>
         </NavbarItem>
         <NavbarItem isActive={router.pathname === "/recipes"}>
-          <Link color="foreground" href="/recipes" aria-current="page">
+          <Link
+            className="font-serif"
+            color="foreground"
+            href="/recipes"
+            aria-current="page"
+          >
             Recipes
           </Link>
         </NavbarItem>
         <NavbarItem isActive={router.pathname === "/discover"}>
-          <Link color="foreground" href="/discover">
+          <Link className="font-serif" color="foreground" href="/discover">
             Discover
           </Link>
         </NavbarItem>
@@ -160,7 +171,7 @@ const NavigationBar = () => {
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
               color="foreground"
-              className="my-2 w-full"
+              className="my-2 w-full font-serif"
               href={item.path}
               size="lg"
             >

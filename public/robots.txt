@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://matminnet.vercel.app/
+
+# Sitemaps
+Sitemap: http://matminnet.vercel.app//sitemap.xml
