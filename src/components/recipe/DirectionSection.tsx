@@ -42,15 +42,15 @@ const DirectionSection: React.FC<DirectionSectionProps> = ({ direction }) => {
       key={direction.mainStepIndex}
       className="max-w-[700px] p-2"
     >
-      <CardHeader className="flex flex-col items-start gap-3">
+      <CardHeader className="flex flex-col items-start gap-3 ">
         <Checkbox
           lineThrough
           color="primary"
           radius="none"
           size="lg"
           classNames={{
-            base: "data-[selected=true]:truncate",
-            label: "data-[selected=true]:truncate",
+            base: "data-[selected=true]:truncate overflow-x-hidden",
+            label: "data-[selected=true]:truncate overflow-x-hidden",
           }}
         >
           <p className="ml-1 text-left font-normal">

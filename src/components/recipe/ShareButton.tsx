@@ -3,7 +3,7 @@ import { MdIosShare } from "react-icons/md";
 
 const ShareButton = () => {
   return (
-    <div className="mt-5 text-center">
+    <div className="text-center">
       <Button
         size="sm"
         color="primary"

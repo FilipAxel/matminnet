@@ -31,7 +31,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({
 
   return (
     <>
-      <div className="mt-5 text-center">
+      <div className="text-center">
         <Button
           size="sm"
           startContent={

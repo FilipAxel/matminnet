@@ -67,7 +67,7 @@ const NavigationBar = () => {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <Link href="/" className="font-serif font-bold text-inherit">
+          <Link href="/" className="font-sans font-bold text-inherit">
             MatMinnet
           </Link>
         </NavbarBrand>
@@ -75,18 +75,18 @@ const NavigationBar = () => {
 
       <NavbarContent className="hidden gap-4 sm:flex" justify="center">
         <NavbarItem isActive={router.pathname === "/"}>
-          <Link className="font-serif" color="foreground" href="/">
+          <Link className="font-sans" color="foreground" href="/">
             Home
           </Link>
         </NavbarItem>
         <NavbarItem isActive={router.pathname === "/collections"}>
-          <Link className="font-serif" color="foreground" href="/collections">
+          <Link className="font-sans" color="foreground" href="/collections">
             Collections
           </Link>
         </NavbarItem>
         <NavbarItem isActive={router.pathname === "/recipes"}>
           <Link
-            className="font-serif"
+            className="font-sans"
             color="foreground"
             href="/recipes"
             aria-current="page"
@@ -95,7 +95,7 @@ const NavigationBar = () => {
           </Link>
         </NavbarItem>
         <NavbarItem isActive={router.pathname === "/discover"}>
-          <Link className="font-serif" color="foreground" href="/discover">
+          <Link className="font-sans" color="foreground" href="/discover">
             Discover
           </Link>
         </NavbarItem>
@@ -134,7 +134,7 @@ const NavigationBar = () => {
                   className="text-danger"
                   color="danger"
                   startContent={
-                    <MdLogout className={cn(iconClasses, "text-black")} />
+                    <MdLogout className={cn(iconClasses, "text-red-500")} />
                   }
                 >
                   Logout
@@ -171,7 +171,7 @@ const NavigationBar = () => {
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
               color="foreground"
-              className="my-2 w-full font-serif"
+              className="my-2 w-full font-sans"
               href={item.path}
               size="lg"
             >

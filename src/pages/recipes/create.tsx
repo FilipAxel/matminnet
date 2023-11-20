@@ -64,13 +64,7 @@ const Create = () => {
   const [imageFiles, setImageFiles] = useState<ImageFile[]>([]);
   const [ingredientSection, setIngredientSection] = useState<
     IngredientInterface[]
-  >([
-    {
-      mainStepIndex: 1,
-      sectionName: "",
-      ingredients: [],
-    },
-  ]);
+  >([]);
   const [directionsSteps, setDirectionsSteps] = useState<StepInterface[]>([
     {
       mainStepIndex: 1,
@@ -85,6 +79,7 @@ const Create = () => {
     getValues,
     clearErrors,
     setError,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -182,15 +177,24 @@ const Create = () => {
   ) => {
     if (submitedForm && filteredDirectionsSteps) {
       setShowComponent(true);
+
+      const updatedIngredientSection = ingredientSection.map((section) => {
+        section.ingredients.forEach((ingredientOption) => {
+          delete ingredientOption.error;
+        });
+        return section;
+      });
+
       createRecipe({
         recipe: submitedForm,
         direction: filteredDirectionsSteps,
-        ingredients: ingredientSection,
+        ingredients: updatedIngredientSection,
       });
     }
   };
 
-  const submitForm = (): void => {
+  const submitForm = (publicationStatus: boolean): void => {
+    setValue("publicationStatus", publicationStatus);
     const submitedData = getValues();
     togglePublicationDialog();
     if (!errors.name?.type) {
@@ -210,7 +214,7 @@ const Create = () => {
           <PublicationComponent
             isOpen={isOpen}
             togglePublicationDialog={togglePublicationDialog}
-            onSubmit={submitForm}
+            submitForm={submitForm}
           />
 
           <Pagination

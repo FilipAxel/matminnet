@@ -6,14 +6,7 @@ import { api } from "~/utils/api";
 
 import { Input } from "@nextui-org/react";
 import { selectCustomStyle } from "../utils/form-utils";
-
-interface IngredientOption {
-  value: string;
-  label: string;
-  quantity: string;
-  unit: string;
-  error?: string;
-}
+import { type IngredientOption } from "./from-interface";
 
 export interface FormIngredients {
   ingredients: IngredientOption[];
@@ -43,6 +36,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
     newValue: MultiValue<IngredientOption[] | IngredientOption>,
     actionMeta: ActionMeta<IngredientOption>
   ) => {
+    console.log(actionMeta);
     if (actionMeta.action === "create-option") {
       const { label, value } = actionMeta.option;
       const existingOptionIndex = currentValue.findIndex(
@@ -59,10 +53,18 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
       };
 
       const updatedValue = [...currentValue, newIngredient];
-
       onChange(updatedValue);
+    } else if (actionMeta.action === "select-option") {
+      const updatedValue = [...currentValue, actionMeta.option];
+      onChange(updatedValue as IngredientOption[] | ChangeEvent<Element>);
+    } else if (actionMeta.action === "remove-value") {
+      const labelToRemove = actionMeta.removedValue?.label;
+      const updatedValueWithoutRemovedLabel = currentValue.filter(
+        (option) => option.value !== labelToRemove
+      );
+      onChange(updatedValueWithoutRemovedLabel);
     } else {
-      onChange(newValue as IngredientOption[] | ChangeEvent<Element>);
+      onChange([]);
     }
   };
 
@@ -73,7 +75,6 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
   ) => {
     const updatedIngredients = [...currentValue];
     const updatedIngredientsIndex = updatedIngredients[index];
-    console.log(field);
     if (updatedIngredientsIndex) {
       if (field === "unit" && value.length > 15) {
         updatedIngredientsIndex.error =
@@ -103,15 +104,16 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
       {currentValue.length > 0 && (
         <div className="m-0 flex w-full flex-wrap rounded-b-lg bg-gray-700 p-2">
           {currentValue.map((option, index) => (
-            <Fragment key={option.value}>
+            <Fragment key={option?.label}>
               <div className="m-3 flex w-full justify-around gap-5">
                 <div className="w-full">
                   <Input
-                    aria-labelledby={option.label}
-                    aria-label={option.label}
+                    aria-labelledby={option?.label}
+                    aria-label={option?.label}
                     size="sm"
                     color="primary"
-                    value={option.label}
+                    disabled
+                    value={option?.label}
                     radius="sm"
                     variant="faded"
                     type="text"
@@ -136,7 +138,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                     }
                     radius="sm"
                     variant="faded"
-                    value={option.quantity}
+                    value={option?.quantity}
                     type="number"
                     onChange={(e) =>
                       handleIngredientChange(index, "quantity", e.target.value)
@@ -146,15 +148,15 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
 
                 <div className="w-[70%]">
                   <Input
-                    aria-labelledby={option.unit}
+                    aria-labelledby={option?.unit}
                     size="sm"
                     radius="sm"
-                    color={option.error ? "danger" : "primary"}
-                    isInvalid={option.error ? true : false}
-                    errorMessage={option.error}
+                    color={option?.error ? "danger" : "primary"}
+                    isInvalid={option?.error ? true : false}
+                    errorMessage={option?.error}
                     variant="faded"
-                    aria-label={option.unit}
-                    value={option.unit}
+                    aria-label={option?.unit}
+                    value={option?.unit}
                     endContent={
                       <div className="pointer-events-none flex items-center">
                         <span className="text-small text-default-400">

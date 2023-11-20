@@ -33,7 +33,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
         >
           <Component {...pageProps} />
         </div>
-
         <Analytics />
       </NextUIProvider>
     </SessionProvider>

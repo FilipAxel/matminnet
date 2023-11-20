@@ -22,26 +22,18 @@ interface props {
 
 const IngredientSection: React.FC<props> = ({ ingredientStep }) => {
   return (
-    <div className="grid" key={ingredientStep.id}>
-      <Card className="w-full max-w-[400px] p-4">
-        <h2 className="font-semibold">{ingredientStep.name}</h2>
-        <CardBody className="flex flex-col items-start">
-          {ingredientStep.ingredients.map((ingredient) => (
-            <div
-              className="flex w-full flex-row items-center justify-between"
-              key={ingredient.id}
-            >
-              <h2 className="font-normal text-gray-800">
-                {ingredient.ingredient.name}
-              </h2>
-              <h3 className="text-[15px] font-semibold text-gray-800">
-                {ingredient.quantity} {ingredient.unit}
-              </h3>
-            </div>
-          ))}
-        </CardBody>
-      </Card>
-    </div>
+    <Card key={ingredientStep.id} className="w-full p-4">
+      <h2 className="font-semibold">{ingredientStep.name}</h2>
+      <CardBody className="flex flex-col items-start">
+        {ingredientStep.ingredients.map((ingredient) => (
+          <h3 key={ingredient.id} className="text-[16px] text-gray-800">
+            - {ingredient.quantity}
+            {ingredient.unit} &nbsp;
+            {ingredient.ingredient.name}
+          </h3>
+        ))}
+      </CardBody>
+    </Card>
   );
 };
 

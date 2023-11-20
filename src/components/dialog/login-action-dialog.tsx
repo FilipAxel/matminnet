@@ -9,11 +9,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 
-interface LoginActionDialogProps {
-  pageName: string;
-}
-
-const LoginActionDialog: React.FC<LoginActionDialogProps> = ({ pageName }) => {
+const LoginActionDialog = () => {
   const router = useRouter(); // Get the router instance
 
   const handleClose = () => {
@@ -21,6 +17,7 @@ const LoginActionDialog: React.FC<LoginActionDialogProps> = ({ pageName }) => {
     void router.push("/discover");
   };
 
+  const routeName = router.pathname.substring(1);
   return (
     <div>
       <Modal
@@ -33,14 +30,14 @@ const LoginActionDialog: React.FC<LoginActionDialogProps> = ({ pageName }) => {
         <ModalContent>
           <ModalHeader></ModalHeader>
           <ModalBody>
-            <h2 className="text-center font-[18px]">
-              Welcome! To access {pageName} page, please create an account or
+            <h2 className="p-5 text-center text-[20px] font-bold">
+              Welcome! To access {routeName} page, please create an account or
               log in.
             </h2>
             <Button
-              color="default"
+              color="primary"
               size={"lg"}
-              className="text-center"
+              className="my-4 text-center"
               onPress={() => void signIn()}
             >
               Sign in

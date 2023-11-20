@@ -22,6 +22,7 @@ export const createPublicationRequest = async (
   }
 ) => {
   const { id } = ctx.session.user;
+
   await ctx.prisma.recipePublicationRequest.create({
     data: {
       recipeId: recipeId,
@@ -86,7 +87,7 @@ export const createRecipe = async (
       data: {
         name: name,
         description: description,
-        countryId: foundUniqueCountry?.id,
+        countryId: foundUniqueCountry?.id || null,
         servingSize: servingSize,
         cookingTime: cookingTime !== null ? +cookingTime : null,
         directions: {

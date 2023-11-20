@@ -11,13 +11,13 @@ import { MdIosShare } from "react-icons/md";
 interface PublicationComponentProps {
   isOpen: boolean;
   togglePublicationDialog: () => void;
-  onSubmit: (value: boolean) => void;
+  submitForm: (value: boolean) => void;
 }
 
 const PublicationComponent: React.FC<PublicationComponentProps> = ({
   isOpen,
   togglePublicationDialog,
-  onSubmit,
+  submitForm,
 }) => {
   return (
     <Modal
@@ -29,10 +29,10 @@ const PublicationComponent: React.FC<PublicationComponentProps> = ({
         {(_) => (
           <>
             <ModalHeader className="flex items-center gap-3">
-              <h1>Share with Community</h1>
+              <h1 className="font-sans">Share with Community</h1>
             </ModalHeader>
             <ModalBody>
-              <p className="text-sm text-gray-700">
+              <p className="font-sans text-sm text-gray-700">
                 By choosing to publish your recipe, you&apos;re sending it to
                 our administrators for review. After approval, your recipe will
                 be featured on the discovery page, making it accessible to
@@ -42,19 +42,20 @@ const PublicationComponent: React.FC<PublicationComponentProps> = ({
             <ModalFooter>
               <Button
                 color="danger"
+                className="font-sans"
                 variant="light"
                 onPress={() => {
-                  onSubmit(false);
+                  submitForm(false);
                 }}
               >
                 Keep Private
               </Button>
               <Button
                 color="success"
-                className="font-semibold text-white"
+                className="font-sans font-semibold text-white"
                 endContent={<MdIosShare className="text-xl" />}
                 onPress={() => {
-                  onSubmit(true);
+                  submitForm(true);
                 }}
               >
                 Publish

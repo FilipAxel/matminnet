@@ -22,7 +22,7 @@ const Recipes = () => {
     api.recipe.getAllRecipesForUser.useQuery();
 
   if (status === "unauthenticated" && !session) {
-    return <LoginActionDialog pageName={"Settings"} />;
+    return <LoginActionDialog />;
   }
 
   if (!recipes?.length && !isLoading) {

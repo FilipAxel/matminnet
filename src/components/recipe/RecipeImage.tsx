@@ -13,17 +13,16 @@ const RecipeImage: React.FC<RecipeImageProps> = ({ images }) => {
   const [mainImageIndex, setMainImageIndex] = useState(0);
   return (
     <>
-      <div className="flex w-full justify-center">
+      <div className="flex w-full justify-center overflow-hidden">
         <Image
-          className="h-[380px] max-h-[400px] w-full max-w-[400px] justify-center rounded-[15px] object-cover md:h-full md:w-full"
+          radius="none"
+          className="h-full w-full lg:max-h-[500px] lg:min-w-[600px]"
           src={images?.[mainImageIndex]?.name ?? "/recipe-placeholder.webp"}
-          width={0}
-          height={0}
           alt={images?.[mainImageIndex]?.name ?? "placeholder image"}
         />
       </div>
 
-      {images?.length && images.length > 1 && (
+      {images?.length && images.length > 1 ? (
         <div className="flex justify-center gap-2">
           {images?.map((image, index: number) => (
             <div
@@ -41,7 +40,7 @@ const RecipeImage: React.FC<RecipeImageProps> = ({ images }) => {
             </div>
           ))}
         </div>
-      )}
+      ) : null}
     </>
   );
 };

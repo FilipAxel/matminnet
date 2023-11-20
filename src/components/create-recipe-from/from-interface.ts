@@ -30,6 +30,7 @@ export interface IngredientOption {
   label: string;
   quantity: string;
   unit: string;
+  error?: string;
 }
 
 export interface ImageFile {

@@ -30,7 +30,7 @@ export default function Home() {
                 Explore Recipes
               </Button>
               <Button
-                href="/create/recipe"
+                href="/recipes/create"
                 as={Link}
                 size="md"
                 color="primary"
@@ -160,7 +160,7 @@ export default function Home() {
         </h3>
 
         <Button
-          href="https://github.com/nextui-org/nextui"
+          href="/recipes/create"
           as={Link}
           size="lg"
           color="primary"
