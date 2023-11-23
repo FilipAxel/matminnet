@@ -24,7 +24,7 @@ const DescriptionComponent: React.FC<DescriptionProps> = ({ control }) => {
             variant="faded"
             radius="none"
             aria-label={field.name}
-            isInvalid={true}
+            isInvalid={charCount >= 350}
             fullWidth
             {...field}
             size="lg"

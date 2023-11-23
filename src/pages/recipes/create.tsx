@@ -48,7 +48,6 @@ interface RecipeData {
 const Create = () => {
   const { activePage, range, setPage, onNext, onPrevious } = usePagination({
     total: 6,
-    defaultValue: 1,
     initialPage: 1,
     showControls: false,
     siblings: 6,

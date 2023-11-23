@@ -4,11 +4,13 @@ import DeleteRecipeActionDialog from "../dialog/delete-recipe-action-dialog";
 
 import { type RecipeWithImage } from "~/pages/recipes";
 import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
+import { useRouter } from "next/router";
 
 const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
   recipe,
   columnKey,
 }) => {
+  const router = useRouter();
   const [isDeleteActionOpen, setDeleteActioOpen] = useState(false);
   const [editActionIsOpen, setEditActionIsOpen] = useState(false);
   const cellValue: string = recipe[
@@ -21,7 +23,7 @@ const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
     case "name":
       return (
         <User
-          className="p-0"
+          className="cursor-pointer p-0"
           avatarProps={{
             src: imageUrl,
           }}
@@ -30,6 +32,7 @@ const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
             imgElement.src = "/recipe-placeholder.webp";
           }}
           name={cellValue}
+          onClick={(_) => void router.push(`/recipe/${recipe?.id}`)}
         >
           {recipe?.name}
         </User>
@@ -40,7 +43,11 @@ const RenderCell: React.FC<{ recipe: RecipeWithImage; columnKey: Key }> = ({
         <Chip
           className="capitalize"
           color={
-            recipe.publicationStatus === "published" ? "success" : "primary"
+            recipe.publicationStatus === "published"
+              ? "success"
+              : recipe.publicationStatus === "private"
+              ? "danger"
+              : "warning"
           }
           size="sm"
           variant="flat"
