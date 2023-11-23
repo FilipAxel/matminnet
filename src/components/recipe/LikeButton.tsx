@@ -1,4 +1,6 @@
 import { Button } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
+import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { FaThumbsUp, FaRegThumbsUp } from "react-icons/fa6";
 import { api } from "~/utils/api";
@@ -14,6 +16,8 @@ const LikeButton: React.FC<LikeButtonProps> = ({
   likes,
   userLikedRecipe,
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const { data: session } = useSession();
   const [likeCount, setLikeCount] = useState(likes || 0);
   const [recipeLiked, setRecipeLiked] = useState(userLikedRecipe || false);
 
@@ -24,6 +28,13 @@ const LikeButton: React.FC<LikeButtonProps> = ({
   });
 
   const handleLike = () => {
+    if (!session?.user.id) {
+      return enqueueSnackbar("Login to Like this Recipe", {
+        autoHideDuration: 3000,
+        preventDuplicate: true,
+        variant: "warning",
+      });
+    }
     addRecipeLike({ id });
     setLikeCount(recipeLiked ? likeCount - 1 : likeCount + 1);
     setRecipeLiked(!recipeLiked);

@@ -76,10 +76,16 @@ export const createRecipe = async (
     publicationStatus,
   } = recipe;
 
-  const recipeIngredients = await createIngredients(ingredients, ctx);
-  const foundCollections = await findCollections(collections, ctx);
-  const author = await createdAuthor(authorName, ctx);
-  const foundUniqueCountry = await findUniqueCountry(country, ctx);
+  const recipeIngredients = ingredients
+    ? await createIngredients(ingredients, ctx)
+    : null;
+  const foundCollections = collections
+    ? await findCollections(collections, ctx)
+    : null;
+  const author = authorName ? await createdAuthor(authorName, ctx) : null;
+  const foundUniqueCountry = country
+    ? await findUniqueCountry(country, ctx)
+    : null;
 
   const foundTags = await createTags(tags, ctx);
   try {
@@ -128,7 +134,7 @@ export const createRecipe = async (
         authorId: author?.id,
         userId: id,
         collections: {
-          create: foundCollections.map((collection) => ({
+          create: foundCollections?.map((collection) => ({
             collection: {
               connect: {
                 id: collection.id,
@@ -146,7 +152,7 @@ export const createRecipe = async (
           })),
         },
         ingredientsSection: {
-          create: recipeIngredients.map((ingredient) => ({
+          create: recipeIngredients?.map((ingredient) => ({
             name: ingredient.name,
             ingredients: {
               create: ingredient.ingredients.map((ingredientDetail) => ({
@@ -203,9 +209,8 @@ export const getRecipeAndIngridients = async (
 
 export const getRecipeWithId = async (
   input: IdSchema,
-  ctx: { prisma: PrismaClient; session: Session }
+  ctx: { prisma: PrismaClient }
 ) => {
-  const { user } = ctx.session;
   try {
     const recipe = await ctx.prisma.recipe.findUnique({
       where: {
@@ -269,18 +274,18 @@ export const getRecipeWithId = async (
         },
       },
     });
-    if (
-      recipe?.publicationStatus === "published" ||
-      user.id === recipe?.userId
-    ) {
-      if (recipe?.images) {
-        recipe.images.forEach((image) => {
-          image.name = getSignedUrlAws(image.name);
-        });
-      }
 
+    if (recipe?.images) {
+      recipe.images.forEach((image) => {
+        image.name = getSignedUrlAws(image.name);
+      });
+    }
+
+    // TODO recipe schould not be return if the recipe is not publish or the user created the recipe is viewing it.
+    // we need to have the userId here in some way.
+    if (recipe) {
       return {
-        recipe: exclude(recipe, ["userId"]),
+        recipe: recipe,
       };
     }
 

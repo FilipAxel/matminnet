@@ -1,8 +1,9 @@
-import { type PrismaClient } from "@prisma/client";
+import { Prisma, type PrismaClient } from "@prisma/client";
 import { type Tags } from "../schema/tag.schema";
 import { type IdSchema } from "../schema/recipe.schema";
 import { type Pagination } from "../schema/utils";
 import { exclude } from "~/utils/prisma-utils";
+import { getSignedUrlAws } from "./aws.controller";
 
 export const getAllTags = async (ctx: { prisma: PrismaClient }) => {
   try {
@@ -101,5 +102,89 @@ export const getTags = async (
     };
   } catch (error) {
     console.error(error);
+  }
+};
+export const getRecipeWithTag = async (
+  tagName: string,
+  ctx: { prisma: PrismaClient },
+  userid?: string
+) => {
+  try {
+    const recipes = await ctx.prisma.recipe.findMany({
+      where: {
+        tags: {
+          some: {
+            tag: {
+              name: tagName,
+            },
+          },
+        },
+
+        AND: [
+          {
+            OR: [
+              {
+                publicationStatus: "published",
+              },
+              {
+                AND: [
+                  {
+                    userId: userid,
+                  },
+                  {
+                    publicationStatus: undefined,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+
+      include: {
+        images: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (recipes.length === 0) {
+      throw new Error("No recipes found for the specified tag.");
+    }
+
+    for (const recipe of recipes) {
+      if (recipe.images[0]) {
+        recipe.images[0].name = getSignedUrlAws(recipe.images[0].name);
+      }
+    }
+
+    const filterRecipes = recipes.map((recipe) => {
+      return exclude(recipe, [
+        "userId",
+        "updated_at",
+        "created_at",
+        "description",
+        "video",
+        "authorId",
+        "countryId",
+      ]);
+    });
+
+    return {
+      recipes: filterRecipes,
+    };
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      console.error("Prisma constraint violation:", error.message);
+      throw new Error("Invalid input. Please check your request parameters.");
+    } else {
+      console.error("Error fetching recipes with tag:", error);
+      throw error;
+    }
   }
 };

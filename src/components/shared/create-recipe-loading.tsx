@@ -5,7 +5,7 @@ import { useWindowSize } from "usehooks-ts";
 
 const content = [
   {
-    title: "Reading your recipe... hopefully we like it...",
+    title: "Reading your recipe...",
     subTitle: "",
     src: "/reading.svg",
   },
@@ -33,7 +33,7 @@ const CreateRecipeLoader: React.FC = () => {
       } else {
         setCurrentImageIndex((prevIndex) => prevIndex + 1);
       }
-    }, 2000);
+    }, 2300);
 
     return () => clearInterval(interval);
   }, [currentImageIndex]);

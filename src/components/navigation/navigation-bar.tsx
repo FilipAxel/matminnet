@@ -56,7 +56,7 @@ const NavigationBar = () => {
     { name: "Collections", path: "/collections" },
     { name: "Recipes", path: "/recipes" },
     { name: "Discover", path: "/discover" },
-    { name: "My Settings", path: "/settings" },
+    { name: "Settings", path: "/settings" },
   ];
 
   return (

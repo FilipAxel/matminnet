@@ -38,7 +38,7 @@ export const recipeRouter = createTRPCRouter({
     .input(idSchema)
     .query(async ({ input, ctx }) => await getRecipesOnCollection(input, ctx)),
 
-  getRecipeWithId: protectedProcedure
+  getRecipeWithId: publicProcedure
     .input(idSchema)
     .query(async ({ input, ctx }) => getRecipeWithId(input, ctx)),
 

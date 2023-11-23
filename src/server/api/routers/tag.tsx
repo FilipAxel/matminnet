@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -7,6 +8,7 @@ import {
 import {
   deleteTagOnRecipe,
   getAllTags,
+  getRecipeWithTag,
   getTags,
 } from "~/server/controller/tag.controller";
 import { idSchema } from "~/server/schema/recipe.schema";
@@ -22,4 +24,16 @@ export const tagRouter = createTRPCRouter({
   getTags: publicProcedure
     .input(pagination)
     .query(async ({ ctx, input }) => await getTags(input, ctx)),
+
+  getRecipeWithTag: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        userId: z.string().optional(),
+      })
+    )
+    .query(
+      async ({ ctx, input }) =>
+        await getRecipeWithTag(input.name, ctx, input.userId)
+    ),
 });

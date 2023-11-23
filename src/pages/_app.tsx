@@ -7,6 +7,7 @@ import "~/styles/globals.css";
 import { NextUIProvider, Spacer } from "@nextui-org/react";
 import NavigationBar from "~/components/navigation/navigation-bar";
 import { Inter, Roboto_Mono } from "next/font/google";
+import { SnackbarProvider } from "notistack";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,16 +26,18 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <NextUIProvider>
-        <NavigationBar />
-        <Spacer y={1} />
-        <div
-          className={`${inter.variable} ${roboto_mono.variable} m-auto max-w-[1200px] font-sans`}
-        >
-          <Component {...pageProps} />
-        </div>
-        <Analytics />
-      </NextUIProvider>
+      <SnackbarProvider>
+        <NextUIProvider>
+          <NavigationBar />
+          <Spacer y={1} />
+          <div
+            className={`${inter.variable} ${roboto_mono.variable} m-auto max-w-[1200px] font-sans`}
+          >
+            <Component {...pageProps} />
+          </div>
+          <Analytics />
+        </NextUIProvider>
+      </SnackbarProvider>
     </SessionProvider>
   );
 };

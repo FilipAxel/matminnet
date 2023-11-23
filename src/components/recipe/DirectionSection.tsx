@@ -49,8 +49,8 @@ const DirectionSection: React.FC<DirectionSectionProps> = ({ direction }) => {
           radius="none"
           size="lg"
           classNames={{
-            base: "data-[selected=true]:truncate overflow-x-hidden",
-            label: "data-[selected=true]:truncate overflow-x-hidden",
+            base: "data-[selected=true]:truncate data-[selected=true]:w-full",
+            label: "data-[selected=true]:truncate data-[selected=true]:w-full",
           }}
         >
           <p className="ml-1 text-left font-normal">
@@ -87,13 +87,17 @@ const DirectionSection: React.FC<DirectionSectionProps> = ({ direction }) => {
           <Divider />
           <CardBody>
             {direction.subSteps.map((step) => (
-              <div className="p-[6px]" key={step.subStepIndex}>
+              <div
+                className="flex w-full min-w-[320px] flex-col p-[6px]"
+                key={step.subStepIndex}
+              >
                 <Checkbox
                   lineThrough
                   color="primary"
                   classNames={{
-                    base: "data-[selected=true]:truncate",
-                    label: "data-[selected=true]:truncate",
+                    base: "data-[selected=true]:truncate data-[selected=true]:w-full",
+                    label:
+                      "data-[selected=true]:truncate data-[selected=true]:w-full",
                   }}
                   radius="none"
                   size="lg"

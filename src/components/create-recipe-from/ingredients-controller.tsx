@@ -32,6 +32,8 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
       unit: "st",
     })) ?? [];
 
+  console.log(currentValue);
+
   const handleInputChange = (
     newValue: MultiValue<IngredientOption[] | IngredientOption>,
     actionMeta: ActionMeta<IngredientOption>
@@ -96,6 +98,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
       <CreatableSelect
         isMulti
         styles={customSelectStyles}
+        value={currentValue}
         aria-label={"ingredients"}
         options={ingredientOptions}
         isClearable={true}

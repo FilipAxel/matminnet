@@ -25,7 +25,7 @@ const SignIn = ({
     <>
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
-          <div className="lg:px-8 flex min-h-full flex-1 flex-col justify-center px-6 py-12">
+          <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
               <Image
                 width={100}
@@ -33,6 +33,7 @@ const SignIn = ({
                 className="mx-auto h-60 w-auto rounded-full bg-black"
                 src="/icon-512x512.png"
                 alt="Mat Minne"
+                priority
               />
               <h1 className="mt-10 text-center text-2xl font-semibold leading-9 tracking-tight text-gray-900">
                 Sign in to your account
@@ -55,7 +56,7 @@ const SignIn = ({
               <h3 className="text-gray-600">Don&apos;t have an account?</h3>
               <h3
                 onClick={() => void handleSignIn(provider.id)}
-                className="ml-1 font-semibold"
+                className="ml-1 cursor-pointer font-semibold"
               >
                 Sign up
               </h3>

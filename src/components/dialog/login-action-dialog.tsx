@@ -14,7 +14,7 @@ const LoginActionDialog = () => {
 
   const handleClose = () => {
     // Redirect the user to a specific page when the modal is closed
-    void router.push("/discover");
+    void router.push("/");
   };
 
   const routeName = router.pathname.substring(1);
@@ -30,9 +30,9 @@ const LoginActionDialog = () => {
         <ModalContent>
           <ModalHeader></ModalHeader>
           <ModalBody>
-            <h2 className="p-5 text-center text-[20px] font-bold">
-              Welcome! To access {routeName} page, please create an account or
-              log in.
+            <h1 className="text-center text-[24px] font-bold">Welcome!</h1>
+            <h2 className="pb-5 text-center text-[20px]">
+              To access {routeName} page, please create an account or log in.
             </h2>
             <Button
               color="primary"

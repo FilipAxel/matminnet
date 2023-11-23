@@ -7,8 +7,17 @@ import { PiBowlFoodDuotone } from "react-icons/pi";
 type RecipeWithImage = Recipe & {
   images: { name: string }[];
 };
+interface MinimalInfoRecipe {
+  cookingTime: number | null;
+  id: string;
+  images: { name: string }[]; // Corrected type
+  name: string;
+  publicationStatus: string;
+  servingSize: string | null;
+}
+
 interface RecipeCardProps {
-  recipe: RecipeWithImage;
+  recipe: RecipeWithImage | MinimalInfoRecipe;
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
