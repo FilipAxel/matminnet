@@ -1,11 +1,12 @@
 import { Button, Image, Link } from "@nextui-org/react";
 import ActionCard from "~/components/shared/action-card";
+import NextImage from "next/image";
 
 export default function Home() {
   return (
     <>
       <div className="pt-20">
-        <div className="container mx-auto flex flex-col flex-wrap items-center px-3 md:flex-row">
+        <div className="container mx-auto flex flex-col flex-wrap items-center px-3 md:flex-row md:px-0">
           <div className="flex w-full flex-col items-start justify-center text-center md:w-2/5 md:text-left">
             <p className="tracking-loose w-full font-sans text-[12px] uppercase">
               Discover Delicious Recipes and Share Your Culinary Creations
@@ -42,7 +43,14 @@ export default function Home() {
           </div>
 
           <div className="w-full py-6 text-center md:w-3/5">
-            <Image alt="hero" className="z-0 w-full md:w-4/5" src="hero.png" />
+            <Image
+              as={NextImage}
+              width={450}
+              height={450}
+              alt="hero"
+              className="z-0 mx-auto w-full md:ml-8"
+              src="/hero.jpg"
+            />
           </div>
         </div>
       </div>
