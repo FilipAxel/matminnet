@@ -42,16 +42,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-full py-6 text-center md:w-3/5">
-            <Image
-              as={NextImage}
-              width={450}
-              height={450}
-              alt="hero"
-              className="z-0 mx-auto w-full md:ml-8"
-              src="/hero.jpg"
-            />
-          </div>
+          <Image
+            as={NextImage}
+            width={0}
+            height={0}
+            alt="hero"
+            className="z-0 mx-auto h-[520px] w-[520px] md:ml-7"
+            src="/hero.svg"
+          />
         </div>
       </div>
       <section className=" bg-white py-8">
@@ -148,10 +146,9 @@ export default function Home() {
           />
         </div>
       </section>
-      {/*     add wave here later? */}
       <section className="container mx-auto mb-12 py-6 text-center">
-        <div className="mx-auto mt-6 w-full p-6 ">
-          <Image alt="hero" className="z-0 m-auto w-full" src="hero.png" />
+        <div className="mx-auto mt-6 flex w-full justify-center p-6">
+          <Image alt="hero" className="z-0 mx-auto w-full" src="hero.png" />
         </div>
         <h2 className="my-2 w-full text-center text-4xl font-bold leading-tight">
           Share Your Culinary Creations
