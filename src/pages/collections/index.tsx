@@ -1,29 +1,29 @@
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import CollectionCard from "~/components/collection/collection-card";
 import CreateCollection from "~/components/collection/create-collection";
+import LoginActionDialog from "~/components/dialog/login-action-dialog";
 import SkeletoncollectionCard from "~/components/skeleton/collection-card-skeletion";
 import { api } from "~/utils/api";
 
 const Collections = () => {
   const numberOfSkeletonsCards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const { status, data: session } = useSession();
-  const router = useRouter();
   const { data: collections, isLoading } =
     api.collection.getCollections.useQuery(
       undefined, // no input
       { enabled: session?.user !== undefined }
     );
 
-  if (status === "unauthenticated" && !session) {
-    void router.push("/discover");
-  }
   if (status === "loading" || isLoading) {
     <div className="mx-auto mb-10 mt-2 flex flex-wrap justify-center gap-1 p-0 xs:max-w-[97%] xs:justify-normal md:justify-normal">
       {numberOfSkeletonsCards.map((n) => {
         return <SkeletoncollectionCard key={n} />;
       })}
     </div>;
+  }
+
+  if (status === "unauthenticated" && !session) {
+    return <LoginActionDialog />;
   }
 
   return (
