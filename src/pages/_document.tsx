@@ -45,11 +45,11 @@ class MyDocument extends Document {
           />
           <meta
             property="og:image"
-            content="https://metatags.io/images/meta-tags.png"
+            content="https://www.matminnet.se/hero-preview.png"
           />
 
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:url" content="https://matminne.com" />
+          <meta name="twitter:url" content="https://www.matminnet.se" />
           <meta
             name="twitter:title"
             content="Matminnet Recipe Builder - Share Your Culinary Creations"
@@ -60,7 +60,7 @@ class MyDocument extends Document {
           />
           <meta
             name="twitter:image"
-            content="https://metatags.io/images/meta-tags.png"
+            content="https://www.matminnet.se/hero-preview.png"
           />
 
           <link rel="manifest" href="/manifest.json" />
@@ -75,24 +75,17 @@ class MyDocument extends Document {
 
           <meta
             name="keywords"
-            content="recipe application, cooking, recipes, food, culinary, cooking tips"
+            content="recipe application, cooking, recipes, food, culinary, cooking tips, save recipes, cook books"
           />
-          <meta name="application-name" content="Recipe Application" />
+          <meta name="application-name" content="Recipe Storage" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
             name="apple-mobile-web-app-status-bar-style"
             content="default"
           />
-          <meta
-            name="apple-mobile-web-app-title"
-            content="Recipe Application"
-          />
+          <meta name="apple-mobile-web-app-title" content="Recipe Storage" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
-          <meta
-            name="msapplication-config"
-            content="/icons/browserconfig.xml"
-          />
           <meta name="msapplication-TileColor" content="#FFFFFF" />
           <meta name="msapplication-tap-highlight" content="no" />
           <meta name="theme-color" content="#FFFFFF" />
@@ -104,10 +97,10 @@ class MyDocument extends Document {
             content="Create and store delicious recipes with our Recipe Application. Find a variety of recipes and cooking tips to enhance your culinary skills."
           />
           <meta property="og:site_name" content="Recipe Application" />
-          <meta property="og:url" content="https://matminnet.vercel.app" />
+          <meta property="og:url" content="https://www.matminnet.se" />
           <meta
             property="og:image"
-            content="https://matminnet.vercel.app/icons/apple-touch-icon.png"
+            content="https://www.matminnet.se/icons/icon-512x512.png"
           />
         </Head>
         <body className="h-full overflow-y-scroll">
