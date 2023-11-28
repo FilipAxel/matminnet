@@ -27,10 +27,10 @@ const Pagination: React.FC<PaginationsProps> = ({
     <>
       <div className="relative flex flex-col gap-1">
         <div className="flex gap-2">
-          <h1 className="font-Inter text-[25px] font-[700] text-[#000]">
+          <h1 className="text-[25px] font-[700] text-[#000]">
             {calculatePercentage()}%{" "}
           </h1>
-          <p className="font-Poppins flex items-center text-[16px] font-normal text-[#636363]">
+          <p className="flex items-center text-[16px] font-normal text-[#636363]">
             Complete
           </p>
         </div>

@@ -15,10 +15,6 @@ export default {
         xs: "385px",
         media428: "428px",
       },
-      fontFamily: {
-        sans: ["var(--font-inter)"],
-        mono: ["var(--font-roboto-mono)"],
-      },
     },
   },
   darkMode: "class",

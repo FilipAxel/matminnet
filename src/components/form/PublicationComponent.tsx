@@ -29,10 +29,10 @@ const PublicationComponent: React.FC<PublicationComponentProps> = ({
         {(_) => (
           <>
             <ModalHeader className="flex items-center gap-3">
-              <h1 className="font-sans">Share with Community</h1>
+              <h1 className=" ">Share with Community</h1>
             </ModalHeader>
             <ModalBody>
-              <p className="font-sans text-sm text-gray-700">
+              <p className="  text-sm text-gray-700">
                 By choosing to publish your recipe, you&apos;re sending it to
                 our administrators for review. After approval, your recipe will
                 be featured on the discovery page, making it accessible to
@@ -42,7 +42,7 @@ const PublicationComponent: React.FC<PublicationComponentProps> = ({
             <ModalFooter>
               <Button
                 color="danger"
-                className="font-sans"
+                className=" "
                 variant="light"
                 onPress={() => {
                   submitForm(false);
@@ -52,7 +52,7 @@ const PublicationComponent: React.FC<PublicationComponentProps> = ({
               </Button>
               <Button
                 color="success"
-                className="font-sans font-semibold text-white"
+                className="  font-semibold text-white"
                 endContent={<MdIosShare className="text-xl" />}
                 onPress={() => {
                   submitForm(true);

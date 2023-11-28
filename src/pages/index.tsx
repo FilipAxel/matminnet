@@ -8,19 +8,19 @@ export default function Home() {
       <div className="pt-20">
         <div className="container mx-auto flex flex-col flex-wrap items-center px-3 md:flex-row md:px-0">
           <div className="flex w-full flex-col items-start justify-center text-center md:w-2/5 md:text-left">
-            <p className="tracking-loose w-full font-sans text-[12px] uppercase">
+            <p className="tracking-loose w-full   text-[12px] uppercase">
               Discover Delicious Recipes and Share Your Culinary Creations
             </p>
-            <h1 className="my-6 font-sans text-4xl font-bold leading-tight">
+            <h1 className="my-6   text-4xl font-bold leading-tight">
               Have a recipe you want to share? Save all your recipes in one
               place!
             </h1>
-            <p className="text-1xl mx-1 mb-8 font-sans leading-normal">
+            <p className="text-1xl mx-1 mb-8   leading-normal">
               Tired of cluttered kitchen shelves filled with cookbooks? Join our
               community and make your life easier.
             </p>
 
-            <div className="flex w-full justify-center space-x-4 font-sans lg:justify-start">
+            <div className="flex w-full justify-center space-x-4   lg:justify-start">
               <Button
                 href="/discover"
                 as={Link}
@@ -62,7 +62,7 @@ export default function Home() {
               <h3 className="mb-3 text-3xl font-bold leading-none text-gray-800">
                 Need Dinner Inspiration?
               </h3>
-              <p className="mb-8 font-mono text-gray-600">
+              <p className="mb-8 text-gray-600">
                 Are you wondering what to cook for dinner tonight? Look no
                 further! Our recipe collection is here to rescue you from the
                 &quot;What&apos;s for dinner?&quot; dilemma.
@@ -94,7 +94,7 @@ export default function Home() {
                 <h3 className="mb-3 text-3xl font-bold leading-none text-gray-800">
                   Simplify Your Cookbook Collection
                 </h3>
-                <p className="mb-8 font-mono text-gray-600">
+                <p className="mb-8 text-gray-600">
                   Tired of cluttered kitchen shelves filled with cookbooks? Join
                   our community and make your life easier. By adding your
                   favorite recipes to our website, you&apos;ll be part of a

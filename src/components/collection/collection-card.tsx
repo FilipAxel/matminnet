@@ -37,7 +37,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ collection }) => {
         src={imageUrl}
       />
       <CardFooter className="absolute top-0 h-full flex-col items-start justify-end bg-gradient-to-t from-black via-transparent to-transparent">
-        <h1 className=" text-rightfont-semibold text-white">
+        <h1 className="text-right font-semibold text-white">
           {collection.name}
         </h1>
         <div className="flex items-center">

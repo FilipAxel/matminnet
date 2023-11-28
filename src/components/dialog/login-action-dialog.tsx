@@ -30,9 +30,13 @@ const LoginActionDialog = () => {
           <ModalHeader></ModalHeader>
           <ModalBody>
             <h1 className="text-center text-[24px] font-bold">Welcome!</h1>
-            <h2 className="pb-5 text-center text-[20px]">
-              To access {routeName} page, please create an account or log in.
+            <h2 className="text-center text-[20px]">
+              To View the following page:
+              <span className="font-bold">{routeName}</span>.
             </h2>
+            <p className="pb-5 text-center">
+              Create a Free Account to Continue.
+            </p>
             <Button
               color="primary"
               size={"lg"}
