@@ -14,6 +14,8 @@ const Discover = () => {
   return (
     <>
       {recipes ? (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         <SearchRecipe recipes={recipes} setSearchResults={setSearchResults} />
       ) : null}
       <Spacer y={1} />

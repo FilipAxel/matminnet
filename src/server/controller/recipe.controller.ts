@@ -309,13 +309,29 @@ export const getApprovedPublication = async (ctx: { prisma: PrismaClient }) => {
       },
     },
   });
-  for (const recipe of recipes) {
-    for (const image of recipe.images) {
-      image.name = getSignedUrlAws(image.name);
-    }
-  }
 
-  return recipes;
+  if (recipes) {
+    for (const recipe of recipes) {
+      if (recipe.images[0]) {
+        recipe.images[0].name = getSignedUrlAws(recipe.images[0].name);
+      }
+    }
+
+    const filterRecipes = recipes.map((recipe) => {
+      return exclude(recipe, [
+        "userId",
+        "updated_at",
+        "created_at",
+        "description",
+        "video",
+        "authorId",
+        "countryId",
+      ]);
+    });
+
+    return filterRecipes;
+  }
+  return null;
 };
 
 export const findImageToDelete = async (

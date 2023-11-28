@@ -10,10 +10,9 @@ import { useRouter } from "next/router";
 import React from "react";
 
 const LoginActionDialog = () => {
-  const router = useRouter(); // Get the router instance
+  const router = useRouter();
 
   const handleClose = () => {
-    // Redirect the user to a specific page when the modal is closed
     void router.push("/");
   };
 

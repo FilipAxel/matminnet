@@ -32,6 +32,8 @@ import PaginationButtons from "~/components/pagination/pagination-buttons";
 import IngredientsStepComponent, {
   type IngredientInterface,
 } from "~/components/form/ingredients/IngredientsStepComponent";
+import { useSession } from "next-auth/react";
+import LoginActionDialog from "~/components/dialog/login-action-dialog";
 
 type CreateRecipeWithDataFunction = (
   submitedForm: FormValues | null,
@@ -46,6 +48,8 @@ interface RecipeData {
 }
 
 const Create = () => {
+  const { data: session, status } = useSession();
+
   const { activePage, range, setPage, onNext, onPrevious } = usePagination({
     total: 6,
     initialPage: 1,
@@ -203,6 +207,10 @@ const Create = () => {
       );
     }
   };
+
+  if (status === "unauthenticated" && !session) {
+    return <LoginActionDialog />;
+  }
 
   return (
     <>
