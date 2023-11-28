@@ -6,14 +6,13 @@ export default function Home() {
   return (
     <>
       <div className="pt-20">
-        <div className="container mx-auto flex flex-col flex-wrap items-center px-3 md:flex-row md:px-0">
+        <div className="container mx-auto flex flex-col flex-wrap items-center justify-center px-3 md:flex-row md:flex-nowrap md:px-0">
           <div className="flex w-full flex-col items-start justify-center text-center md:w-2/5 md:text-left">
-            <p className="tracking-loose w-full   text-[12px] uppercase">
+            <p className="tracking-loose w-full text-[12px] uppercase">
               Discover Delicious Recipes and Share Your Culinary Creations
             </p>
-            <h1 className="my-6   text-4xl font-bold leading-tight">
-              Have a recipe you want to share? Save all your recipes in one
-              place!
+            <h1 className="my-6 text-4xl font-bold leading-tight md:text-5xl">
+              Cook. Share. Connect: Your Recipe Hub!
             </h1>
             <p className="text-1xl mx-1 mb-8   leading-normal">
               Tired of cluttered kitchen shelves filled with cookbooks? Join our
@@ -26,6 +25,7 @@ export default function Home() {
                 as={Link}
                 size="md"
                 color="primary"
+                radius="sm"
                 variant="solid"
               >
                 Explore Recipes
@@ -35,7 +35,7 @@ export default function Home() {
                 as={Link}
                 size="md"
                 color="primary"
-                variant="solid"
+                variant="light"
               >
                 Share Your Recipes
               </Button>
@@ -156,7 +156,7 @@ export default function Home() {
         <div className="mb-4 w-full">
           <div className="mx-auto my-0 h-1 w-1/6 rounded-t bg-white py-0 opacity-25"></div>
         </div>
-        <h3 className="my-4 ml-6 mr-2 text-left text-xl text-gray-600">
+        <h3 className="my-4 ml-6 mr-2 text-center text-xl text-gray-600">
           Why add your recipes here? With our platform, you can organize your
           recipes effortlessly, find new culinary inspirations shared by fellow
           users, and access your recipes from anywhere. Say goodbye to the chaos
