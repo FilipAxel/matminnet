@@ -148,7 +148,7 @@ const NavigationBar = () => {
           <NavbarItem className="hidden lg:flex">
             <Button
               color="primary"
-              variant="flat"
+              variant="light"
               onClick={() => void void signIn()}
             >
               Login
@@ -158,7 +158,7 @@ const NavigationBar = () => {
             <Button
               onClick={() => void void signIn()}
               color="primary"
-              variant="flat"
+              variant="bordered"
             >
               Sign Up
             </Button>
