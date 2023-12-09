@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import LoginActionDialog from "~/components/dialog/login-action-dialog";
 
-import CreateRecipe from "~/components/recipe/create-recipe";
 import RecipeCard from "~/components/recipe/recipe-card";
 import SearchRecipe from "~/components/recipe/recipe-search";
 import SkeletonRecipeCard from "~/components/skeleton/recipe-card-skeletion";
@@ -32,10 +31,6 @@ const Recipes = () => {
           <h1 className="text-center font-normal">
             Oh no! It seems like you haven&apos;t added any recipes yet.
           </h1>
-
-          <div className="mt-5 flex justify-center">
-            <CreateRecipe />
-          </div>
         </div>
       </div>
     );
@@ -55,9 +50,6 @@ const Recipes = () => {
         </div>
       ) : (
         <div className="mx-auto mb-10 mt-4 flex flex-wrap justify-center gap-5 p-0  xs:max-w-[90%]  xs:justify-normal media428:max-w-[88%]  md:justify-normal">
-          <div className="w-full xs:w-auto">
-            <CreateRecipe />
-          </div>
           {searchResults.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}

@@ -19,6 +19,7 @@ const AddStep: React.FC<AddStepProps> = ({
     <Button
       variant="solid"
       color="primary"
+      radius="sm"
       disabled={stepCount >= 20}
       isDisabled={stepCount >= 20}
       className="h-[40px] w-full text-xl font-bold"

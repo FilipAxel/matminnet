@@ -47,6 +47,7 @@ export default function Home() {
             width={0}
             height={0}
             alt="hero"
+            priority
             className="z-0 mx-auto h-[520px] w-[520px] md:ml-7"
             src="/hero.svg"
           />

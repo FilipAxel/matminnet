@@ -4,10 +4,10 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import BackButton from "~/components/shared/back-button";
-import CreateRecipe from "~/components/recipe/create-recipe";
-import RecipeCard from "~/components/recipe/recipe-card";
+
 import SearchRecipe from "~/components/recipe/recipe-search";
 import { api } from "~/utils/api";
+import RecipeCard from "~/components/recipe/recipe-card";
 
 export type RecipeWithImage = Recipe & {
   images: { name: string }[];
@@ -54,12 +54,6 @@ const CollectionPage = () => {
           </div>
         ) : null}
         <div className="mx-auto mb-10 mt-4 flex flex-wrap justify-center gap-5 p-0  xs:max-w-[97%]  xs:justify-normal media428:max-w-[88%]  md:justify-normal">
-          {collection && !isLoadingCollection ? (
-            <div className="w-full xs:w-auto">
-              <CreateRecipe />
-            </div>
-          ) : null}
-
           {searchResults && !isLoading
             ? searchResults.map((recipe: RecipeWithImage) => (
                 <RecipeCard key={recipe.id} recipe={recipe} />

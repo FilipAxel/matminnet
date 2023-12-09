@@ -89,6 +89,7 @@ model VerificationToken {
 model Tag {
     id         String       @id @default(cuid())
     name       String       @unique
+    type       String
     recipeTags RecipeTags[]
     created_at DateTime     @default(now())
     updated_at DateTime     @updatedAt

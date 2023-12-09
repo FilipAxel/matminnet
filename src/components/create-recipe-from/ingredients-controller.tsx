@@ -32,13 +32,10 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
       unit: "st",
     })) ?? [];
 
-  console.log(currentValue);
-
   const handleInputChange = (
     newValue: MultiValue<IngredientOption[] | IngredientOption>,
     actionMeta: ActionMeta<IngredientOption>
   ) => {
-    console.log(actionMeta);
     if (actionMeta.action === "create-option") {
       const { label, value } = actionMeta.option;
       const existingOptionIndex = currentValue.findIndex(

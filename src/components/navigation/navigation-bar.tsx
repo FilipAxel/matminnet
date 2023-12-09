@@ -20,7 +20,9 @@ import {
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { MdLogout } from "react-icons/md";
+import { MdLogout, MdHome, MdMenuBook, MdOutlineSearch } from "react-icons/md";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import { SiBookstack } from "react-icons/si";
 
 type Key = string | number;
 
@@ -52,11 +54,37 @@ const NavigationBar = () => {
   };
 
   const menuItems = [
-    { name: "Home", path: "/" },
-    { name: "Collections", path: "/collections" },
-    { name: "Recipes", path: "/recipes" },
-    { name: "Discover", path: "/discover" },
-    { name: "Settings", path: "/settings" },
+    {
+      name: "Home",
+      path: "/",
+      public: true,
+      icon: <MdHome className="text-2xl" />,
+    },
+    {
+      name: "Discover",
+      path: "/discover",
+      public: true,
+      icon: <MdOutlineSearch className="text-2xl" />,
+    },
+    {
+      name: "Create",
+      path: "/recipes/create",
+      public: session?.user?.id ? true : false,
+      icon: <IoIosAddCircleOutline className="text-2xl" />,
+    },
+    {
+      name: "Recipes",
+      path: "/recipes",
+      public: session?.user?.id ? true : false,
+      icon: <MdMenuBook className="text-2xl" />,
+    },
+
+    {
+      name: "Collections",
+      path: "/collections",
+      public: session?.user?.id ? true : false,
+      icon: <SiBookstack className="text-2xl" />,
+    },
   ];
 
   return (
@@ -74,28 +102,31 @@ const NavigationBar = () => {
       </NavbarContent>
 
       <NavbarContent className="hidden gap-4 sm:flex" justify="center">
-        <NavbarItem isActive={router.pathname === "/"}>
-          <Link className=" " color="foreground" href="/">
-            Home
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive={router.pathname === "/collections"}>
-          <Link className=" " color="foreground" href="/collections">
-            Collections
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive={router.pathname === "/recipes"}>
-          <Link
-            className=" "
-            color="foreground"
-            href="/recipes"
-            aria-current="page"
-          >
-            Recipes
-          </Link>
-        </NavbarItem>
+        {session?.user?.id && (
+          <NavbarItem isActive={router.pathname === "/collections"}>
+            <Link color="foreground" href="/collections">
+              Collections
+            </Link>
+          </NavbarItem>
+        )}
+
+        {session?.user?.id && (
+          <NavbarItem isActive={router.pathname === "/recipes/create"}>
+            <Link color="foreground" href="/recipes/create" aria-current="page">
+              Create
+            </Link>
+          </NavbarItem>
+        )}
+        {session?.user?.id && (
+          <NavbarItem isActive={router.pathname === "/recipes"}>
+            <Link color="foreground" href="/recipes" aria-current="page">
+              Recipes
+            </Link>
+          </NavbarItem>
+        )}
+
         <NavbarItem isActive={router.pathname === "/discover"}>
-          <Link className=" " color="foreground" href="/discover">
+          <Link color="foreground" href="/discover">
             Discover
           </Link>
         </NavbarItem>
@@ -167,18 +198,25 @@ const NavigationBar = () => {
       )}
 
       <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item.name}-${index}`}>
-            <Link
-              color="foreground"
-              className="my-2 w-full  "
-              href={item.path}
-              size="lg"
-            >
-              {item.name}
-            </Link>
-          </NavbarMenuItem>
-        ))}
+        {menuItems.map(
+          (item, index) =>
+            item.public && (
+              <NavbarMenuItem
+                className="flex items-center gap-2"
+                key={`${item.name}-${index}`}
+              >
+                {item.icon}
+                <Link
+                  color="foreground"
+                  className="my-2 w-full  "
+                  href={item.path}
+                  size="lg"
+                >
+                  {item.name}
+                </Link>
+              </NavbarMenuItem>
+            )
+        )}
       </NavbarMenu>
     </Navbar>
   );

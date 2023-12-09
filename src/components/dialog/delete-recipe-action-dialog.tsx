@@ -59,13 +59,12 @@ const DeleteRecipeActionDialog: React.FC<DeleteRecipeActionDialogProps> = ({
         <ModalFooter>
           <Button
             variant="light"
-            className=" "
             color="danger"
             onPress={() => setDeleteActioOpen(false)}
           >
             Cancel
           </Button>
-          <Button className=" " color="primary" onPress={() => handleDelete()}>
+          <Button color="primary" onPress={() => handleDelete()}>
             Yes, Delete
           </Button>
         </ModalFooter>

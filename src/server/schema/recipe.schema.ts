@@ -3,12 +3,7 @@ import { z } from "zod";
 export const recipeFields = {
   name: z.string(),
   description: z.string(),
-  tags: z.array(
-    z.object({
-      value: z.string(),
-      label: z.string(),
-    })
-  ),
+  tags: z.array(z.string()),
   servingSize: z.string(),
   cookingTime: z.union([z.number(), z.null(), z.string()]),
   video: z.string(),

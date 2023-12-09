@@ -1,15 +1,15 @@
-import { type Control, Controller } from "react-hook-form";
-import TagsController from "../create-recipe-from/tags.controller";
+import { type UseFormSetValue } from "react-hook-form";
 import { type FormValues } from "../create-recipe-from/from-interface";
 import { ScrollShadow, cn } from "@nextui-org/react";
 import { useState } from "react";
+import TagSelector from "../tag/tag-component";
 
 interface TagComponentProps {
-  control: Control<FormValues>;
+  setValue: UseFormSetValue<FormValues>;
   getValues: () => FormValues;
 }
 
-const TagComponent: React.FC<TagComponentProps> = ({ control, getValues }) => {
+const TagComponent: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
   const [shadowSize, setShadowSize] = useState(50);
   const toggleSize = () => {
     setShadowSize((prevSize) => (prevSize === 50 ? 0 : 50));
@@ -17,7 +17,6 @@ const TagComponent: React.FC<TagComponentProps> = ({ control, getValues }) => {
   return (
     <div className="my-10">
       <h1 className="mb-5 text-4xl font-semibold">Tags</h1>
-
       <ScrollShadow
         hideScrollBar
         onClick={toggleSize}
@@ -36,16 +35,7 @@ const TagComponent: React.FC<TagComponentProps> = ({ control, getValues }) => {
         </p>
       </ScrollShadow>
 
-      <div className="w-full">
-        <Controller
-          name="tags"
-          render={({ field }) => {
-            const currentValue = getValues().tags || [];
-            return <TagsController field={field} currentValue={currentValue} />;
-          }}
-          control={control}
-        />
-      </div>
+      <TagSelector setValue={setValue} getValues={getValues} />
     </div>
   );
 };

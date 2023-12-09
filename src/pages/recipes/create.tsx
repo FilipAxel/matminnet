@@ -180,7 +180,6 @@ const Create = () => {
   ) => {
     if (submitedForm && filteredDirectionsSteps) {
       setShowComponent(true);
-
       const updatedIngredientSection = ingredientSection.map((section) => {
         section.ingredients.forEach((ingredientOption) => {
           delete ingredientOption.error;
@@ -293,7 +292,7 @@ const Create = () => {
 
           {activePage === 5 && (
             <div>
-              <TagComponent control={control} getValues={getValues} />
+              <TagComponent setValue={setValue} getValues={getValues} />
             </div>
           )}
 

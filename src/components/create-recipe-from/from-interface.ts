@@ -2,7 +2,7 @@ export interface FormValues {
   name: string;
   description: string;
   directions: string;
-  tags: TagOption[];
+  tags: string[];
   ingredients: {
     ingredients: IngredientOption[];
   }[];
@@ -16,11 +16,6 @@ export interface FormValues {
 }
 
 export interface CollectionOption {
-  value: string;
-  label: string;
-}
-
-export interface TagOption {
   value: string;
   label: string;
 }

@@ -108,7 +108,7 @@ const RecipeSection: React.FC<RecipeSectionProps> = ({ id }) => {
                 </ScrollShadow>
               )}
 
-              <div className="justify-left mx-3 my-4 flex gap-2">
+              <div className="justify-left mx-3 my-4 flex flex-wrap gap-2 px-2">
                 {data?.recipe.tags.map((tag, index) => (
                   <Button
                     href={`/tag/${tag.tag.name}`}

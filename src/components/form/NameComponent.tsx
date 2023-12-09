@@ -19,7 +19,7 @@ const NameComponent: React.FC<NameProps> = ({ control, errors }) => {
       }}
       render={({ field }) => (
         <Input
-          size="md"
+          size="sm"
           radius="none"
           variant="faded"
           isRequired

@@ -37,23 +37,11 @@ export const createTags = async (tags: Tags, ctx: { prisma: PrismaClient }) => {
     }[] = [];
 
     for (const tag of tags) {
-      const existingTag = await getTag(tag.value, ctx);
-
+      const existingTag = await getTag(tag, ctx);
       if (existingTag) {
         recipeTag.push({
-          name: tag.value,
+          name: tag,
           tagId: existingTag.id,
-        });
-      } else {
-        const newTag = await ctx.prisma.tag.create({
-          data: {
-            name: tag.value,
-          },
-        });
-
-        recipeTag.push({
-          name: tag.value,
-          tagId: newTag.id,
         });
       }
     }

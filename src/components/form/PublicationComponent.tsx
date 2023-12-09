@@ -29,7 +29,7 @@ const PublicationComponent: React.FC<PublicationComponentProps> = ({
         {(_) => (
           <>
             <ModalHeader className="flex items-center gap-3">
-              <h1 className=" ">Share with Community</h1>
+              <h1>Share with Community</h1>
             </ModalHeader>
             <ModalBody>
               <p className="  text-sm text-gray-700">
@@ -42,7 +42,6 @@ const PublicationComponent: React.FC<PublicationComponentProps> = ({
             <ModalFooter>
               <Button
                 color="danger"
-                className=" "
                 variant="light"
                 onPress={() => {
                   submitForm(false);
