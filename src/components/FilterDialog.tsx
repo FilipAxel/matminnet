@@ -34,9 +34,9 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
   });
 
   const cookingTime = [
-    { name: "Under 15 mins", value: "15" },
-    { name: "Under 30 mins", value: "30" },
-    { name: "Under 60 mins", value: "60" },
+    { name: "Under 15 minuter", value: "15" },
+    { name: "Under 30 minuter", value: "30" },
+    { name: "Under 60 minuter", value: "60" },
   ];
 
   const handleFilters = useDebouncedCallback(() => {
@@ -52,7 +52,6 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
       params.delete("cookingTime");
     }
 
-    // Add tags parameter
     if (selectedFilters.tags.length > 0) {
       params.set("tags", selectedFilters.tags.join(","));
     } else {
@@ -122,9 +121,9 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Filters</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Filter</ModalHeader>
               <ModalBody>
-                <h1>Cooking Time</h1>
+                <h1>Tillagningstid</h1>
                 <div className="flex flex-wrap gap-1">
                   {cookingTime.map((time) => {
                     return (
@@ -157,7 +156,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                 </div>
                 {tags && (
                   <div className="flex flex-col gap-4">
-                    <h1>Meals</h1>
+                    <h1>Måltider</h1>
                     <div className="flex flex-wrap gap-1">
                       {tags.map(
                         (tag) =>
@@ -189,7 +188,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                           )
                       )}
                     </div>
-                    <h1>Diet</h1>
+                    <h1>Kost</h1>
                     <div className="flex flex-wrap gap-1">
                       {tags.map(
                         (tag) =>
@@ -221,7 +220,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                           )
                       )}
                     </div>
-                    <h1>Others</h1>
+                    <h1>Andra</h1>
                     <div className="flex flex-wrap gap-1">
                       {tags.map(
                         (tag) =>
@@ -266,7 +265,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                     handleFilters();
                   }}
                 >
-                  Clear All
+                  Rensa allt
                 </Button>
                 <Button
                   color="primary"
@@ -275,7 +274,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                     handleFilters();
                   }}
                 >
-                  Apply
+                  Tillämpa
                 </Button>
               </ModalFooter>
             </>

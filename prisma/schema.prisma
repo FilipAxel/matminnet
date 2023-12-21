@@ -70,15 +70,6 @@ model User {
     updated_at DateTime @updatedAt
 }
 
-model Author {
-    id     String   @id @default(cuid())
-    name   String   @unique
-    Recipe Recipe[]
-
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
-}
-
 model VerificationToken {
     identifier String
     token      String   @unique
@@ -154,8 +145,6 @@ model Recipe {
     countryId                String?
     images                   Image[]
     video                    String?
-    author                   Author?                    @relation(fields: [authorId], references: [id])
-    authorId                 String?
     publicationStatus        String                     @default("private") // Add a field to track publication status: "private", "published", "unapproved"
     RecipePublicationRequest RecipePublicationRequest[]
     likes                    RecipeLike[]
@@ -166,7 +155,6 @@ model Recipe {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    @@index([authorId])
     @@index([userId])
     @@index([countryId])
     @@fulltext([name])

@@ -16,7 +16,7 @@ const CountryComponent: React.FC<CountryProps> = ({ control }) => {
           isClearable
           radius="none"
           variant="faded"
-          label="Country"
+          label="Land"
           aria-label={field.name}
           fullWidth
           {...field}

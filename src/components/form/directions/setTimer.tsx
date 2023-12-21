@@ -54,9 +54,7 @@ const SetTimer: React.FC<SetTimerProps> = ({
           {(onClose) => (
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             <form onSubmit={handleSubmit(handleFormSubmit)}>
-              <ModalHeader className="flex flex-col gap-1">
-                Step Timer
-              </ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Timer</ModalHeader>
               <ModalBody>
                 <Controller
                   name="timer"
@@ -101,10 +99,10 @@ const SetTimer: React.FC<SetTimerProps> = ({
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
-                  Close
+                  Stäng
                 </Button>
                 <Button className="text-white" color="success" type="submit">
-                  Save
+                  Spara
                 </Button>
               </ModalFooter>
             </form>

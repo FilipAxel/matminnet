@@ -76,10 +76,10 @@ const TimerDialog: React.FC<TimerDialogProps> = ({
         const permission = await Notification.requestPermission();
         if (permission === "denied") {
           console.warn(
-            "Notification permission denied. You won't receive notifications."
+            "Aviseringsbehörighet nekad. Du kommer inte att få aviseringar."
           );
           console.warn(
-            "To reset notification permissions, click the lock icon next to the URL and allow notifications."
+            "För att återställa aviseringstillståndet, klicka på låsikonen bredvid webbadressen och tillåt aviseringar"
           );
         }
       } catch (error) {
@@ -147,7 +147,7 @@ const TimerDialog: React.FC<TimerDialogProps> = ({
                       void showNotification();
                     }}
                   >
-                    Start Timer
+                    Starta timer
                   </Button>
                 ) : (
                   <Button
@@ -156,7 +156,7 @@ const TimerDialog: React.FC<TimerDialogProps> = ({
                     variant="solid"
                     onPress={resetTimer}
                   >
-                    Reset
+                    Återställ
                   </Button>
                 )}
                 <Button
@@ -166,7 +166,7 @@ const TimerDialog: React.FC<TimerDialogProps> = ({
                     setIsPlayingTimer(false);
                   }}
                 >
-                  Pause
+                  Pausa
                 </Button>
               </div>
             </ModalBody>

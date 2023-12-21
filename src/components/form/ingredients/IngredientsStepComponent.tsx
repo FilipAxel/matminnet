@@ -82,7 +82,7 @@ const IngredientsStepComponent: React.FC<IngredientsStepProps> = ({
 
   return (
     <div className="my-10">
-      <h1 className="mb-5 text-4xl font-semibold">Ingredients</h1>
+      <h1 className="mb-5 text-4xl font-semibold">Ingredienser</h1>
       <ScrollShadow
         onClick={toggleSize}
         size={shadowSize}
@@ -93,11 +93,11 @@ const IngredientsStepComponent: React.FC<IngredientsStepProps> = ({
         })}
       >
         <p className="max-w-[70ch] text-sm text-gray-500">
-          Ensure your recipe is complete by adding all the necessary
-          ingredients. Each ingredient can be customized with quantity and units
-          to make your recipe as precise as possible. Begin by selecting or
-          creating ingredients below, and don&apos;t forget to specify
-          quantities and units as needed.
+          Säkerställ att ditt recept är komplett genom att lägga till alla
+          nödvändiga ingredienser. Varje ingrediens kan anpassas med mängd och
+          enheter för att göra ditt recept så exakt som möjligt. Börja med att
+          välja eller skapa ingredienser nedan och glöm inte att specificera
+          mängder och enheter vid behov.
         </p>
       </ScrollShadow>
 
@@ -114,7 +114,7 @@ const IngredientsStepComponent: React.FC<IngredientsStepProps> = ({
         <AddIngredientStep
           stepCount={ingredientSection.length}
           onAddStepClick={addStep}
-          text={"Add Ingredient List"}
+          text={"Lägg till ingredienslista"}
         />
       </div>
     </div>

@@ -50,7 +50,7 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
         onClick={onOpen}
         className="flex h-14 w-full cursor-pointer items-center justify-between border-1 p-2"
       >
-        <h1>Add tags</h1>
+        <h1>Lägg till taggar</h1>
         <MdArrowForwardIos />
       </div>
       <Modal
@@ -63,13 +63,13 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
           {() => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Choose tags
+                Välj taggar
               </ModalHeader>
               <ModalBody>
                 {/* Group tags based on type */}
                 {tags && (
                   <div className="flex flex-col gap-4">
-                    <h1>Meals</h1>
+                    <h1>Måltider</h1>
                     <div className="flex flex-wrap gap-1">
                       {tags.map(
                         (tag) =>
@@ -101,7 +101,7 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
                           )
                       )}
                     </div>
-                    <h1>Diet</h1>
+                    <h1>Kost</h1>
                     <div className="flex flex-wrap gap-1">
                       {tags.map(
                         (tag) =>
@@ -133,7 +133,7 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
                           )
                       )}
                     </div>
-                    <h1>Others</h1>
+                    <h1>Andra</h1>
                     <div className="flex flex-wrap gap-1">
                       {tags.map(
                         (tag) =>
@@ -174,10 +174,10 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
                   color="danger"
                   variant="light"
                 >
-                  Clear All
+                  Rensa allt
                 </Button>
                 <Button color="primary" onPress={onSubmit}>
-                  Add
+                  Lägg till
                 </Button>
               </ModalFooter>
             </>

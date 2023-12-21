@@ -123,7 +123,7 @@ const DirectionComponent: React.FC<DirectionsProps> = ({
 
   return (
     <div className="my-10">
-      <h1 className="mb-5 text-4xl font-semibold">Directions</h1>
+      <h1 className="mb-5 text-4xl font-semibold">Instruktioner</h1>
       <ScrollShadow
         onClick={toggleSize}
         size={shadowSize}
@@ -134,12 +134,12 @@ const DirectionComponent: React.FC<DirectionsProps> = ({
         })}
       >
         <p className="max-w-[70ch] text-sm text-gray-500">
-          Add detailed steps to guide you through the recipe preparation. Each
-          step can have sub-steps and timers to help you follow along
-          seamlessly. Click &quot;Add Step&quot; below to get started, and use
-          the &quot;Add Sub-Step&quot; button within each step to break down the
-          process further. Don&apos;t forget to set timers for precise cooking
-          or preparation times.
+          Lägg till detaljerade steg för att guida dig genom receptets
+          förberedelse. Varje steg kan ha delsteg och timer för att hjälpa dig
+          att följa med smidigt. Klicka på &apos;Lägg till steg&apos; nedan för
+          att komma igång och använd &apos;Lägg till delsteg&apos;-knappen inom
+          varje steg för att bryta ned processen ytterligare. Glöm inte att
+          ställa in timer för exakta tillagningstider eller förberedelsetider
         </p>
       </ScrollShadow>
 
@@ -157,7 +157,7 @@ const DirectionComponent: React.FC<DirectionsProps> = ({
         <AddStep
           stepCount={directionsSteps.length}
           onAddStepClick={addStep}
-          text={"Add Step"}
+          text={"Lägg till steg"}
         />
       </div>
     </div>

@@ -33,10 +33,10 @@ const PublicationComponent: React.FC<PublicationComponentProps> = ({
             </ModalHeader>
             <ModalBody>
               <p className="  text-sm text-gray-700">
-                By choosing to publish your recipe, you&apos;re sending it to
-                our administrators for review. After approval, your recipe will
-                be featured on the discovery page, making it accessible to
-                everyone.
+                Genom att välja att publicera ditt recept skickar du det till
+                våra administratörer för granskning. Efter godkännande kommer
+                ditt recept att visas på upptäcktsidan och bli tillgängligt för
+                alla.
               </p>
             </ModalBody>
             <ModalFooter>
@@ -47,7 +47,7 @@ const PublicationComponent: React.FC<PublicationComponentProps> = ({
                   submitForm(false);
                 }}
               >
-                Keep Private
+                Håll privat
               </Button>
               <Button
                 color="success"
@@ -57,7 +57,7 @@ const PublicationComponent: React.FC<PublicationComponentProps> = ({
                   submitForm(true);
                 }}
               >
-                Publish
+                Publicera
               </Button>
             </ModalFooter>
           </>

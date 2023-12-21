@@ -29,13 +29,13 @@ const LoginActionDialog = () => {
         <ModalContent>
           <ModalHeader></ModalHeader>
           <ModalBody>
-            <h1 className="text-center text-[24px] font-bold">Welcome!</h1>
+            <h1 className="text-center text-[24px] font-bold">Välkommen!</h1>
             <h2 className="text-center text-[20px]">
-              To View the following page:
+              För att visa nästa sida:
               <span className="font-bold">{routeName}</span>.
             </h2>
             <p className="pb-5 text-center">
-              Create a Free Account to Continue.
+              Skapa ett gratis konto för att fortsätta.
             </p>
             <Button
               color="primary"
@@ -43,7 +43,7 @@ const LoginActionDialog = () => {
               className="my-4 text-center"
               onPress={() => void signIn()}
             >
-              Sign in
+              Logga in
             </Button>
           </ModalBody>
         </ModalContent>

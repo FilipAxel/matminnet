@@ -17,7 +17,7 @@ const ServingSizeComponent: React.FC<ServingSizeProps> = ({ control }) => {
           variant="faded"
           aria-label={field.name}
           fullWidth
-          label="Serving Size"
+          label="Serveringsstorlek"
           type="text"
           {...field}
           size="sm"

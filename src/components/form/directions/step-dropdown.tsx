@@ -37,9 +37,9 @@ const StepDropDown: React.FC<StepDropDownProps> = ({ onOpen, onDelete }) => {
             onPress={onOpen}
             className="text-2xl"
             key="time"
-            description="let user track time for this task."
+            description="Låt användaren följa tiden för denna uppgift."
           >
-            Add timer
+            Lägg till timer
           </DropdownItem>
         </DropdownSection>
 
@@ -51,7 +51,7 @@ const StepDropDown: React.FC<StepDropDownProps> = ({ onOpen, onDelete }) => {
             color="danger"
             onClick={() => onDelete()}
           >
-            Delete Task
+            Ta bort uppgiften
           </DropdownItem>
         </DropdownSection>
       </DropdownMenu>

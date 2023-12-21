@@ -9,35 +9,35 @@ export default function Home() {
         <div className="container mx-auto flex flex-col flex-wrap items-center justify-center px-3 md:flex-row md:flex-nowrap md:px-0">
           <div className="flex w-full flex-col items-start justify-center text-center md:w-2/5 md:text-left">
             <p className="tracking-loose w-full text-[12px] uppercase">
-              Discover Delicious Recipes and Share Your Culinary Creations
+              Upptäck läckra recept och dela dina kulinariska skapelser
             </p>
             <h1 className="my-6 text-4xl font-bold leading-tight md:text-5xl">
-              Cook. Share. Connect: Your Recipe Hub!
+              Laga. Dela. Anslut Din receptcentral!
             </h1>
             <p className="text-1xl mx-1 mb-8   leading-normal">
-              Tired of cluttered kitchen shelves filled with cookbooks? Join our
-              community and make your life easier.
+              Trött på röriga kökshyllor fyllda med kokböcker? Gå med i vår
+              gemenskap och gör ditt liv enklare.
             </p>
 
             <div className="flex w-full justify-center space-x-4   lg:justify-start">
               <Button
-                href="/discover"
+                href="/upptacka"
                 as={Link}
                 size="md"
                 color="primary"
                 radius="sm"
                 variant="solid"
               >
-                Explore Recipes
+                Utforska Recept
               </Button>
               <Button
-                href="/recipes/create"
+                href="/recept/skapa"
                 as={Link}
                 size="md"
                 color="primary"
                 variant="light"
               >
-                Share Your Recipes
+                Dela Dina Recept
               </Button>
             </div>
           </div>
@@ -61,16 +61,15 @@ export default function Home() {
           <div className="flex flex-wrap items-center justify-center sm:justify-start">
             <div className="w-5/6 p-6 text-center sm:w-1/2 sm:text-left">
               <h3 className="mb-3 text-3xl font-bold leading-none text-gray-800">
-                Need Dinner Inspiration?
+                Behöver du middagsinspiration?
               </h3>
               <p className="mb-8 text-gray-600">
-                Are you wondering what to cook for dinner tonight? Look no
-                further! Our recipe collection is here to rescue you from the
-                &quot;What&apos;s for dinner?&quot; dilemma.
+                Undrar du vad du ska laga till middag ikväll? Leta inte längre!
+                Vår receptsamling är här för att rädda dig från dilemmat
+                &quot;Vad ska vi äta ikväll?&quot;. <br />
                 <br />
-                <br />
-                <Link color="primary" className="underline" href="/discover">
-                  Find inspiration here
+                <Link color="primary" className="underline" href="/upptacka">
+                  Hitta inspiration här
                 </Link>
               </p>
             </div>
@@ -93,13 +92,13 @@ export default function Home() {
             <div className="mt-6 w-full p-6 sm:w-1/2">
               <div className="text-center align-middle sm:text-left">
                 <h3 className="mb-3 text-3xl font-bold leading-none text-gray-800">
-                  Simplify Your Cookbook Collection
+                  Förenkla din kokbokssamling
                 </h3>
                 <p className="mb-8 text-gray-600">
-                  Tired of cluttered kitchen shelves filled with cookbooks? Join
-                  our community and make your life easier. By adding your
-                  favorite recipes to our website, you&apos;ll be part of a
-                  cooking revolution.
+                  Trött på röriga kökshyllor fyllda med kokböcker? Gå med i vår
+                  gemenskap och gör ditt liv enklare. Genom att lägga till dina
+                  favoritrecept på vår webbplats blir du en del av en
+                  matlagningsrevolution.
                   <br />
                   <br />
                   <br />
@@ -107,9 +106,9 @@ export default function Home() {
                   <Link
                     color="primary"
                     className="underline"
-                    href="/recipes/create"
+                    href="/recept/skapa"
                   >
-                    Start Sharing Your Recipes
+                    Börja dela dina recept
                   </Link>
                 </p>
               </div>
@@ -120,30 +119,30 @@ export default function Home() {
       <section className="px-4 py-8">
         <div className="container mx-auto flex flex-wrap gap-5 pb-12 pt-4">
           <h2 className="mx-4 my-2 w-full text-center text-4xl font-bold leading-tight text-gray-800 lg:text-5xl">
-            Explore Our Recipe Features
+            Utforska våra receptfunktioner
           </h2>
           <div className="mb-4 w-full">
             <div className="gradient mx-auto my-0 h-1 w-64 rounded-t py-0 opacity-25"></div>
           </div>
           <ActionCard
-            subTitle="Build Your Own Recipes"
-            message="With our user-friendly recipe builder, you can create and customize your own delicious recipes, complete with ingredients and cooking instructions. Let your culinary creativity shine!"
-            buttonText="Get Started"
-            link="/recipes/create"
+            subTitle="Bygg dina egna recept"
+            message="Med vår användarvänliga receptbyggare kan du skapa och anpassa dina egna läckra recept, komplett med ingredienser och tillagningsanvisningar. Låt din kulinariska kreativitet lysa!"
+            buttonText="Kom igång"
+            link="/recept/skapa"
           />
 
           <ActionCard
-            subTitle="Share Your Culinary Creations"
-            message="Share your culinary masterpieces with the world! Publish your recipes, and they will be accessible to everyone, making it easy for others to discover and enjoy your dishes. Start sharing your love for cooking today!"
-            buttonText="Publish Now"
-            link="/recipes/create"
+            subTitle="Dela dina kulinariska skapelser"
+            message="Dela dina kulinariska mästerverk med världen! Publicera dina recept, och de blir tillgängliga för alla, vilket gör det enkelt för andra att upptäcka och njuta av dina rätter. Börja dela din kärlek till matlagning idag!"
+            buttonText="Publicera nu"
+            link="/recept/skapa"
           />
 
           <ActionCard
-            subTitle="Find the Right Recipe"
-            message="Looking for the perfect dish? Explore our extensive collection of recipes and find the one that suits your taste. Your culinary journey begins here!"
-            buttonText="Search Now"
-            link="/recipes"
+            subTitle="Hitta det rätta receptet"
+            message="Letar du efter det perfekta rätten? Utforska vår omfattande samling av recept och hitta det som passar din smak. Din kulinariska resa börjar här!"
+            buttonText="Sök nu"
+            link="/recept"
           />
         </div>
       </section>
@@ -152,28 +151,28 @@ export default function Home() {
           <Image alt="hero" className="z-0 mx-auto w-full" src="hero.png" />
         </div>
         <h2 className="my-2 w-full text-center text-4xl font-bold leading-tight">
-          Share Your Culinary Creations
+          Dela dina kulinariska skapelser
         </h2>
         <div className="mb-4 w-full">
           <div className="mx-auto my-0 h-1 w-1/6 rounded-t bg-white py-0 opacity-25"></div>
         </div>
         <h3 className="my-4 ml-6 mr-2 text-center text-xl text-gray-600">
-          Why add your recipes here? With our platform, you can organize your
-          recipes effortlessly, find new culinary inspirations shared by fellow
-          users, and access your recipes from anywhere. Say goodbye to the chaos
-          of traditional cookbooks, and embrace the convenience of a digital
-          recipe hub.
+          Varför lägga till dina recept här? Med vår plattform kan du organisera
+          dina recept utan ansträngning, hitta nya kulinariska inspirationer
+          delade av andra användare och få tillgång till dina recept var som
+          helst. Säg adjö till kaoset med traditionella kokböcker och omfamna
+          bekvämligheten med en digital receptcentral.
         </h3>
 
         <Button
-          href="/recipes/create"
+          href="/recept/skapa"
           as={Link}
           size="lg"
           color="primary"
           className="mt-5"
           radius="full"
         >
-          Create Recipe
+          Skapa Recept
         </Button>
       </section>
     </>

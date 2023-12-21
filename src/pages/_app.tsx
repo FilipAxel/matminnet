@@ -7,6 +7,7 @@ import "~/styles/globals.css";
 import { NextUIProvider, Spacer } from "@nextui-org/react";
 import NavigationBar from "~/components/navigation/navigation-bar";
 import { SnackbarProvider } from "notistack";
+import Head from "next/head";
 
 const MatMinnet: AppType<{ session: Session | null }> = ({
   Component,
@@ -16,6 +17,15 @@ const MatMinnet: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <SnackbarProvider>
         <NextUIProvider>
+          <Head>
+            <title>
+              Matminnet Receptbyggare - Dela dina kulinariska skapelser.
+            </title>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1, maximum-scale=1"
+            />
+          </Head>
           <NavigationBar />
           <Spacer y={1} />
           <div className={` m-auto max-w-[1200px]`}>

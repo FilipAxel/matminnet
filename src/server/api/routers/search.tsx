@@ -20,7 +20,7 @@ export const searchRouter = createTRPCRouter({
 
       try {
         if (query.length === 0) {
-          const recipesCount = await ctx.prisma.recipe.count();
+          // const recipesCount = await ctx.prisma.recipe.count();
           //const skip = Math.floor(Math.random() * recipesCount);
           const randomRecipes = await ctx.prisma.recipe.findMany({
             take: 10,

@@ -31,7 +31,7 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({
             color="default"
             startContent={<MdNavigateBefore className="text-xl" />}
           >
-            Back
+            Tillbaka
           </Button>
         )}
 
@@ -48,7 +48,7 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({
           className="text-white"
           endContent={<MdNavigateNext className="text-2xl" />}
         >
-          {activePage >= 6 ? "Save" : "Next"}
+          {activePage >= 6 ? "Spara" : "Nästa"}
         </Button>
       </div>
     </div>

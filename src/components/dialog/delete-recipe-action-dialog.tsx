@@ -49,12 +49,12 @@ const DeleteRecipeActionDialog: React.FC<DeleteRecipeActionDialogProps> = ({
       onClose={() => setDeleteActioOpen(false)}
     >
       <ModalContent>
-        <ModalHeader className="  text-2xl">Delete {name}?</ModalHeader>
+        <ModalHeader className="  text-2xl">Ta bort {name}?</ModalHeader>
         <ModalBody>
           <h3 className="  text-lg font-semibold">
-            Are you sure you want to delete {name}?
+            Är du säker på att du vill ta bort {name}?
           </h3>
-          <p>This action cannot be undone.</p>
+          <p>Denna åtgärd kan inte ångras.</p>
         </ModalBody>
         <ModalFooter>
           <Button
@@ -62,10 +62,10 @@ const DeleteRecipeActionDialog: React.FC<DeleteRecipeActionDialogProps> = ({
             color="danger"
             onPress={() => setDeleteActioOpen(false)}
           >
-            Cancel
+            Avbryt
           </Button>
           <Button color="primary" onPress={() => handleDelete()}>
-            Yes, Delete
+            Ja, ta bort
           </Button>
         </ModalFooter>
       </ModalContent>

@@ -10,7 +10,6 @@ export interface FormValues {
   cookingTime: string | number | null;
   video: string;
   country: string;
-  author: string;
   collections: CollectionOption[];
   publicationStatus: boolean;
 }

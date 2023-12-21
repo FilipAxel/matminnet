@@ -20,7 +20,7 @@ const DescriptionComponent: React.FC<DescriptionProps> = ({ control }) => {
       render={({ field }) => (
         <>
           <Textarea
-            label="Description"
+            label="Beskrivning"
             variant="faded"
             radius="none"
             aria-label={field.name}
@@ -32,7 +32,7 @@ const DescriptionComponent: React.FC<DescriptionProps> = ({ control }) => {
             maxRows={8}
             errorMessage={
               charCount >= 350
-                ? "The Description should be max 350 characters long."
+                ? "Beskrivningen bör vara max 350 tecken lång."
                 : undefined
             }
             onChange={(e) => {

@@ -239,7 +239,7 @@ const Create = () => {
 
           {activePage === 1 && (
             <div className="flex flex-col justify-center gap-5 pt-10">
-              <h1 className="text-4xl font-semibold">Create a New Recipe</h1>
+              <h1 className="text-4xl font-semibold">Skapa ett nytt recept</h1>
 
               <ScrollShadow
                 hideScrollBar
@@ -251,10 +251,10 @@ const Create = () => {
                 })}
               >
                 <p className="max-w-[70ch] text-sm text-gray-500">
-                  Let&apos;s begin crafting your culinary masterpiece! Enter the
-                  essential details for your recipe below. Give it a name, a
-                  brief description, specify the serving size, estimated cooking
-                  time, and share a bit about its origin.
+                  Låt oss börja skapa ditt kulinariska mästerverk! Ange de
+                  väsentliga detaljerna för ditt recept nedan. Ge det ett namn,
+                  en kort beskrivning, ange serveringsstorlek, uppskattad
+                  tillagningstid och dela lite om dess ursprung.
                 </p>
               </ScrollShadow>
 

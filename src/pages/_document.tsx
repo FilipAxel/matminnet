@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-title-in-document-head */
 import React from "react";
 import Document, {
   Html,
@@ -19,29 +18,26 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="en">
+      <Html lang="sv">
         <Head>
-          <title>
-            Matminnet Recipe Builder - Share Your Culinary Creations
-          </title>
           <meta
             name="title"
-            content="Matminnet Recipe Builder - Share Your Culinary Creations"
+            content="Matminnet Receptbyggare - Dela dina kulinariska skapelser"
           />
           <meta
             name="description"
-            content="Matminnet Recipe Builder - Unleash Your Culinary Creativity! Design, craft, and share your unique recipes effortlessly. Say goodbye to that old recipe book and hello to a modern way of keeping your culinary creations organized. Share your passion for cooking with the world!"
+            content="Matminnet Receptbyggare - Ge fritt spelrum åt din kulinariska kreativitet! Designa, skapa och dela dina unika recept utan ansträngning. Säg hej då till den gamla receptboken och välkommen till ett modernt sätt att organisera dina kulinariska skapelser. Dela din passion för matlagning med världen!"
           />
 
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://matminne.com" />
           <meta
             property="og:title"
-            content="Matminnet Recipe Builder - Share Your Culinary Creations"
+            content="Matminnet Receptbyggare - Dela dina kulinariska skapelser"
           />
           <meta
             property="og:description"
-            content="Matminnet Recipe Builder - Unleash Your Culinary Creativity! Design, craft, and share your unique recipes effortlessly. Say goodbye to that old recipe book and hello to a modern way of keeping your culinary creations organized. Share your passion for cooking with the world!"
+            content="Matminnet Receptbyggare - Ge fritt spelrum åt din kulinariska kreativitet! Designa, skapa och dela dina unika recept utan ansträngning. Säg hej då till den gamla receptboken och välkommen till ett modernt sätt att organisera dina kulinariska skapelser. Dela din passion för matlagning med världen!"
           />
           <meta
             property="og:image"
@@ -52,11 +48,11 @@ class MyDocument extends Document {
           <meta name="twitter:url" content="https://www.matminnet.se" />
           <meta
             name="twitter:title"
-            content="Matminnet Recipe Builder - Share Your Culinary Creations"
+            content="Matminnet Receptbyggare - Dela dina kulinariska skapelser"
           />
           <meta
             name="twitter:description"
-            content="Matminnet Recipe Builder - Unleash Your Culinary Creativity! Design, craft, and share your unique recipes effortlessly. Say goodbye to that old recipe book and hello to a modern way of keeping your culinary creations organized. Share your passion for cooking with the world!"
+            content="Matminnet Receptbyggare - Ge fritt spelrum åt din kulinariska kreativitet! Designa, skapa och dela dina unika recept utan ansträngning. Säg hej då till den gamla receptboken och välkommen till ett modernt sätt att organisera dina kulinariska skapelser. Dela din passion för matlagning med världen!"
           />
           <meta
             name="twitter:image"
@@ -68,22 +64,18 @@ class MyDocument extends Document {
 
           <meta name="robots" content="index, follow" />
           <meta name="author" content="Filip Johansson" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1"
-          />
 
           <meta
             name="keywords"
-            content="recipe application, cooking, recipes, food, culinary, cooking tips, save recipes, cook books"
+            content="receptapplikation, matlagning, recept, mat, kulinarisk, matlagningsråd, spara recept, kokbok"
           />
-          <meta name="application-name" content="Recipe Storage" />
+          <meta name="application-name" content="Receptlagring" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
             name="apple-mobile-web-app-status-bar-style"
             content="default"
           />
-          <meta name="apple-mobile-web-app-title" content="Recipe Storage" />
+          <meta name="apple-mobile-web-app-title" content="Receptlagring" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="msapplication-TileColor" content="#FFFFFF" />
@@ -91,12 +83,12 @@ class MyDocument extends Document {
           <meta name="theme-color" content="#FFFFFF" />
 
           <meta property="og:type" content="website" />
-          <meta property="og:title" content="Recipe Application" />
+          <meta property="og:title" content="Receptapplikation" />
           <meta
             property="og:description"
-            content="Create and store delicious recipes with our Recipe Application. Find a variety of recipes and cooking tips to enhance your culinary skills."
+            content="Skapa och spara läckra recept med vår Receptapplikation. Hitta olika recept och matlagningsråd för att förbättra dina kulinariska färdigheter."
           />
-          <meta property="og:site_name" content="Recipe Application" />
+          <meta property="og:site_name" content="Receptapplikation" />
           <meta property="og:url" content="https://www.matminnet.se" />
           <meta
             property="og:image"

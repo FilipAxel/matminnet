@@ -82,7 +82,7 @@ const RecipeSection: React.FC<RecipeSectionProps> = ({ id }) => {
               <div className="mb-3 flex gap-2 px-4">
                 {data?.recipe?.servingSize && (
                   <h3 className="text-[16px]">
-                    {data?.recipe?.servingSize} Portions |
+                    {data?.recipe?.servingSize} Portioner |
                   </h3>
                 )}
                 {data?.recipe?.cookingTime && (
@@ -130,7 +130,7 @@ const RecipeSection: React.FC<RecipeSectionProps> = ({ id }) => {
             {data?.recipe.ingredientsSection.length ? (
               <div className="flex w-full max-w-[400px] flex-col">
                 <h2 className="mb-2 text-center text-[25px] font-bold lg:text-left">
-                  Ingredients
+                  Ingredienser
                 </h2>
                 {data?.recipe.ingredientsSection.map((ingredientStep) => {
                   return (
@@ -146,7 +146,7 @@ const RecipeSection: React.FC<RecipeSectionProps> = ({ id }) => {
             {data?.recipe.directions.length ? (
               <div>
                 <h2 className="mt-4 text-center text-[25px] font-bold lg:ml-5 lg:mt-0 lg:text-left">
-                  Directions
+                  Instruktioner
                 </h2>
                 <div className="flex w-full max-w-[450px] flex-col items-center justify-center gap-3 overflow-hidden p-2 pb-5 lg:max-w-[600px]">
                   {data?.recipe.directions.map((direction) => {

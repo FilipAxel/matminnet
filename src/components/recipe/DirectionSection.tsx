@@ -66,7 +66,7 @@ const DirectionSection: React.FC<DirectionSectionProps> = ({ direction }) => {
             radius="full"
             onPress={() => setOpenTimerStep(direction.mainStepValue)}
           >
-            <MdOutlineTimer /> Open Timer:&nbsp;
+            <MdOutlineTimer /> Öppna Timer:&nbsp;
             {direction.time?.timeValue}&nbsp;
             {direction.time?.unit}
           </Button>
@@ -115,7 +115,7 @@ const DirectionSection: React.FC<DirectionSectionProps> = ({ direction }) => {
                         setOpenTimerStep(step.subStepValue);
                       }}
                     >
-                      <MdOutlineTimer /> Open Timer:&nbsp;
+                      <MdOutlineTimer /> Öppna Timer:&nbsp;
                       {step.time?.timeValue}&nbsp;
                       {step.time?.unit}
                     </Button>

@@ -16,7 +16,7 @@ const TagComponent: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
   };
   return (
     <div className="my-10">
-      <h1 className="mb-5 text-4xl font-semibold">Tags</h1>
+      <h1 className="mb-5 text-4xl font-semibold">Taggar</h1>
       <ScrollShadow
         hideScrollBar
         onClick={toggleSize}
@@ -27,11 +27,11 @@ const TagComponent: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
         })}
       >
         <p className="mb-5 max-w-[70ch] text-sm text-gray-500">
-          Tags help you categorize your recipes based on various criteria. For
-          instance, you can tag a recipe as &quot;Quick and Easy,&quot;
-          &quot;Vegetarian,&quot; &quot;Italian,&quot; or &quot;Weeknight
-          Dinner.&quot; This makes it incredibly easy to find specific recipes
-          later on, especially when your collection grows.
+          Taggar hjälper dig att kategorisera dina recept baserat på olika
+          kriterier. Till exempel kan du tagga ett recept som &apos;Snabbt och
+          Enkelt&apos;, &apos;Vegetariskt&apos;, &apos;Italienskt&apos; eller
+          &apos;Vardagsmiddag&apos;. Det gör det otroligt enkelt att senare
+          hitta specifika recept, särskilt när din samling växer.
         </p>
       </ScrollShadow>
 

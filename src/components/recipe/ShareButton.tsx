@@ -10,7 +10,7 @@ const ShareButton = () => {
         startContent={<MdIosShare className="text-lg" />}
         className="text-white"
       >
-        Share
+        Dela
       </Button>
     </div>
   );

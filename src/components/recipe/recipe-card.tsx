@@ -61,7 +61,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                 <div className="flex items-center">
                   <PiBowlFoodDuotone className="mr-1 text-[#d1d1d1]" />
                   <h3 className="text-[11px] text-white">
-                    {recipe.servingSize} Servings
+                    {recipe.servingSize} Portioner
                   </h3>
                 </div>
               </div>

@@ -101,10 +101,10 @@ const Step: React.FC<StepProps> = ({
             radius="none"
             required
             className="mt-2"
-            id={`step${step.mainStepIndex}`}
+            id={`Steg${step.mainStepIndex}`}
             type="text"
             aria-label="step"
-            label={`Step ${step.mainStepIndex}`}
+            label={`Steg ${step.mainStepIndex}`}
             value={step.mainStepValue}
             onChange={(e) => updateStep(step.mainStepIndex, e.target.value)}
           />
@@ -127,7 +127,7 @@ const Step: React.FC<StepProps> = ({
           <AddStep
             stepCount={step.subSteps.length}
             onAddStepClick={addSubStep}
-            text={"Add Sub-task"}
+            text={"Lägg till underuppgift"}
           />
         </div>
       </div>

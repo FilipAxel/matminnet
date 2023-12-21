@@ -17,7 +17,7 @@ const CookTimeComponent: React.FC<CookTimeProps> = ({ control }) => {
           variant="faded"
           aria-label={field.name}
           fullWidth
-          label="Cooking Time (in minutes)"
+          label="Tillagningstid (i minuter)"
           type="number"
           onChange={(e) => {
             const newValue = e.target.value;

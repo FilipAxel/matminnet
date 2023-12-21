@@ -20,7 +20,7 @@ const UploadImageComponent: React.FC<ImageComponentProps> = ({
   return (
     <div className="my-10">
       <h1 className="mb-5 w-full text-left text-4xl font-semibold">
-        Add Recipe Images
+        Lägg till receptbilder
       </h1>
 
       <ScrollShadow
@@ -33,10 +33,11 @@ const UploadImageComponent: React.FC<ImageComponentProps> = ({
         })}
       >
         <p className="mb-5 max-w-[70ch] text-left text-sm text-gray-500">
-          Enhance your recipe by adding up to three images. The first selected
-          image will serve as the thumbnail for your recipe. Click below to
-          upload your images, ensuring your culinary masterpiece is visually
-          appealing. Share the essence of your recipe with beautiful visuals.
+          Förbättra ditt recept genom att lägga till upp till tre bilder. Den
+          första valda bilden kommer att fungera som miniatyrbild för ditt
+          recept. Klicka nedan för att ladda upp dina bilder och se till att
+          ditt kulinariska mästerverk är visuellt tilltalande. Dela essensen av
+          ditt recept med vackra visuella element.
         </p>
       </ScrollShadow>
 

@@ -9,17 +9,17 @@ const notFoundPage = () => {
           <div className="absolute">
             <div className="">
               <h1 className="my-2 text-2xl font-bold text-gray-800">
-                Looks like you&apos;ve found the doorway to the great nothing
+                Ser ut som att du har hittat dörren till det stora ingentinget
               </h1>
               <p className="my-2 text-gray-800">
-                Sorry about that! Please visit our hompage to get where you need
-                to go.
+                Tyvärr för det! Besök vår startsida för att komma dit du behöver
+                gå.
               </p>
               <Link
                 href="/"
                 className="md my-5 rounded border bg-indigo-600 px-8 py-4 text-center text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50 sm:w-full lg:w-auto"
               >
-                Take me there!
+                Ta mig dit!
               </Link>
             </div>
           </div>

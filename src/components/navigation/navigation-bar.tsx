@@ -55,32 +55,32 @@ const NavigationBar = () => {
 
   const menuItems = [
     {
-      name: "Home",
+      name: "Hem",
       path: "/",
       public: true,
       icon: <MdHome className="text-2xl" />,
     },
     {
-      name: "Discover",
+      name: "Upptäck",
       path: "/discover",
       public: true,
       icon: <MdOutlineSearch className="text-2xl" />,
     },
     {
-      name: "Create",
+      name: "Skapa",
       path: "/recipes/create",
       public: session?.user?.id ? true : false,
       icon: <IoIosAddCircleOutline className="text-2xl" />,
     },
     {
-      name: "Recipes",
+      name: "Recept",
       path: "/recipes",
       public: session?.user?.id ? true : false,
       icon: <MdMenuBook className="text-2xl" />,
     },
 
     {
-      name: "Collections",
+      name: "Samlingar",
       path: "/collections",
       public: session?.user?.id ? true : false,
       icon: <SiBookstack className="text-2xl" />,
@@ -95,7 +95,7 @@ const NavigationBar = () => {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <Link href="/" className="  font-bold text-inherit">
+          <Link href="/" className="font-bold text-inherit">
             MatMinnet
           </Link>
         </NavbarBrand>
@@ -104,7 +104,7 @@ const NavigationBar = () => {
       {session?.user?.id && (
         <NavbarItem isActive={router.pathname === "/recipes/create"}>
           <Link color="foreground" href="/recipes/create" aria-current="page">
-            Create
+            Skapa
           </Link>
         </NavbarItem>
       )}
@@ -113,7 +113,7 @@ const NavigationBar = () => {
         {session?.user?.id && (
           <NavbarItem isActive={router.pathname === "/collections"}>
             <Link color="foreground" href="/collections">
-              Collections
+              Samlingar
             </Link>
           </NavbarItem>
         )}
@@ -121,14 +121,14 @@ const NavigationBar = () => {
         {session?.user?.id && (
           <NavbarItem isActive={router.pathname === "/recipes"}>
             <Link color="foreground" href="/recipes" aria-current="page">
-              Recipes
+              Recept
             </Link>
           </NavbarItem>
         )}
 
         <NavbarItem isActive={router.pathname === "/discover"}>
           <Link color="foreground" href="/discover">
-            Discover
+            Upptäck
           </Link>
         </NavbarItem>
       </NavbarContent>
@@ -154,10 +154,10 @@ const NavigationBar = () => {
             >
               <DropdownSection>
                 <DropdownItem key="profile" className="h-14 gap-2">
-                  <p className="font-semibold">Signed in as</p>
+                  <p className="font-semibold">Inloggad som</p>
                   <p className="font-semibold">{session?.user.email}</p>
                 </DropdownItem>
-                <DropdownItem key="settings">My Settings</DropdownItem>
+                <DropdownItem key="settings">Mina inställningar</DropdownItem>
               </DropdownSection>
 
               <DropdownSection>
@@ -169,7 +169,7 @@ const NavigationBar = () => {
                     <MdLogout className={cn(iconClasses, "text-red-500")} />
                   }
                 >
-                  Logout
+                  Logga ut
                 </DropdownItem>
               </DropdownSection>
             </DropdownMenu>
@@ -183,7 +183,7 @@ const NavigationBar = () => {
               variant="light"
               onClick={() => void void signIn()}
             >
-              Login
+              Logga in
             </Button>
           </NavbarItem>
           <NavbarItem>
@@ -192,7 +192,7 @@ const NavigationBar = () => {
               color="primary"
               variant="bordered"
             >
-              Sign Up
+              Skapa konto
             </Button>
           </NavbarItem>
         </NavbarContent>

@@ -58,9 +58,9 @@ const SearchList = ({
 
       {isSuccess && data?.recipes.length === 0 ? (
         <div className="p-5">
-          <h1 className="font-bold">No Search result found...</h1>
+          <h1 className="font-bold">Inga sökresultat hittades...</h1>
           <p className="text-gray-600">
-            Try chaning your seach terms or removing some of your filters.
+            Försök ändra dina söktermer eller ta bort några av dina filter.
           </p>
         </div>
       ) : (
