@@ -46,10 +46,6 @@ export const recipeRouter = createTRPCRouter({
     .input(createRecipeSchema)
     .mutation(async ({ input, ctx }) => await createRecipe(input, ctx)),
 
-  /*  updateRecipe: protectedProcedure
-    .input(updateRecipeSchema)
-    .mutation(async ({ input, ctx }) => updateRecipe(input, ctx)),
- */
   deleteImagesFromAws: protectedProcedure
     .input(idSchema)
     .mutation(async ({ input, ctx }) => findImageToDelete(input, ctx)),

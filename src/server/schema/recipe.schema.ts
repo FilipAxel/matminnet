@@ -8,7 +8,6 @@ export const recipeFields = {
   cookingTime: z.union([z.number(), z.null(), z.string()]),
   video: z.string(),
   country: z.string(),
-  author: z.string(),
   collections: z.array(
     z.object({
       value: z.string(),

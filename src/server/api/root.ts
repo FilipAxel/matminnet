@@ -5,6 +5,7 @@ import { adminRouter } from "./routers/admin";
 import { ingredientRouter } from "./routers/ingredient";
 import { tagRouter } from "./routers/tag";
 import { CountryRouter } from "./routers/country";
+import { searchRouter } from "./routers/search";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   ingredient: ingredientRouter,
   tag: tagRouter,
   country: CountryRouter,
+  searchRouter,
 });
 
 // export type definition of API

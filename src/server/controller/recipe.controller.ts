@@ -4,12 +4,10 @@ import {
   type IdSchema,
 } from "../schema/recipe.schema";
 import { findCollections } from "./collection.controller";
-import { createdAuthor } from "./author.controller";
 import { createIngredients } from "./Ingredient.controller";
 import { type Session } from "next-auth";
 import { deleteImageFromAws, getSignedUrlAws } from "./aws.controller";
 import { TRPCError } from "@trpc/server";
-import { createTags } from "./tag.controller";
 import { exclude } from "~/utils/prisma-utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { findUniqueCountry } from "./country.controller";
@@ -64,7 +62,6 @@ export const createRecipe = async (
   const { id } = ctx.session.user;
   const { recipe, direction, ingredients } = input;
   const {
-    author: authorName,
     collections,
     country,
     description,
@@ -82,12 +79,11 @@ export const createRecipe = async (
   const foundCollections = collections
     ? await findCollections(collections, ctx)
     : null;
-  const author = authorName ? await createdAuthor(authorName, ctx) : null;
+
   const foundUniqueCountry = country
     ? await findUniqueCountry(country, ctx)
     : null;
 
-  const foundTags = await createTags(tags, ctx);
   try {
     const createdRecipe = await ctx.prisma.recipe.create({
       data: {
@@ -131,7 +127,6 @@ export const createRecipe = async (
           })),
         },
         video: video,
-        authorId: author?.id,
         userId: id,
         collections: {
           create: foundCollections?.map((collection) => ({
@@ -143,13 +138,7 @@ export const createRecipe = async (
           })),
         },
         tags: {
-          create: foundTags?.map((tag) => ({
-            tag: {
-              connect: {
-                id: tag.tagId,
-              },
-            },
-          })),
+          connect: tags.map((tag) => ({ name: tag })),
         },
         ingredientsSection: {
           create: recipeIngredients?.map((ingredient) => ({
@@ -217,7 +206,6 @@ export const getRecipeWithId = async (
         id: input.id,
       },
       include: {
-        author: true,
         images: {
           select: {
             name: true,
@@ -258,11 +246,7 @@ export const getRecipeWithId = async (
             },
           },
         },
-        tags: {
-          include: {
-            tag: true,
-          },
-        },
+        tags: true,
         collections: {
           include: {
             collection: {
@@ -324,7 +308,6 @@ export const getApprovedPublication = async (ctx: { prisma: PrismaClient }) => {
         "created_at",
         "description",
         "video",
-        "authorId",
         "countryId",
       ]);
     });
@@ -539,7 +522,6 @@ export const getTopRatedRecipes = async (
     const filteredTopRatedRecipes: filteredTopRated[] = topRatedRecipes.map(
       (recipe) => {
         return exclude(recipe, [
-          "authorId",
           "cookingTime",
           "countryId",
           "created_at",
@@ -568,84 +550,3 @@ export const getTopRatedRecipes = async (
     };
   } catch (error) {}
 };
-
-/* export const updateRecipe = async (
-  input: UpdateRecipeSchema,
-  ctx: { prisma: PrismaClient; session: Session }
-) => {
-  const {
-    id,
-    recipe: {
-      name,
-      description,
-      servingSize,
-      cookingTime,
-      video,
-      country,
-      tags,
-      author: authorName,
-      collections,
-      publicationStatus,
-    },
-  } = input;
-
-  const recipeIngredients = await updatedIngredient(input, ctx);
-  const foundCollections = await findCollections(collections, ctx);
-  const author = await createdAuthor(authorName, ctx);
-  const foundTags = await createTags(tags, ctx);
-
-  const updateRecipe = await ctx.prisma.recipe.update({
-    data: {
-      name: name,
-      description: description,
-      servingSize: servingSize,
-      cookingTime: cookingTime !== null ? +cookingTime : null,
-      video: video,
-      country: country,
-      authorId: author.id,
-      collections: {
-        create: foundCollections.map((collection) => ({
-          collection: {
-            connect: {
-              id: collection.id,
-            },
-          },
-        })),
-      },
-      tags: {
-        create: foundTags?.map((tag) => ({
-          tag: {
-            connect: {
-              id: tag.tagId,
-            },
-          },
-        })),
-      },
-         recipeIngredients: {
-        create: recipeIngredients.map((ingredient) => ({
-          quantity: ingredient.quantity,
-          unit: ingredient.unit,
-          ingredient: {
-            connect: {
-              id: ingredient.ingredientId,
-            },
-          },
-        })),
-      },
-
-      publicationStatus: publicationStatus ? "unapproved" : "private",
-    },
-    where: {
-      id: id,
-    },
-  });
-
-  if (publicationStatus) {
-    await createPublicationRequest(updateRecipe.id, ctx);
-  }
-
-  return {
-    status: "success",
-    updateRecipe,
-  };
-}; */

@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -87,25 +88,13 @@ model VerificationToken {
 }
 
 model Tag {
-    id         String       @id @default(cuid())
-    name       String       @unique
-    type       String
-    recipeTags RecipeTags[]
-    created_at DateTime     @default(now())
-    updated_at DateTime     @updatedAt
-}
+    id   String @id @default(cuid())
+    name String @unique
+    type String
 
-model RecipeTags {
-    id         String   @id @default(cuid())
-    tag        Tag      @relation(fields: [tagid], references: [id])
-    tagid      String
-    recipe     Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-    recipeId   String
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
-
-    @@index([tagid])
-    @@index([recipeId])
+    Recipe     Recipe[]
 }
 
 model Collection {
@@ -157,7 +146,7 @@ model Recipe {
     collections              RecipeOnCollection[]
     ingredientsSection       IngredientSection[]
     directions               Direction[]
-    tags                     RecipeTags[]
+    tags                     Tag[]
     servingSize              String?
     description              String?                    @db.Text
     cookingTime              Int?
@@ -180,6 +169,7 @@ model Recipe {
     @@index([authorId])
     @@index([userId])
     @@index([countryId])
+    @@fulltext([name])
 }
 
 model Country {

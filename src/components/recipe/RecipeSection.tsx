@@ -111,13 +111,13 @@ const RecipeSection: React.FC<RecipeSectionProps> = ({ id }) => {
               <div className="justify-left mx-3 my-4 flex flex-wrap gap-2 px-2">
                 {data?.recipe.tags.map((tag, index) => (
                   <Button
-                    href={`/tag/${tag.tag.name}`}
+                    href={`/tag/${tag.name}`}
                     as={Link}
                     color="secondary"
                     size="sm"
                     key={index}
                   >
-                    {tag.tag.name}
+                    {tag.name}
                   </Button>
                 ))}
               </div>

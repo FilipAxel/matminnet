@@ -11,7 +11,6 @@ import {
   type ImageFile,
   type FormValues,
 } from "~/components/create-recipe-from/from-interface";
-import AuthorComponent from "~/components/form/AuthorComponent";
 import CollectionComponent from "~/components/form/CollectionComponent";
 import CookTimeComponent from "~/components/form/CookTimeComponent";
 import CountryComponent from "~/components/form/CountryComponent";
@@ -93,7 +92,6 @@ const Create = () => {
       tags: [],
       video: "",
       country: "",
-      author: "",
       collections: [],
       publicationStatus: false,
     },
@@ -264,7 +262,6 @@ const Create = () => {
               <DescriptionComponent control={control} />
               <ServingSizeComponent control={control} />
               <CookTimeComponent control={control} />
-              <AuthorComponent control={control} />
               <CountryComponent control={control} />
             </div>
           )}
