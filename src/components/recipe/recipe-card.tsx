@@ -51,19 +51,22 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             </h2>
             <div>
               <div className="flex justify-start">
-                <div className="flex items-center">
-                  <MdAccessTime className="mr-1 text-[#d1d1d1]" />
-                  <h3 className="mr-3 text-[11px] text-white">
-                    {recipe.cookingTime} min
-                  </h3>
-                </div>
-
-                <div className="flex items-center">
-                  <PiBowlFoodDuotone className="mr-1 text-[#d1d1d1]" />
-                  <h3 className="text-[11px] text-white">
-                    {recipe.servingSize} Portioner
-                  </h3>
-                </div>
+                {recipe.cookingTime && (
+                  <div className="flex items-center">
+                    <MdAccessTime className="mr-1 text-[#d1d1d1]" />
+                    <h3 className="mr-3 text-[11px] text-white">
+                      {recipe.cookingTime} min
+                    </h3>
+                  </div>
+                )}
+                {recipe.servingSize && (
+                  <div className="flex items-center">
+                    <PiBowlFoodDuotone className="mr-1 text-[#d1d1d1]" />
+                    <h3 className="text-[11px] text-white">
+                      {recipe.servingSize} Portioner
+                    </h3>
+                  </div>
+                )}
               </div>
             </div>
           </div>
