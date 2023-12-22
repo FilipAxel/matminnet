@@ -114,6 +114,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
           footer: "border-t-[1px] border-[#292f46]",
           closeButton: "hover:bg-white/5 active:bg-white/10",
         }}
+        placement="auto"
         scrollBehavior="inside"
         isOpen={isOpen}
         onOpenChange={onOpenChange}

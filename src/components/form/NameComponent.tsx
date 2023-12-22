@@ -25,11 +25,11 @@ const NameComponent: React.FC<NameProps> = ({ control, errors }) => {
           isRequired
           errorMessage={
             errors?.name?.type === "required"
-              ? "Name is required"
+              ? "Namn krävs"
               : "" || errors?.name?.type === "maxLength"
-              ? "Name must not exceed 40 characters"
+              ? "Namnet får inte överskrida 40 tecken"
               : "" || errors?.name?.type === "minLength"
-              ? "Name must be at least 3 characters"
+              ? "Namnet måste vara minst 3 tecken"
               : null
           }
           color={
@@ -41,7 +41,7 @@ const NameComponent: React.FC<NameProps> = ({ control, errors }) => {
               : "default"
           }
           aria-label={field.name}
-          label="Name"
+          label="Namn"
           fullWidth
           {...field}
         />

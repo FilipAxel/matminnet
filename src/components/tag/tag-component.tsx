@@ -55,7 +55,15 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
       </div>
       <Modal
         className="w-full"
-        placement="bottom"
+        classNames={{
+          body: "py-6",
+          backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
+          base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
+          header: "border-b-[1px] border-[#292f46]",
+          footer: "border-t-[1px] border-[#292f46]",
+          closeButton: "hover:bg-white/5 active:bg-white/10",
+        }}
+        placement="auto"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
@@ -66,7 +74,6 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
                 Välj taggar
               </ModalHeader>
               <ModalBody>
-                {/* Group tags based on type */}
                 {tags && (
                   <div className="flex flex-col gap-4">
                     <h1>Måltider</h1>
@@ -80,7 +87,7 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
                                 className={
                                   selectedTags.includes(tag.name)
                                     ? "text-white"
-                                    : ""
+                                    : "text-[#a8b0d3]"
                                 }
                                 size="sm"
                                 color={
@@ -112,7 +119,7 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
                                 className={
                                   selectedTags.includes(tag.name)
                                     ? "text-white"
-                                    : ""
+                                    : "text-[#a8b0d3]"
                                 }
                                 size="sm"
                                 color={
@@ -144,7 +151,7 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
                                 className={
                                   selectedTags.includes(tag.name)
                                     ? "text-white"
-                                    : ""
+                                    : "text-[#a8b0d3]"
                                 }
                                 size="sm"
                                 color={

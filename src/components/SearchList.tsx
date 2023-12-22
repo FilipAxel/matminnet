@@ -64,7 +64,7 @@ const SearchList = ({
           </p>
         </div>
       ) : (
-        <div className="mt-5 flex flex-wrap justify-center gap-5 p-3 sm:justify-start">
+        <div className="mt-5 flex flex-wrap justify-center gap-3 p-3 xs:ml-4 xs:justify-start sm:justify-start">
           {recipesData.map((recipe) => {
             return <RecipeCard key={recipe.id} recipe={recipe} />;
           })}

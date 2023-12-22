@@ -34,7 +34,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         isPressable
         isHoverable
         onClick={() => handleRoute()}
-        className="h-[260px] w-full bg-transparent xs:h-[240px] xs:w-[170px] sm:w-[210px]"
+        className="h-[260px] w-full bg-transparent xs:h-[200px] xs:w-[175px] sm:h-[210] sm:w-[210px]"
       >
         <Image
           removeWrapper

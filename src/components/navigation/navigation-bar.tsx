@@ -101,15 +101,14 @@ const NavigationBar = () => {
         </NavbarBrand>
       </NavbarContent>
 
-      {session?.user?.id && (
-        <NavbarItem isActive={router.pathname === "/recipes/create"}>
-          <Link color="foreground" href="/recipes/create" aria-current="page">
-            Skapa
-          </Link>
-        </NavbarItem>
-      )}
-
       <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+        {session?.user?.id && (
+          <NavbarItem isActive={router.pathname === "/recipes/create"}>
+            <Link color="foreground" href="/recipes/create" aria-current="page">
+              Skapa
+            </Link>
+          </NavbarItem>
+        )}
         {session?.user?.id && (
           <NavbarItem isActive={router.pathname === "/collections"}>
             <Link color="foreground" href="/collections">
