@@ -21,7 +21,7 @@ export default function Home() {
 
             <div className="flex w-full justify-center space-x-4   lg:justify-start">
               <Button
-                href="/upptacka"
+                href="/discover"
                 as={Link}
                 size="md"
                 color="primary"
@@ -31,7 +31,7 @@ export default function Home() {
                 Utforska Recept
               </Button>
               <Button
-                href="/recept/skapa"
+                href="/recipes/create"
                 as={Link}
                 size="md"
                 color="primary"
@@ -68,7 +68,7 @@ export default function Home() {
                 Vår receptsamling är här för att rädda dig från dilemmat
                 &quot;Vad ska vi äta ikväll?&quot;. <br />
                 <br />
-                <Link color="primary" className="underline" href="/upptacka">
+                <Link color="primary" className="underline" href="/discover">
                   Hitta inspiration här
                 </Link>
               </p>
@@ -106,7 +106,7 @@ export default function Home() {
                   <Link
                     color="primary"
                     className="underline"
-                    href="/recept/skapa"
+                    href="/recipes/create"
                   >
                     Börja dela dina recept
                   </Link>
@@ -128,21 +128,21 @@ export default function Home() {
             subTitle="Bygg dina egna recept"
             message="Med vår användarvänliga receptbyggare kan du skapa och anpassa dina egna läckra recept, komplett med ingredienser och tillagningsanvisningar. Låt din kulinariska kreativitet lysa!"
             buttonText="Kom igång"
-            link="/recept/skapa"
+            link="/recipes/create"
           />
 
           <ActionCard
             subTitle="Dela dina kulinariska skapelser"
             message="Dela dina kulinariska mästerverk med världen! Publicera dina recept, och de blir tillgängliga för alla, vilket gör det enkelt för andra att upptäcka och njuta av dina rätter. Börja dela din kärlek till matlagning idag!"
             buttonText="Publicera nu"
-            link="/recept/skapa"
+            link="/recipes/create"
           />
 
           <ActionCard
             subTitle="Hitta det rätta receptet"
             message="Letar du efter det perfekta rätten? Utforska vår omfattande samling av recept och hitta det som passar din smak. Din kulinariska resa börjar här!"
             buttonText="Sök nu"
-            link="/recept"
+            link="/discover"
           />
         </div>
       </section>
@@ -165,7 +165,7 @@ export default function Home() {
         </h3>
 
         <Button
-          href="/recept/skapa"
+          href="/recipes/create"
           as={Link}
           size="lg"
           color="primary"

@@ -80,7 +80,7 @@ const NavigationBar = () => {
     },
 
     {
-      name: "Samlingar",
+      name: "kokböcker",
       path: "/collections",
       public: session?.user?.id ? true : false,
       icon: <SiBookstack className="text-2xl" />,
@@ -112,7 +112,7 @@ const NavigationBar = () => {
         {session?.user?.id && (
           <NavbarItem isActive={router.pathname === "/collections"}>
             <Link color="foreground" href="/collections">
-              Samlingar
+              kokböcker
             </Link>
           </NavbarItem>
         )}
