@@ -106,7 +106,7 @@ const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
     >
       <ModalContent>
         <ModalHeader>
-          <h1 id="create-collection">Create Collection</h1>
+          <h1 id="create-collection">Skapa kokbok</h1>
         </ModalHeader>
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -125,27 +125,27 @@ const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
                   variant="faded"
                   errorMessage={
                     errors?.name?.type === "required"
-                      ? "Input is required"
+                      ? "Namn krävs"
                       : "" || errors?.name?.type === "maxLength"
-                      ? "name must not exceed 50 characters"
+                      ? "Namnet får inte överstiga 50 tecken"
                       : ""
                   }
                   color={errors.name?.type === "invalid" ? "danger" : "default"}
-                  aria-label={field.name}
+                  aria-label="Namn"
                   fullWidth
-                  placeholder={field.name}
+                  placeholder="Namn"
                   {...field}
-                  size="lg"
+                  size="md"
                 />
               )}
             />
-            <Spacer y={1.5} />
+            <Spacer y={4} />
 
             <label
               htmlFor="fileInput"
               className="font-semibol mb-2 block text-black"
             >
-              Upload an image to be displayed:
+              Ladda upp en bild som ska visas:
             </label>
 
             <input
@@ -160,10 +160,10 @@ const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
             <Spacer y={1.5} />
             {imagePreviewUrl?.length && (
               <div className="mt-2">
-                Selected Image preview:
+                Förhandsgranskning av vald bild:
                 <Image
                   src={imagePreviewUrl}
-                  alt="Image Preview"
+                  alt="Bildförhandsgranskning"
                   style={{ maxWidth: "100%", maxHeight: "80px" }}
                   width={80}
                   height={80}
@@ -176,16 +176,16 @@ const CreateCollectionDialog: React.FC<CreateCollectionDialogProps> = ({
                 <Button
                   type="button"
                   onPress={() => reset()}
-                  variant="solid"
-                  color="primary"
+                  color="danger"
+                  variant="light"
                 >
-                  Clear
+                  Rensa
                 </Button>
               </div>
 
               <div>
                 <Button type="submit" variant="solid" color="primary">
-                  Create
+                  Skapa
                 </Button>
               </div>
             </div>

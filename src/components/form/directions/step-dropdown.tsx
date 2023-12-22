@@ -30,7 +30,7 @@ const StepDropDown: React.FC<StepDropDownProps> = ({ onOpen, onDelete }) => {
         color="default"
         variant="solid"
       >
-        <DropdownSection title="Actions">
+        <DropdownSection title="Åtgärder">
           <DropdownItem
             showDivider
             startContent={<MdAccessTime />}
@@ -43,7 +43,7 @@ const StepDropDown: React.FC<StepDropDownProps> = ({ onOpen, onDelete }) => {
           </DropdownItem>
         </DropdownSection>
 
-        <DropdownSection title="Danger">
+        <DropdownSection title="Farligt">
           <DropdownItem
             startContent={<MdDeleteForever />}
             key="delete"

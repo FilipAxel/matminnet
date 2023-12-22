@@ -10,6 +10,7 @@ export const searchRouter = createTRPCRouter({
         filters: z.object({
           tags: z.array(z.string()).optional(),
           cookingTime: z.number().optional(),
+          collection: z.string().optional(),
         }),
         publication: z.string().optional(),
         publicSearch: z.boolean(),
@@ -49,6 +50,15 @@ export const searchRouter = createTRPCRouter({
                           name: {
                             in: filters.tags,
                           },
+                        },
+                      },
+                    }
+                  : {}),
+                ...(filters.collection
+                  ? {
+                      collections: {
+                        some: {
+                          collectionId: filters.collection,
                         },
                       },
                     }
@@ -105,6 +115,15 @@ export const searchRouter = createTRPCRouter({
                         name: {
                           in: filters.tags,
                         },
+                      },
+                    },
+                  }
+                : {}),
+              ...(filters.collection
+                ? {
+                    collections: {
+                      some: {
+                        collectionId: filters.collection,
                       },
                     },
                   }

@@ -8,9 +8,11 @@ import { Spinner } from "@nextui-org/react";
 const SearchList = ({
   publicSearch,
   publication,
+  collection,
 }: {
   publicSearch: boolean;
   publication?: string;
+  collection?: string;
 }) => {
   const searchParams = useSearchParams();
   const [recipesData, setRecipesData] = useState<RecipeWithImage[]>([]);
@@ -39,6 +41,7 @@ const SearchList = ({
     const filters = {
       tags: tagsArray || undefined,
       cookingTime: Number(cookingTime) || undefined,
+      collection,
     };
     getRecipes({
       query: querySearch || "",
@@ -46,7 +49,7 @@ const SearchList = ({
       publication,
       publicSearch,
     });
-  }, [getRecipes, publicSearch, publication, searchParams]);
+  }, [collection, getRecipes, publicSearch, publication, searchParams]);
 
   return (
     <>
