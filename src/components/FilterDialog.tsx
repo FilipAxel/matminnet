@@ -11,27 +11,25 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { MdFilterAlt } from "react-icons/md";
 import { useDebouncedCallback } from "use-debounce";
-import { api } from "~/utils/api";
 import { type Filters, initialFilters } from "./RecipeSearch";
+import { type Tag } from "@prisma/client";
 
 interface FilterDialogProps {
   selectedFilters: Filters;
   setSelectedFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  tags: Tag[] | undefined;
 }
 
 const FilterDialog: React.FC<FilterDialogProps> = ({
   selectedFilters,
   setSelectedFilters,
+  tags,
 }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const { data: tags } = api.tag.getAllTags.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-  });
 
   const cookingTime = [
     { name: "Under 15 minuter", value: "15" },

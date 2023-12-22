@@ -6,6 +6,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import FilterDialog from "./FilterDialog";
+import { api } from "~/utils/api";
 
 export interface Filters {
   cookingTime?: string;
@@ -28,6 +29,10 @@ const SearchBar: React.FC<{ placeholder: string }> = ({ placeholder }) => {
     defaultValues: {
       search: "",
     },
+  });
+
+  const { data: tags } = api.tag.getAllTags.useQuery(undefined, {
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
@@ -84,6 +89,7 @@ const SearchBar: React.FC<{ placeholder: string }> = ({ placeholder }) => {
 
       <div className="ml-2 flex items-center gap-4">
         <FilterDialog
+          tags={tags}
           selectedFilters={selectedFilters}
           setSelectedFilters={setSelectedFilters}
         />
