@@ -91,10 +91,6 @@ const Step: React.FC<StepProps> = ({
           placement="top-start"
           isOpen={isOpenToolTip}
           content={`Step ${step.mainStepIndex} Value is Required to Add Sub-Steps`}
-          classNames={{
-            base: "py-2 mb-2 px-4 shadow-xl text-white bg-[#F5A524]",
-            arrow: "bg-[#F5A524] mb-2 dark:bg-white",
-          }}
         >
           <Input
             variant="faded"
