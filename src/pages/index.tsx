@@ -46,7 +46,8 @@ export default function Home() {
             as={NextImage}
             width={0}
             height={0}
-            alt="hero"
+            title="Dela Dina Recept"
+            alt="hero placeholder image"
             priority
             className="z-0 mx-auto h-[520px] w-[520px] md:ml-7"
             src="/hero.svg"
@@ -75,7 +76,8 @@ export default function Home() {
             </div>
             <div className="w-full p-6 sm:w-1/2">
               <Image
-                alt="hero"
+                title="Hitta inspiration här"
+                alt="hero placeholder image"
                 className="z-0 w-full md:w-3/5"
                 src="hero.png"
               />
@@ -84,7 +86,8 @@ export default function Home() {
           <div className="flex flex-col-reverse flex-wrap items-center  justify-center sm:flex-row sm:justify-start">
             <div className="mt-6 w-full p-6 sm:w-1/2">
               <Image
-                alt="hero"
+                alt="hero placeholder image"
+                title="Förenkla din kokbokssamling"
                 className="z-0 w-full md:w-3/5"
                 src="hero.png"
               />
@@ -148,7 +151,12 @@ export default function Home() {
       </section>
       <section className="container mx-auto mb-12 py-6 text-center">
         <div className="mx-auto mt-6 flex w-full justify-center p-6">
-          <Image alt="hero" className="z-0 mx-auto w-full" src="hero.png" />
+          <Image
+            title="Dela dina kulinariska skapelser"
+            alt="hero"
+            className="z-0 mx-auto w-full"
+            src="hero.png"
+          />
         </div>
         <h2 className="my-2 w-full text-center text-4xl font-bold leading-tight">
           Dela dina kulinariska skapelser

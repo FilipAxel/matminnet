@@ -26,7 +26,7 @@ class MyDocument extends Document {
           />
           <meta
             name="description"
-            content="Matminnet Receptbyggare - Ge fritt spelrum åt din kulinariska kreativitet! Designa, skapa och dela dina unika recept utan ansträngning. Säg hej då till den gamla receptboken och välkommen till ett modernt sätt att organisera dina kulinariska skapelser. Dela din passion för matlagning med världen!"
+            content="Matminnet Receptbyggare - Uttryck din kreativitet! Skapa och dela unika recept enkelt. Modern organisering av dina kulinariska skapelser. Dela din passion med världen!"
           />
 
           <meta property="og:type" content="website" />
@@ -37,7 +37,7 @@ class MyDocument extends Document {
           />
           <meta
             property="og:description"
-            content="Matminnet Receptbyggare - Ge fritt spelrum åt din kulinariska kreativitet! Designa, skapa och dela dina unika recept utan ansträngning. Säg hej då till den gamla receptboken och välkommen till ett modernt sätt att organisera dina kulinariska skapelser. Dela din passion för matlagning med världen!"
+            content="Matminnet Receptbyggare - Uttryck din kreativitet! Skapa och dela unika recept enkelt. Modern organisering av dina kulinariska skapelser. Dela din passion med världen!"
           />
           <meta
             property="og:image"
@@ -52,7 +52,7 @@ class MyDocument extends Document {
           />
           <meta
             name="twitter:description"
-            content="Matminnet Receptbyggare - Ge fritt spelrum åt din kulinariska kreativitet! Designa, skapa och dela dina unika recept utan ansträngning. Säg hej då till den gamla receptboken och välkommen till ett modernt sätt att organisera dina kulinariska skapelser. Dela din passion för matlagning med världen!"
+            content="Matminnet Receptbyggare - Uttryck din kreativitet! Skapa och dela unika recept enkelt. Modern organisering av dina kulinariska skapelser. Dela din passion med världen!"
           />
           <meta
             name="twitter:image"
@@ -67,7 +67,7 @@ class MyDocument extends Document {
 
           <meta
             name="keywords"
-            content="receptapplikation, matlagning, recept, mat, kulinarisk, matlagningsråd, spara recept, kokbok"
+            content="vad ska vi äta?, matlagning, recept, mat, kulinarisk, matlagningsråd, spara recept, kokbok, mat idag?"
           />
           <meta name="application-name" content="Receptlagring" />
           <meta name="apple-mobile-web-app-capable" content="yes" />

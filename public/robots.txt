@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://matminnet.vercel.app/
+Host: https://matminnet.se/
 
 # Sitemaps
-Sitemap: http://matminnet.vercel.app//sitemap.xml
+Sitemap: http://matminnet.se/sitemap.xml
