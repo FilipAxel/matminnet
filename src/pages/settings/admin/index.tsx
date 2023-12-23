@@ -5,7 +5,6 @@ import LoginActionDialog from "~/components/dialog/login-action-dialog";
 import BackButton from "~/components/shared/back-button";
 
 const Admin = () => {
-  const router = useRouter();
   const { data: session, status } = useSession();
   const isAdmin = session?.user?.isAdmin;
 
