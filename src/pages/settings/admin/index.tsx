@@ -1,23 +1,27 @@
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import PublicationList from "~/components/admin/publication-list";
-
+import LoginActionDialog from "~/components/dialog/login-action-dialog";
 import BackButton from "~/components/shared/back-button";
 
 const Admin = () => {
-  const { data: session } = useSession();
-  // Get the isAdmin value from the session data
+  const router = useRouter();
+  const { data: session, status } = useSession();
   const isAdmin = session?.user?.isAdmin;
 
-  // If no session exists, display access denied message
-  if (!session || !isAdmin) {
-    return <h1>you are not allowed</h1>;
+  if (!isAdmin && status !== "loading") {
+    return <LoginActionDialog />;
   }
 
   // If session exists, display content
   return (
     <>
-      <BackButton />
-      <PublicationList />
+      {isAdmin && status !== "loading" && (
+        <>
+          <BackButton />
+          <PublicationList />
+        </>
+      )}
     </>
   );
 };

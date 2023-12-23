@@ -161,16 +161,13 @@ model Recipe {
 }
 
 model Country {
-    id      String   @id @default(cuid())
-    name    String   @unique
-    Recipe  Recipe[]
-    image   Image?
-    imageId String?
+    id          String   @id @default(cuid())
+    name        String   @unique
+    countryCode String   @unique
+    Recipe      Recipe[]
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
-
-    @@index([imageId])
 }
 
 model Direction {
@@ -281,13 +278,10 @@ model Image {
     collectionId String?
     Ingredient   Ingredient? @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
     ingredientId String?
-    country      Country?    @relation(fields: [countryId], references: [id], onDelete: Cascade)
-    countryId    String?     @unique
     created_at   DateTime    @default(now())
     updated_at   DateTime    @updatedAt
 
     @@index([recipeId])
     @@index([collectionId])
     @@index([ingredientId])
-    @@index([countryId])
 }

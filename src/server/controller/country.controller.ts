@@ -11,13 +11,6 @@ export const getAllCountries = async (
     const countrys = await ctx.prisma.country.findMany({
       skip,
       take: pageSize,
-      include: {
-        image: {
-          select: {
-            name: true,
-          },
-        },
-      },
     });
 
     return countrys;

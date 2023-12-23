@@ -97,6 +97,11 @@ const Create = () => {
     },
   });
 
+  const { data: countrys } = api.country.getCountrys.useQuery({
+    page: 1,
+    pageSize: 100,
+  });
+
   const createPresignedUrlMutation =
     api.recipe.createPresignedUrl.useMutation();
 
@@ -240,7 +245,6 @@ const Create = () => {
           {activePage === 1 && (
             <div className="flex flex-col justify-center gap-5 pt-10">
               <h1 className="text-4xl font-semibold">Skapa ett nytt recept</h1>
-
               <ScrollShadow
                 hideScrollBar
                 onClick={toggleSize}
@@ -257,12 +261,13 @@ const Create = () => {
                   tillagningstid och dela lite om dess ursprung.
                 </p>
               </ScrollShadow>
-
               <NameComponent control={control} errors={errors} />
               <DescriptionComponent control={control} />
               <ServingSizeComponent control={control} />
               <CookTimeComponent control={control} />
-              <CountryComponent control={control} />
+              {countrys && (
+                <CountryComponent control={control} countrys={countrys} />
+              )}
             </div>
           )}
 
