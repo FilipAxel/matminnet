@@ -97,10 +97,15 @@ const Create = () => {
     },
   });
 
-  const { data: countrys } = api.country.getCountrys.useQuery({
-    page: 1,
-    pageSize: 100,
-  });
+  const { data: countrys } = api.country.getCountrys.useQuery(
+    {
+      page: 1,
+      pageSize: 100,
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const createPresignedUrlMutation =
     api.recipe.createPresignedUrl.useMutation();
@@ -265,9 +270,8 @@ const Create = () => {
               <DescriptionComponent control={control} />
               <ServingSizeComponent control={control} />
               <CookTimeComponent control={control} />
-              {countrys && (
-                <CountryComponent control={control} countrys={countrys} />
-              )}
+
+              <CountryComponent control={control} countrys={countrys || []} />
             </div>
           )}
 
