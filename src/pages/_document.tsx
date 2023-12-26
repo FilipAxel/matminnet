@@ -26,7 +26,7 @@ class MyDocument extends Document {
           />
           <meta
             name="description"
-            content="Matminnet Receptbyggare - Uttryck din kreativitet! Skapa och dela unika recept enkelt. Modern organisering av dina kulinariska skapelser. Dela din passion med världen!"
+            content="Matminnet - din plats för kulinarisk kreativitet! Skapa, dela och organisera dina unika recept med vårt moderna Receptbokslagringssystem."
           />
 
           <meta property="og:type" content="website" />
@@ -37,7 +37,7 @@ class MyDocument extends Document {
           />
           <meta
             property="og:description"
-            content="Matminnet Receptbyggare - Uttryck din kreativitet! Skapa och dela unika recept enkelt. Modern organisering av dina kulinariska skapelser. Dela din passion med världen!"
+            content="Matminnet - din plats för kulinarisk kreativitet! Skapa, dela och organisera dina unika recept med vårt moderna Receptbokslagringssystem."
           />
           <meta
             property="og:image"
@@ -52,7 +52,7 @@ class MyDocument extends Document {
           />
           <meta
             name="twitter:description"
-            content="Matminnet Receptbyggare - Uttryck din kreativitet! Skapa och dela unika recept enkelt. Modern organisering av dina kulinariska skapelser. Dela din passion med världen!"
+            content="Matminnet - din plats för kulinarisk kreativitet! Skapa, dela och organisera dina unika recept med vårt moderna Receptbokslagringssystem."
           />
           <meta
             name="twitter:image"
