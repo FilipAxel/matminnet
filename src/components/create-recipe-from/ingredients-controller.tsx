@@ -77,7 +77,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
     if (updatedIngredientsIndex) {
       if (field === "unit" && value.length > 15) {
         updatedIngredientsIndex.error =
-          "Unit text can be at most 15 characters long.";
+          "Enhetstext kan vara högst 15 tecken lång";
       } else {
         updatedIngredientsIndex.error = "";
       }
@@ -132,7 +132,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                     endContent={
                       <div className="pointer-events-none flex items-center">
                         <span className="text-small text-default-400">
-                          Quantity
+                          Antal
                         </span>
                       </div>
                     }
@@ -160,7 +160,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                     endContent={
                       <div className="pointer-events-none flex items-center">
                         <span className="text-small text-default-400">
-                          Unit
+                          Enhet
                         </span>
                       </div>
                     }

@@ -67,7 +67,7 @@ class MyDocument extends Document {
 
           <meta
             name="keywords"
-            content="vad ska vi äta?, matlagning, recept, mat, kulinarisk, matlagningsråd, spara recept, kokbok, mat idag?"
+            content="vad ska vi äta?, matlagning, recept, mat, tips, matlagningsråd, spara recept, kokbok, mat idag?"
           />
           <meta name="application-name" content="Receptlagring" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
