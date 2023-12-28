@@ -9,7 +9,7 @@ export type RecipeWithImage = Recipe & {
 const Recipes = () => {
   return (
     <>
-      <RecipeSearch placeholder="Search Recipes..." />
+      <RecipeSearch placeholder="Sök Recept..." />
       <SearchList publicSearch={false} />
     </>
   );

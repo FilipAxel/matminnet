@@ -90,7 +90,7 @@ const Step: React.FC<StepProps> = ({
           showArrow
           placement="top-start"
           isOpen={isOpenToolTip}
-          content={`Step ${step.mainStepIndex} Value is Required to Add Sub-Steps`}
+          content={`För att inkludera delsteget måste steg ${step.mainStepIndex} tilldelas ett namn.`}
         >
           <Input
             variant="faded"

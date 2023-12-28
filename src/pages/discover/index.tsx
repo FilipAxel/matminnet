@@ -4,7 +4,7 @@ import RecipeSearch from "~/components/RecipeSearch";
 const Discover = () => {
   return (
     <>
-      <RecipeSearch placeholder="Search Recipes..." />
+      <RecipeSearch placeholder="Sök Recept..." />
       <SearchList publicSearch={true} publication={"published"} />
     </>
   );

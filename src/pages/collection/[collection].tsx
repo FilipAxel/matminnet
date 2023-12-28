@@ -13,7 +13,7 @@ const CollectionPage = () => {
 
   return (
     <>
-      <RecipeSearch placeholder="Search Recipes..." />
+      <RecipeSearch placeholder="Sök Recept..." />
       {collection && (
         <SearchList publicSearch={false} collection={collection as string} />
       )}
