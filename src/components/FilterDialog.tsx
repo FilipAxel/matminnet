@@ -142,11 +142,11 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
       <Modal
         classNames={{
           body: "py-6",
-          backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
-          base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
-          header: "border-b-[1px] border-[#292f46]",
-          footer: "border-t-[1px] border-[#292f46]",
-          closeButton: "hover:bg-white/5 active:bg-white/10",
+          backdrop: "bg-[#f0f0f0]/50 backdrop-opacity-40",
+          base: "border-[#f0f0f0] bg-[#ffffff] dark:bg-[#ffffff] text-[#333333]",
+          header: "border-b-[1px] border-[#f0f0f0]",
+          footer: "border-t-[1px] border-[#f0f0f0]",
+          closeButton: "hover:bg-[#ffffff]/5 active:bg-[#ffffff]/10",
         }}
         placement="auto"
         scrollBehavior="inside"
@@ -161,6 +161,8 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                 <h1>Länder</h1>
 
                 <Select
+                  aria-label="Länder"
+                  aria-labelledby="Länder"
                   items={countries}
                   selectedKeys={[...selectedFilters.countries]}
                   variant="bordered"
@@ -239,7 +241,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                           className={
                             selectedFilters?.cookingTime?.includes(time.value)
                               ? "text-white"
-                              : "text-[#a8b0d3]"
+                              : "text-[#131416]"
                           }
                           color={
                             selectedFilters?.cookingTime?.includes(time.value)
@@ -272,7 +274,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                                 className={
                                   selectedFilters.tags.includes(tag.name)
                                     ? "text-white"
-                                    : "text-[#a8b0d3]"
+                                    : "text-[#131416]"
                                 }
                                 size="sm"
                                 color={
@@ -304,7 +306,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                                 className={
                                   selectedFilters.tags.includes(tag.name)
                                     ? "text-white"
-                                    : "text-[#a8b0d3]"
+                                    : "text-[#131416]"
                                 }
                                 size="sm"
                                 color={
@@ -336,7 +338,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
                                 className={
                                   selectedFilters.tags.includes(tag.name)
                                     ? "text-white"
-                                    : "text-[#a8b0d3]"
+                                    : "text-[#131416]"
                                 }
                                 size="sm"
                                 color={

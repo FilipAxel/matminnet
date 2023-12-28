@@ -48,20 +48,30 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
     <>
       <div
         onClick={onOpen}
-        className="flex h-14 w-full cursor-pointer items-center justify-between border-1 p-2"
+        className="flex min-h-[55px] w-full cursor-pointer items-center justify-between border-1 p-2"
       >
-        <h1>Lägg till taggar</h1>
+        <div>
+          <h1>Lägg till taggar</h1>
+          <div className="flex flex-wrap gap-1">
+            {selectedTags.map((tag) => (
+              <span className="text-gray-500" key={tag}>
+                {tag},
+              </span>
+            ))}
+          </div>
+        </div>
         <MdArrowForwardIos />
       </div>
       <Modal
+        scrollBehavior="inside"
         className="w-full"
         classNames={{
           body: "py-6",
-          backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
-          base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
-          header: "border-b-[1px] border-[#292f46]",
-          footer: "border-t-[1px] border-[#292f46]",
-          closeButton: "hover:bg-white/5 active:bg-white/10",
+          backdrop: "bg-[#f0f0f0]/50 backdrop-opacity-40",
+          base: "border-[#f0f0f0] bg-[#ffffff] dark:bg-[#ffffff] text-[#333333]",
+          header: "border-b-[1px] border-[#f0f0f0]",
+          footer: "border-t-[1px] border-[#f0f0f0]",
+          closeButton: "hover:bg-[#ffffff]/5 active:bg-[#ffffff]/10",
         }}
         placement="auto"
         isOpen={isOpen}
@@ -87,7 +97,7 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
                                 className={
                                   selectedTags.includes(tag.name)
                                     ? "text-white"
-                                    : "text-[#a8b0d3]"
+                                    : "text-[#131416]"
                                 }
                                 size="sm"
                                 color={
@@ -119,7 +129,7 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
                                 className={
                                   selectedTags.includes(tag.name)
                                     ? "text-white"
-                                    : "text-[#a8b0d3]"
+                                    : "text-[#131416]]"
                                 }
                                 size="sm"
                                 color={
@@ -151,7 +161,7 @@ const TagSelector: React.FC<TagComponentProps> = ({ setValue, getValues }) => {
                                 className={
                                   selectedTags.includes(tag.name)
                                     ? "text-white"
-                                    : "text-[#a8b0d3]"
+                                    : "text-[#131416]"
                                 }
                                 size="sm"
                                 color={
