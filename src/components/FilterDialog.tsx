@@ -6,36 +6,44 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Avatar,
+  Select,
+  SelectItem,
+  Chip,
+  type Selection,
 } from "@nextui-org/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { MdFilterAlt } from "react-icons/md";
 import { useDebouncedCallback } from "use-debounce";
 import { type Filters, initialFilters } from "./RecipeSearch";
-import { type Tag } from "@prisma/client";
+import { type Country, type Tag } from "@prisma/client";
+import { type Key } from "react";
 
 interface FilterDialogProps {
   selectedFilters: Filters;
   setSelectedFilters: React.Dispatch<React.SetStateAction<Filters>>;
   tags: Tag[] | undefined;
+  countries: Country[] | undefined;
 }
+
+const cookingTime = [
+  { name: "Under 15 minuter", value: "15" },
+  { name: "Under 30 minuter", value: "30" },
+  { name: "Under 60 minuter", value: "60" },
+];
 
 const FilterDialog: React.FC<FilterDialogProps> = ({
   selectedFilters,
   setSelectedFilters,
   tags,
+  countries,
 }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const cookingTime = [
-    { name: "Under 15 minuter", value: "15" },
-    { name: "Under 30 minuter", value: "30" },
-    { name: "Under 60 minuter", value: "60" },
-  ];
 
   const handleFilters = useDebouncedCallback(() => {
     const params = new URLSearchParams();
@@ -54,6 +62,12 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
       params.set("tags", selectedFilters.tags.join(","));
     } else {
       params.delete("tags");
+    }
+
+    if (selectedFilters.countries.length > 0) {
+      params.set("countries", selectedFilters.countries.join(","));
+    } else {
+      params.delete("countries");
     }
 
     void replace(`${pathname}?${params.toString()}`);
@@ -93,6 +107,28 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
       }
     });
   };
+
+  const handelAddCountrys = (keys: Selection) => {
+    setSelectedFilters((prevFilters) => {
+      const isAllSelected = keys === "all";
+
+      if (isAllSelected) {
+        return {
+          ...prevFilters,
+          countries: [],
+        };
+      } else {
+        const newCountry = keys as Set<Key>;
+        const stringCountries = Array.from(newCountry).map(String);
+
+        return {
+          ...prevFilters,
+          countries: stringCountries,
+        };
+      }
+    });
+  };
+
   return (
     <>
       <Button
@@ -122,6 +158,76 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
             <>
               <ModalHeader className="flex flex-col gap-1">Filter</ModalHeader>
               <ModalBody>
+                <h1>Länder</h1>
+
+                <Select
+                  items={countries}
+                  selectedKeys={[...selectedFilters.countries]}
+                  variant="bordered"
+                  color="default"
+                  isMultiline={true}
+                  selectionMode="multiple"
+                  onSelectionChange={handelAddCountrys}
+                  listboxProps={{
+                    itemClasses: {
+                      base: [
+                        "rounded-md",
+                        "text-default-500",
+                        "transition-opacity",
+                      ],
+                    },
+                  }}
+                  popoverProps={{
+                    classNames: {
+                      base: "before:bg-default-200",
+                      content: "p-0 border-small border-divider bg-background",
+                    },
+                  }}
+                  classNames={{
+                    base: "border-[#a8b0d3]",
+                    trigger: "min-h-unit-12 py-2 border-[#a8b0d3]",
+                  }}
+                  renderValue={(countries) => {
+                    return (
+                      <div className="my-2 flex flex-wrap gap-2">
+                        {countries.map((country) => (
+                          <Chip
+                            variant="solid"
+                            avatar={
+                              <Avatar
+                                alt={country.data?.name}
+                                className="h-6 w-6"
+                                src={`https://flagcdn.com/h20/${
+                                  country.data?.countryCode || ""
+                                }.png`}
+                              />
+                            }
+                            key={country.key}
+                          >
+                            {country.data?.name}
+                          </Chip>
+                        ))}
+                      </div>
+                    );
+                  }}
+                >
+                  {(country) => (
+                    <SelectItem
+                      key={country.name}
+                      textValue={country.name}
+                      startContent={
+                        <Avatar
+                          alt={country.name}
+                          className="h-6 w-6"
+                          src={`https://flagcdn.com/h20/${country.countryCode}.png`}
+                        />
+                      }
+                    >
+                      {country.name}
+                    </SelectItem>
+                  )}
+                </Select>
+
                 <h1>Tillagningstid</h1>
                 <div className="flex flex-wrap gap-1">
                   {cookingTime.map((time) => {

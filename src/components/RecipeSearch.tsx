@@ -12,11 +12,13 @@ export interface Filters {
   cookingTime?: string;
   tags: string[];
   ingredients?: string[];
+  countries: string[];
 }
 
 export const initialFilters: Filters = {
   tags: [],
   ingredients: [],
+  countries: [],
 };
 
 const SearchBar: React.FC<{ placeholder: string }> = ({ placeholder }) => {
@@ -34,16 +36,27 @@ const SearchBar: React.FC<{ placeholder: string }> = ({ placeholder }) => {
   const { data: tags } = api.tag.getAllTags.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
+  const { data: countries } = api.country.getCountries.useQuery(
+    {
+      page: 1,
+      pageSize: 100,
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
   useEffect(() => {
     const getFiltersFromSearchParams = () => {
       const params = new URLSearchParams(searchParams);
       const tags = params.get("tags")?.split(",") || [];
+      const countries = params.get("countries")?.split(",") || [];
       const cookingTime = params.get("cookingTime");
 
       const filters: Filters = {
         tags: tags,
         cookingTime: cookingTime ? cookingTime : undefined,
+        countries: countries,
       };
       setSelectedFilters(filters);
     };
@@ -90,6 +103,7 @@ const SearchBar: React.FC<{ placeholder: string }> = ({ placeholder }) => {
       <div className="ml-2 flex items-center gap-4">
         <FilterDialog
           tags={tags}
+          countries={countries}
           selectedFilters={selectedFilters}
           setSelectedFilters={setSelectedFilters}
         />

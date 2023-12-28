@@ -34,12 +34,15 @@ const SearchList = ({
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
     const tags = params.get("tags");
+    const countries = params.get("countries");
     const querySearch = params.get("query");
     const cookingTime = params.get("cookingTime");
     const tagsArray = tags ? tags.split(",") : [];
+    const countriesArray = countries ? countries.split(",") : [];
 
     const filters = {
       tags: tagsArray || undefined,
+      countries: countriesArray || undefined,
       cookingTime: Number(cookingTime) || undefined,
       collection,
     };

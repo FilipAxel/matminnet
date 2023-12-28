@@ -73,34 +73,4 @@ const CountryComponent: React.FC<CountryProps> = ({ control, countrys }) => {
   );
 };
 
-{
-  /* <Select className="max-w-xs" label="Select country">
-  <SelectItem
-    key="argentina"
-    startContent={
-      <Avatar
-        alt="Argentina"
-        className="h-6 w-6"
-        src="https://flagcdn.com/ar.svg"
-      />
-    }
-  >
-    Argentina
-  </SelectItem>
-</Select>; */
-}
-
 export default CountryComponent;
-
-{
-  /* <Input
-isClearable
-radius="none"
-variant="faded"
-label="Land"
-aria-label={field.name}
-fullWidth
-{...field}
-size="sm"
-/> */
-}

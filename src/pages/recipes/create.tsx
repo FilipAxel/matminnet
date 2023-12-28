@@ -97,7 +97,7 @@ const Create = () => {
     },
   });
 
-  const { data: countrys } = api.country.getCountrys.useQuery(
+  const { data: countrys } = api.country.getCountries.useQuery(
     {
       page: 1,
       pageSize: 100,

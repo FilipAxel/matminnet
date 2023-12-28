@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { getSignedUrlAws } from "~/server/controller/aws.controller";
+import { Prisma } from "@prisma/client";
 
 export const searchRouter = createTRPCRouter({
   searchRecipe: publicProcedure
@@ -9,6 +10,7 @@ export const searchRouter = createTRPCRouter({
         query: z.string(),
         filters: z.object({
           tags: z.array(z.string()).optional(),
+          countries: z.array(z.string()).optional(),
           cookingTime: z.number().optional(),
           collection: z.string().optional(),
         }),
@@ -50,6 +52,15 @@ export const searchRouter = createTRPCRouter({
                           name: {
                             in: filters.tags,
                           },
+                        },
+                      },
+                    }
+                  : {}),
+                ...(filters.countries && filters.countries.length > 0
+                  ? {
+                      country: {
+                        name: {
+                          in: filters.countries,
                         },
                       },
                     }
@@ -119,6 +130,15 @@ export const searchRouter = createTRPCRouter({
                     },
                   }
                 : {}),
+              ...(filters.countries && filters.countries.length > 0
+                ? {
+                    country: {
+                      name: {
+                        in: filters.countries,
+                      },
+                    },
+                  }
+                : {}),
               ...(filters.collection
                 ? {
                     collections: {
@@ -156,8 +176,10 @@ export const searchRouter = createTRPCRouter({
 
         return { status: "success", recipes: foundRecipes };
       } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        return { status: "error", recipes: [], error };
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          return { status: error.cause, recipes: [], message: error.message };
+        }
+        return { status: "error", recipes: [] };
       }
     }),
 });
