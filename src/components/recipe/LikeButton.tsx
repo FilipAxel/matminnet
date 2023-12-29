@@ -45,6 +45,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({
       <div className="text-center">
         <Button
           size="sm"
+          variant={recipeLiked ? "solid" : "bordered"}
           startContent={
             recipeLiked ? (
               <FaThumbsUp className="text-lg" />
@@ -54,8 +55,10 @@ const LikeButton: React.FC<LikeButtonProps> = ({
           }
           onClick={handleLike}
           className={`${
-            recipeLiked ? "bg-[#ff5722]" : "bg-[#b195d2]"
-          } text-white`}
+            recipeLiked
+              ? "bg-[#eb3a37] text-white"
+              : "border-[#eb3a37] text-[#eb3a37]"
+          } `}
         >
           {likeCount}
         </Button>

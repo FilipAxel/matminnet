@@ -28,7 +28,7 @@ const IngredientSection: React.FC<props> = ({ ingredientStep }) => {
         {ingredientStep.ingredients.map((ingredient) => (
           <h3 key={ingredient.id} className="text-[16px] text-gray-800">
             - {ingredient.quantity}
-            {ingredient.unit} &nbsp;
+            {ingredient.unit}&nbsp;
             {ingredient.ingredient.name}
           </h3>
         ))}

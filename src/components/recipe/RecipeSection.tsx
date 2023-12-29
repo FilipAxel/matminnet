@@ -1,4 +1,4 @@
-import { Button, ScrollShadow, cn } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import router from "next/router";
 import { api } from "~/utils/api";
 import SkeletonRecipe from "../skeleton/recipe-skeleton";
@@ -8,21 +8,12 @@ import LikeButton from "./LikeButton";
 import RecipeImage from "./RecipeImage";
 import Video from "./Video";
 import ShareButton from "./ShareButton";
-import { useState } from "react";
 import { MdOutlineTimer } from "react-icons/md";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-interface RecipeSectionProps {
-  id: string;
-}
-
-const RecipeSection: React.FC<RecipeSectionProps> = ({ id }) => {
+const RecipeSection = ({ id }: { id: string }) => {
   const { data: session } = useSession();
-  const [shadowSize, setShadowSize] = useState(70);
-  const toggleSize = () => {
-    setShadowSize((prevSize) => (prevSize === 70 ? 0 : 70));
-  };
 
   const { data, isLoading } = api.recipe.getRecipeWithId.useQuery({
     id,
@@ -87,34 +78,25 @@ const RecipeSection: React.FC<RecipeSectionProps> = ({ id }) => {
                 )}
                 {data?.recipe?.cookingTime && (
                   <h3 className="flex items-center text-[16px]">
-                    <MdOutlineTimer className="mr-2" />{" "}
+                    <MdOutlineTimer className="mr-2" />
                     {data?.recipe?.cookingTime} Min
                   </h3>
                 )}
               </div>
               {data?.recipe?.description && (
-                <ScrollShadow
-                  hideScrollBar
-                  onClick={toggleSize}
-                  size={shadowSize}
-                  className={cn("mb-8", {
-                    "h-[75px]": shadowSize === 70,
-                    "h-[165px]": shadowSize === 0,
-                  })}
-                >
-                  <p className="mx-4 mb-5 max-w-[70ch] text-sm text-gray-800">
-                    {data?.recipe?.description}
-                  </p>
-                </ScrollShadow>
+                <p className="mx-4 mb-5 max-w-[70ch] text-sm text-gray-800">
+                  {data?.recipe?.description}
+                </p>
               )}
 
               <div className="justify-left mx-3 my-4 flex flex-wrap gap-2 px-2">
                 {data?.recipe.tags.map((tag, index) => (
                   <Button
-                    href={`/tag/${tag.name}`}
+                    href={`/discover?tags=${tag.name}`}
                     as={Link}
-                    color="secondary"
+                    color="primary"
                     size="sm"
+                    className="font-semibold"
                     key={index}
                   >
                     {tag.name}
@@ -126,20 +108,22 @@ const RecipeSection: React.FC<RecipeSectionProps> = ({ id }) => {
             <RecipeImage images={data?.recipe.images} />
           </div>
 
-          <div className="mx-4 ml-2 mt-4 flex flex-wrap justify-center lg:mt-8 lg:flex-nowrap lg:justify-normal">
+          <div className="mx-2 mt-4 flex flex-wrap justify-center lg:mt-8 lg:flex-nowrap lg:justify-normal">
             {data?.recipe.ingredientsSection.length ? (
-              <div className="flex w-full max-w-[400px] flex-col">
+              <div className="flex w-full flex-col sm:max-w-[700px]">
                 <h2 className="mb-2 text-center text-[25px] font-bold lg:text-left">
                   Ingredienser
                 </h2>
-                {data?.recipe.ingredientsSection.map((ingredientStep) => {
-                  return (
-                    <IngredientSection
-                      key={ingredientStep.id}
-                      ingredientStep={ingredientStep}
-                    />
-                  );
-                })}
+                <div className="flex flex-col gap-2">
+                  {data?.recipe.ingredientsSection.map((ingredientStep) => {
+                    return (
+                      <IngredientSection
+                        key={ingredientStep.id}
+                        ingredientStep={ingredientStep}
+                      />
+                    );
+                  })}
+                </div>
               </div>
             ) : null}
 
@@ -148,7 +132,7 @@ const RecipeSection: React.FC<RecipeSectionProps> = ({ id }) => {
                 <h2 className="mt-4 text-center text-[25px] font-bold lg:ml-5 lg:mt-0 lg:text-left">
                   Instruktioner
                 </h2>
-                <div className="flex w-full max-w-[450px] flex-col items-center justify-center gap-3 overflow-hidden p-2 pb-5 lg:max-w-[600px]">
+                <div className="flex w-full flex-col items-center justify-center gap-3 overflow-hidden p-2 pb-5 lg:max-w-[600px]">
                   {data?.recipe.directions.map((direction) => {
                     return (
                       <DirectionSection

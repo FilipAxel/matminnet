@@ -1,5 +1,6 @@
-import { Image } from "@nextui-org/react";
+import { Image, Modal, ModalContent, useDisclosure } from "@nextui-org/react";
 import { useState } from "react";
+import { MdOutlineZoomOutMap } from "react-icons/md";
 interface RecipeImageProps {
   images:
     | {
@@ -9,16 +10,48 @@ interface RecipeImageProps {
 }
 
 const RecipeImage: React.FC<RecipeImageProps> = ({ images }) => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [mainImageIndex, setMainImageIndex] = useState(0);
+
   return (
     <>
       <div className="flex w-full flex-col items-center justify-center overflow-hidden">
-        <Image
+        <div className="relative">
+          <div className="absolute bottom-2 right-2 z-50">
+            <MdOutlineZoomOutMap
+              onClick={onOpen}
+              className="cursor-pointer text-2xl text-white"
+            />
+          </div>
+          <Image
+            className="h-[390px] w-full rounded-none bg-black object-cover sm:h-[400px] sm:w-[700px] sm:rounded-md"
+            src={images?.[mainImageIndex]?.name ?? "/recipe-placeholder.webp"}
+            alt={images?.[mainImageIndex]?.name ?? "placeholder image"}
+          />
+        </div>
+
+        <Modal
+          placement="center"
+          size="2xl"
+          backdrop="blur"
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
           radius="none"
-          className="h-full w-full bg-black  lg:max-h-[500px] lg:min-w-[500px]"
-          src={images?.[mainImageIndex]?.name ?? "/recipe-placeholder.webp"}
-          alt={images?.[mainImageIndex]?.name ?? "placeholder image"}
-        />
+        >
+          <ModalContent>
+            {() => (
+              <div className="flex justify-center bg-black">
+                <Image
+                  className="h-full w-full rounded-none object-contain"
+                  src={
+                    images?.[mainImageIndex]?.name ?? "/recipe-placeholder.webp"
+                  }
+                  alt={images?.[mainImageIndex]?.name ?? "placeholder image"}
+                />
+              </div>
+            )}
+          </ModalContent>
+        </Modal>
 
         {images?.length && images.length > 1 ? (
           <div className="mx-auto flex justify-center gap-2">
