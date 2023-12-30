@@ -68,8 +68,9 @@ const RecipeSection = ({ id }: { id: string }) => {
                   likes={likeResponse?.likes}
                   userLikedRecipe={userLikedRecipe?.userLikesRecipe}
                 />
+                {/*  add back when we have this feature */}
+                {/* <ShareButton /> */}
 
-                <ShareButton />
                 <Button size="sm" color="primary" className="text-white">
                   {data?.recipe.publicationStatus &&
                     data.recipe.publicationStatus.charAt(0).toUpperCase() +

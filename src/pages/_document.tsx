@@ -26,18 +26,18 @@ class MyDocument extends Document {
           />
           <meta
             name="description"
-            content="Matminnet - din plats för kulinarisk kreativitet! Skapa, dela och organisera dina unika recept med vårt moderna Receptbokslagringssystem."
+            content="Matminnet - din plats för kulinarisk kreativitet! Skapa, dela och organisera dina unika recept med vårt moderna receptbokslagringssystem helt grattis!"
           />
 
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://matminne.com" />
+          <meta property="og:url" content="https://matminnet.com" />
           <meta
             property="og:title"
             content="Matminnet Receptbyggare - Dela dina kulinariska skapelser"
           />
           <meta
             property="og:description"
-            content="Matminnet - din plats för kulinarisk kreativitet! Skapa, dela och organisera dina unika recept med vårt moderna Receptbokslagringssystem."
+            content="Matminnet - din plats för kulinarisk kreativitet! Skapa, dela och organisera dina unika recept med vårt moderna receptbokslagringssystem helt gratis!"
           />
           <meta
             property="og:image"
@@ -52,7 +52,7 @@ class MyDocument extends Document {
           />
           <meta
             name="twitter:description"
-            content="Matminnet - din plats för kulinarisk kreativitet! Skapa, dela och organisera dina unika recept med vårt moderna Receptbokslagringssystem."
+            content="Matminnet - din plats för kulinarisk kreativitet! Skapa, dela och organisera dina unika recept med vårt moderna receptbokslagringssystem helt gratis!"
           />
           <meta
             name="twitter:image"
@@ -86,13 +86,13 @@ class MyDocument extends Document {
           <meta property="og:title" content="Receptapplikation" />
           <meta
             property="og:description"
-            content="Skapa och spara läckra recept med vår Receptapplikation. Hitta olika recept och matlagningsråd för att förbättra dina kulinariska färdigheter."
+            content="Skapa och spara läckra recept med vår Receptapplikation. Hitta olika recept och matlagningsråd för en lättare vardag"
           />
           <meta property="og:site_name" content="Receptapplikation" />
           <meta property="og:url" content="https://www.matminnet.se" />
           <meta
             property="og:image"
-            content="https://www.matminnet.se/icons/icon-512x512.png"
+            content="https://www.matminnet.se/icon-512x512.png"
           />
         </Head>
         <body className="h-full overflow-y-scroll">

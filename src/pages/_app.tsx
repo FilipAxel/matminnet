@@ -21,6 +21,7 @@ const MatMinnet: AppType<{ session: Session | null }> = ({
             <title>
               Matminnet Receptbyggare - Dela dina kulinariska skapelser.
             </title>
+            <link rel="icon" href="/icon-512x512.png" />
             <meta
               name="viewport"
               content="width=device-width, initial-scale=1, maximum-scale=1"

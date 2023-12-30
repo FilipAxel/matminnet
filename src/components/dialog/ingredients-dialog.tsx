@@ -37,8 +37,6 @@ const IngredientDialog: React.FC<IngredientSectionProps> = ({
   ingredientsSection,
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  console.log(ingredientsSection);
-
   return (
     <>
       <Button
@@ -53,7 +51,7 @@ const IngredientDialog: React.FC<IngredientSectionProps> = ({
 
       <Modal placement="auto" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
-          {(onClose) => (
+          {(_) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 Ingredienser
@@ -71,17 +69,12 @@ const IngredientDialog: React.FC<IngredientSectionProps> = ({
                         <h1 className="font-semibold">
                           {quantity}&nbsp;{unit}&nbsp;
                         </h1>
-                        <h2> {name}</h2>
+                        <h2>{name}</h2>
                       </div>
                     );
                   });
                 })}
               </ModalBody>
-              <ModalFooter>
-                <Button variant="solid" color="danger" onPress={onClose}>
-                  Stäng
-                </Button>
-              </ModalFooter>
             </>
           )}
         </ModalContent>
