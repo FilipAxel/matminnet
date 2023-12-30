@@ -11,6 +11,7 @@ import ShareButton from "./ShareButton";
 import { MdOutlineTimer } from "react-icons/md";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import CookModeDialog from "../dialog/cook-mode-dialog";
 
 const RecipeSection = ({ id }: { id: string }) => {
   const { data: session } = useSession();
@@ -32,9 +33,14 @@ const RecipeSection = ({ id }: { id: string }) => {
     void refetch();
   }
 
-  const { data: likeResponse } = api.recipe.getLikes.useQuery({
-    id,
-  });
+  const { data: likeResponse } = api.recipe.getLikes.useQuery(
+    {
+      id,
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
   if (isLoading) {
     return <SkeletonRecipe />;
@@ -69,6 +75,12 @@ const RecipeSection = ({ id }: { id: string }) => {
                     data.recipe.publicationStatus.charAt(0).toUpperCase() +
                       data.recipe.publicationStatus.slice(1)}
                 </Button>
+                {data?.recipe.directions ? (
+                  <CookModeDialog
+                    directions={data?.recipe.directions}
+                    ingredientsSection={data?.recipe.ingredientsSection}
+                  />
+                ) : null}
               </div>
               <div className="mb-3 flex gap-2 px-4">
                 {data?.recipe?.servingSize && (
@@ -110,8 +122,8 @@ const RecipeSection = ({ id }: { id: string }) => {
 
           <div className="mx-2 mt-4 flex flex-wrap justify-center lg:mt-8 lg:flex-nowrap lg:justify-normal">
             {data?.recipe.ingredientsSection.length ? (
-              <div className="flex w-full flex-col sm:max-w-[700px]">
-                <h2 className="mb-2 text-center text-[25px] font-bold lg:text-left">
+              <div className="flex w-full flex-col sm:max-w-[700px] md:max-w-[500px]">
+                <h2 className="mb-2 text-center text-[30px] font-bold lg:text-left">
                   Ingredienser
                 </h2>
                 <div className="flex flex-col gap-2">
@@ -129,8 +141,8 @@ const RecipeSection = ({ id }: { id: string }) => {
 
             {data?.recipe.directions.length ? (
               <div>
-                <h2 className="mt-4 text-center text-[25px] font-bold lg:ml-5 lg:mt-0 lg:text-left">
-                  Instruktioner
+                <h2 className="mt-4 text-center text-[30px] font-bold lg:ml-5 lg:mt-0 lg:text-left">
+                  Gör så här
                 </h2>
                 <div className="flex w-full flex-col items-center justify-center gap-3 overflow-hidden p-2 pb-5 lg:max-w-[600px]">
                   {data?.recipe.directions.map((direction) => {

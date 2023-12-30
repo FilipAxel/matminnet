@@ -26,7 +26,7 @@ const IngredientSection: React.FC<props> = ({ ingredientStep }) => {
       <h2 className="font-semibold">{ingredientStep.name}</h2>
       <CardBody className="flex flex-col items-start">
         {ingredientStep.ingredients.map((ingredient) => (
-          <h3 key={ingredient.id} className="text-[16px] text-gray-800">
+          <h3 key={ingredient.id} className="text-[18px] text-gray-800">
             - {ingredient.quantity}
             {ingredient.unit}&nbsp;
             {ingredient.ingredient.name}
