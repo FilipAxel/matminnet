@@ -27,8 +27,9 @@ const ImageController: React.FC<ImageControllerProps> = ({
     if (!selectedFiles) return;
 
     const newImageFiles: ImageFile[] = [];
-
-    if (selectedFiles.length + imageFiles.length > 3) {
+    const totalLength = selectedFiles.length + imageFiles.length;
+    console.log(totalLength);
+    if (totalLength > 3) {
       setUploadError(
         "Du har överskridit det maximala begränsningen på tre bilder."
       );
@@ -39,7 +40,7 @@ const ImageController: React.FC<ImageControllerProps> = ({
 
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
-      if (!file) continue; // Skip if the file is undefined
+      if (!file) continue;
 
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -47,7 +48,10 @@ const ImageController: React.FC<ImageControllerProps> = ({
         newImageFiles.push({ file, previewUrl });
 
         if (newImageFiles.length === selectedFiles.length) {
-          setImageFiles(newImageFiles);
+          setImageFiles((prevImageFiles) => [
+            ...prevImageFiles,
+            ...newImageFiles,
+          ]);
         }
       };
       reader.readAsDataURL(file);
@@ -56,35 +60,64 @@ const ImageController: React.FC<ImageControllerProps> = ({
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [mainImageIndex, setMainImageIndex] = useState(0);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  /*   const removeImage = (index: number) => {
+  const removeImage = (index: number) => {
     console.log(index);
     const newImageFiles = [...imageFiles];
     newImageFiles.splice(index, 1);
     setImageFiles(newImageFiles);
   };
- */
+
   return (
     <div className="w-full">
-      <input
-        ref={fileInputRef}
-        aria-label="Upload images"
-        onChange={handleFileChange}
-        className="focus:shadow-te-primary hover:file:[#066FEE] relative m-0 block w-full min-w-0 flex-auto rounded border border-solid
-         border-neutral-300
-          px-3 py-[0.32rem] text-base font-normal
-           text-neutral-700 duration-300 ease-in-out
-            transition file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 
-            file:border-solid file:border-inherit file:bg-[#066FEE] file:px-3 file:py-[0.32rem] file:text-white
-             file:duration-150 file:ease-in-out file:transition file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] 
-             focus:border-primary focus:text-neutral-700 focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-        accept="image/*"
-        type="file"
-        multiple
-      />
-      {uploadError && <p className="text-red-500">{uploadError}</p>}
-      <div className="flex flex-wrap items-center justify-start gap-5 pt-5">
+      <div className="flex w-full items-center justify-center">
+        <label
+          htmlFor="dropzone-file"
+          className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600 dark:hover:bg-gray-800"
+        >
+          <div className="flex flex-col items-center justify-center pb-6 pt-5">
+            <svg
+              className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+              />
+            </svg>
+            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+              <span className="font-semibold">Klicka för att ladda upp</span>
+              {/*    eller dra och släpp */}
+            </p>
+
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              JPEG, PNG, WebP, SVG (MAX. 2560x1440px)
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Vänligen välj upp till max tre bilder.
+            </p>
+          </div>
+
+          {uploadError && <p className="text-red-500">{uploadError}</p>}
+          <input
+            id="dropzone-file"
+            type="file"
+            className="hidden"
+            accept=".jpg, .jpeg, .png, .webp, .svg"
+            aria-label="Ladda upp bilder"
+            multiple
+            onChange={handleFileChange}
+          />
+        </label>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-start gap-3 pt-5">
         {imageFiles.map(({ previewUrl }, index) => {
           return (
             <div
@@ -94,7 +127,7 @@ const ImageController: React.FC<ImageControllerProps> = ({
               className="relative cursor-zoom-in border-1"
               key={index}
             >
-              {/*  <div className="absolute right-1 top-1 z-40">
+              <div className="absolute right-1 top-1 z-40">
                 <Button
                   onPress={() => removeImage(index)}
                   className="h-6"
@@ -104,7 +137,7 @@ const ImageController: React.FC<ImageControllerProps> = ({
                 >
                   <MdDeleteForever />
                 </Button>
-              </div> */}
+              </div>
               <Image
                 width={0}
                 height={0}
