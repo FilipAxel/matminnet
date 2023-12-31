@@ -44,9 +44,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           className="z-0 h-full w-full object-cover"
           src={imageUrl}
         />
-        <CardFooter className="absolute top-0 h-full flex-col items-start justify-end bg-gradient-to-t from-black via-transparent to-transparent">
+        <CardFooter className="absolute top-0 h-full flex-col items-start justify-end bg-gradient-to-t from-[#0b0b0b] via-5% to-85%">
           <div className="z-30 w-full">
-            <h2 className="mb-2 text-left text-[18px] font-semibold text-white">
+            <h2 className="mb-2 text-left text-[16px] font-semibold text-white sm:text-[18px]">
               {recipe.name}
             </h2>
             <div>
