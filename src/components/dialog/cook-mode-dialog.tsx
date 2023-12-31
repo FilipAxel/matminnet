@@ -189,7 +189,7 @@ const CookModeDialog: React.FC<CookModeProps> = ({
                   })}
                 </>
               </ModalBody>
-              <ModalFooter className="flex">
+              <ModalFooter className="mb-2 md:mb-0">
                 <IngrediantDialog ingredientsSection={ingredientsSection} />
                 <div className="flex flex-1 justify-end">
                   {activePage !== 1 && (
