@@ -14,12 +14,12 @@ export default function Home() {
             <h1 className="my-6 text-4xl font-bold leading-tight md:text-5xl">
               Laga. Dela. Anslut Din receptcentral!
             </h1>
-            <p className="text-1xl mx-1 mb-8   leading-normal">
+            <p className="text-1xl mx-1 mb-8 leading-normal">
               Trött på röriga kökshyllor fyllda med kokböcker? Gå med i vår
               gemenskap och gör ditt liv enklare.
             </p>
 
-            <div className="flex w-full justify-center space-x-4   lg:justify-start">
+            <div className="flex w-full justify-center space-x-4 lg:justify-start">
               <Button
                 href="/discover"
                 as={Link}

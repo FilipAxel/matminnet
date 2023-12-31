@@ -27,7 +27,7 @@ const IngredientDropDown: React.FC<IngredientDropDownProps> = ({
         color="default"
         variant="solid"
       >
-        <DropdownSection title="Danger">
+        <DropdownSection title="Farligt">
           <DropdownItem
             startContent={<MdDeleteForever />}
             key="delete"
