@@ -35,7 +35,7 @@ const IngredientDropDown: React.FC<IngredientDropDownProps> = ({
             color="danger"
             onClick={() => onDelete()}
           >
-            Ta bort uppgift
+            Ta bort lista
           </DropdownItem>
         </DropdownSection>
       </DropdownMenu>
