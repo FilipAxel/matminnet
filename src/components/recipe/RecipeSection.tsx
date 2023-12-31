@@ -7,7 +7,6 @@ import IngredientSection from "./IngredientSection";
 import LikeButton from "./LikeButton";
 import RecipeImage from "./RecipeImage";
 import Video from "./Video";
-import ShareButton from "./ShareButton";
 import { MdOutlineTimer } from "react-icons/md";
 import Link from "next/link";
 import { useSession } from "next-auth/react";

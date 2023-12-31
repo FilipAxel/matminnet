@@ -1,6 +1,13 @@
-import { type ChangeEvent } from "react";
+import { useState, type ChangeEvent, useRef } from "react";
 import { type ImageFile } from "./from-interface";
-import { Image } from "@nextui-org/react";
+import {
+  Button,
+  Image,
+  Modal,
+  ModalContent,
+  useDisclosure,
+} from "@nextui-org/react";
+import { MdDeleteForever } from "react-icons/md";
 
 interface ImageControllerProps {
   imageFiles: ImageFile[];
@@ -22,7 +29,9 @@ const ImageController: React.FC<ImageControllerProps> = ({
     const newImageFiles: ImageFile[] = [];
 
     if (selectedFiles.length + imageFiles.length > 3) {
-      setUploadError("You have exceeded the maximum limit of three images.");
+      setUploadError(
+        "Du har överskridit det maximala begränsningen på tre bilder."
+      );
       return;
     } else {
       setUploadError(null);
@@ -45,9 +54,21 @@ const ImageController: React.FC<ImageControllerProps> = ({
     }
   };
 
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [mainImageIndex, setMainImageIndex] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  /*   const removeImage = (index: number) => {
+    console.log(index);
+    const newImageFiles = [...imageFiles];
+    newImageFiles.splice(index, 1);
+    setImageFiles(newImageFiles);
+  };
+ */
   return (
     <div className="w-full">
       <input
+        ref={fileInputRef}
         aria-label="Upload images"
         onChange={handleFileChange}
         className="focus:shadow-te-primary hover:file:[#066FEE] relative m-0 block w-full min-w-0 flex-auto rounded border border-solid
@@ -64,17 +85,69 @@ const ImageController: React.FC<ImageControllerProps> = ({
       />
       {uploadError && <p className="text-red-500">{uploadError}</p>}
       <div className="flex flex-wrap items-center justify-start gap-5 pt-5">
-        {imageFiles.map(({ previewUrl }, index) => (
-          <Image
-            key={index}
-            width={100}
-            height={100}
-            className="h-[120px] max-h-[120px] max-w-[120px] rounded-none border-1"
-            src={previewUrl}
-            alt={`Image Preview ${index}`}
-          />
-        ))}
+        {imageFiles.map(({ previewUrl }, index) => {
+          return (
+            <div
+              onClick={() => {
+                onOpen(), setMainImageIndex(index);
+              }}
+              className="relative cursor-zoom-in border-1"
+              key={index}
+            >
+              {/*  <div className="absolute right-1 top-1 z-40">
+                <Button
+                  onPress={() => removeImage(index)}
+                  className="h-6"
+                  isIconOnly
+                  color="danger"
+                  aria-label="Like"
+                >
+                  <MdDeleteForever />
+                </Button>
+              </div> */}
+              <Image
+                width={0}
+                height={0}
+                className="h-[130px] max-h-[130px] w-[140px] max-w-[140px] rounded-none"
+                src={previewUrl}
+                alt={`Bild Förhandsvisning ${index}`}
+              />
+              <div className="w-full bg-[#201f1f] p-1 text-center">
+                <p className="text-center text-sm text-white">
+                  Förhandsvisning
+                </p>
+              </div>
+            </div>
+          );
+        })}
       </div>
+      <Modal
+        placement="center"
+        scrollBehavior="inside"
+        size="2xl"
+        backdrop="blur"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        radius="none"
+      >
+        <ModalContent>
+          {() => (
+            <div className="flex justify-center bg-black">
+              <Image
+                className="h-full w-full rounded-none object-contain"
+                src={
+                  imageFiles?.[mainImageIndex]?.previewUrl ??
+                  "/recipe-placeholder.webp"
+                }
+                alt={
+                  imageFiles?.[mainImageIndex]?.previewUrl ??
+                  "placeholder image"
+                }
+              />
+            </div>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

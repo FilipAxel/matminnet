@@ -4,7 +4,7 @@ import { type ImageFile } from "~/components/create-recipe-from/from-interface";
 import ImageController from "~/components/create-recipe-from/image-controller";
 
 interface ImageComponentProps {
-  imageFiles: ImageFile[]; // Define the prop types
+  imageFiles: ImageFile[];
   setImageFiles: React.Dispatch<React.SetStateAction<ImageFile[]>>;
 }
 

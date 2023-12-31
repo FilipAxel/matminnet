@@ -33,6 +33,7 @@ const RecipeImage: React.FC<RecipeImageProps> = ({ images }) => {
         <Modal
           placement="center"
           size="2xl"
+          scrollBehavior="inside"
           backdrop="blur"
           isOpen={isOpen}
           onOpenChange={onOpenChange}
