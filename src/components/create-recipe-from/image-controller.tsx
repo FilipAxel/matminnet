@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, useRef } from "react";
+import { useState, type ChangeEvent } from "react";
 import { type ImageFile } from "./from-interface";
 import {
   Button,
@@ -28,7 +28,6 @@ const ImageController: React.FC<ImageControllerProps> = ({
 
     const newImageFiles: ImageFile[] = [];
     const totalLength = selectedFiles.length + imageFiles.length;
-    console.log(totalLength);
     if (totalLength > 3) {
       setUploadError(
         "Du har överskridit det maximala begränsningen på tre bilder."
@@ -62,7 +61,6 @@ const ImageController: React.FC<ImageControllerProps> = ({
   const [mainImageIndex, setMainImageIndex] = useState(0);
 
   const removeImage = (index: number) => {
-    console.log(index);
     const newImageFiles = [...imageFiles];
     newImageFiles.splice(index, 1);
     setImageFiles(newImageFiles);
@@ -127,15 +125,14 @@ const ImageController: React.FC<ImageControllerProps> = ({
               className="relative cursor-zoom-in border-1"
               key={index}
             >
-              <div className="absolute right-1 top-1 z-40">
+              <div className="absolute right-0 top-1 z-40">
                 <Button
                   onPress={() => removeImage(index)}
-                  className="h-6"
+                  className="h-6 bg-transparent"
                   isIconOnly
-                  color="danger"
                   aria-label="Like"
                 >
-                  <MdDeleteForever />
+                  <MdDeleteForever className="text-2xl text-danger-500" />
                 </Button>
               </div>
               <Image
