@@ -70,7 +70,7 @@ const SearchList = ({
           </p>
         </div>
       ) : (
-        <div className="mt-5 flex flex-wrap justify-center gap-3 p-3 xs:ml-4 xs:justify-start sm:justify-start">
+        <div className="mt-5 flex flex-wrap justify-center gap-3 p-3 xs:justify-start media428:ml-2 sm:justify-start md:ml-4">
           {recipesData.map((recipe) => {
             return <RecipeCard key={recipe.id} recipe={recipe} />;
           })}
