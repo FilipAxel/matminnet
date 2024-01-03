@@ -11,6 +11,7 @@ import { MdOutlineTimer } from "react-icons/md";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import CookModeDialog from "../dialog/cook-mode-dialog";
+import { type Recipe } from "@prisma/client";
 
 const RecipeSection = ({ id }: { id: string }) => {
   const { data: session } = useSession();
@@ -40,6 +41,13 @@ const RecipeSection = ({ id }: { id: string }) => {
       refetchOnWindowFocus: false,
     }
   );
+
+  const calculateTotalCookingTime = (recipe: Recipe): number => {
+    const hoursInMinutes = (recipe.cookingTimeHours || 0) * 60;
+    const minutes = recipe.cookingTimeMinutes || 0;
+
+    return hoursInMinutes + minutes;
+  };
 
   if (isLoading) {
     return <SkeletonRecipe />;
@@ -88,12 +96,19 @@ const RecipeSection = ({ id }: { id: string }) => {
                     {data?.recipe?.servingSize} Portioner |
                   </h3>
                 )}
-                {data?.recipe?.cookingTime && (
+                {data?.recipe?.cookingTimeMinutes ||
+                data?.recipe?.cookingTimeHours ? (
                   <h3 className="flex items-center text-[16px]">
                     <MdOutlineTimer className="mr-2" />
-                    {data?.recipe?.cookingTime} Min
+                    {data?.recipe?.cookingTimeHours && (
+                      <span>{data?.recipe?.cookingTimeHours}&nbsp;tim</span>
+                    )}
+                    &nbsp;
+                    {data?.recipe?.cookingTimeMinutes && (
+                      <span>{data?.recipe?.cookingTimeMinutes}&nbsp;min</span>
+                    )}
                   </h3>
-                )}
+                ) : null}
               </div>
               {data?.recipe?.description && (
                 <p className="mx-4 mb-5 max-w-[70ch] text-sm text-gray-800">

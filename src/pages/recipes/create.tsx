@@ -12,7 +12,6 @@ import {
   type FormValues,
 } from "~/components/create-recipe-from/from-interface";
 import CollectionComponent from "~/components/form/CollectionComponent";
-import CookTimeComponent from "~/components/form/CookTimeComponent";
 import CountryComponent from "~/components/form/CountryComponent";
 import DescriptionComponent from "~/components/form/DescriptionComponent";
 import DirectionComponent, {
@@ -33,6 +32,7 @@ import IngredientsStepComponent, {
 } from "~/components/form/ingredients/IngredientsStepComponent";
 import { useSession } from "next-auth/react";
 import LoginActionDialog from "~/components/dialog/login-action-dialog";
+import SetTimmerComponent from "~/components/form/SetTimmerComponent";
 
 type CreateRecipeWithDataFunction = (
   submitedForm: FormValues | null,
@@ -88,7 +88,7 @@ const Create = () => {
       name: "",
       description: "",
       servingSize: "",
-      cookingTime: null,
+      cookingTime: { hours: undefined, minutes: undefined },
       tags: [],
       video: "",
       country: "",
@@ -269,7 +269,7 @@ const Create = () => {
               <NameComponent control={control} errors={errors} />
               <DescriptionComponent control={control} />
               <ServingSizeComponent control={control} />
-              <CookTimeComponent control={control} />
+              <SetTimmerComponent control={control} setValue={setValue} />
 
               <CountryComponent control={control} countrys={countrys || []} />
             </div>

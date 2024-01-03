@@ -8,7 +8,8 @@ type RecipeWithImage = Recipe & {
   images: { name: string }[];
 };
 interface MinimalInfoRecipe {
-  cookingTime: number | null;
+  cookingTimeMinutes: number | null;
+  cookingTimeHours: number | null;
   id: string;
   images: { name: string }[]; // Corrected type
   name: string;
@@ -34,7 +35,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         isPressable
         isHoverable
         onClick={() => handleRoute()}
-        className="h-[260px] w-full bg-transparent xs:h-[200px] xs:w-[175px] sm:h-[210] sm:w-[210px]"
+        className="h-[260px] w-full bg-transparent xs:h-[200px] xs:w-[180px] sm:h-[210] sm:w-[210px]"
       >
         <Image
           removeWrapper
@@ -51,18 +52,26 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             </h2>
             <div>
               <div className="flex justify-start">
-                {recipe.cookingTime && (
-                  <div className="flex items-center">
-                    <MdAccessTime className="mr-1 text-[#d1d1d1]" />
-                    <h3 className="mr-3 text-[11px] text-white">
-                      {recipe.cookingTime} min
-                    </h3>
+                {recipe?.cookingTimeMinutes || recipe?.cookingTimeHours ? (
+                  <div className="mr-2 flex items-center">
+                    <MdAccessTime className="mr-[2px] text-[#d1d1d1]  md:mr-1" />
+                    {recipe?.cookingTimeHours && (
+                      <h3 className="text-[9px] text-white md:text-[11px]">
+                        {recipe?.cookingTimeHours}&nbsp;tim&nbsp;
+                      </h3>
+                    )}
+
+                    {recipe?.cookingTimeMinutes && (
+                      <h3 className="text-[9px] text-white md:text-[11px]">
+                        {recipe?.cookingTimeMinutes}&nbsp;min
+                      </h3>
+                    )}
                   </div>
-                )}
+                ) : null}
                 {recipe.servingSize && (
                   <div className="flex items-center">
-                    <PiBowlFoodDuotone className="mr-1 text-[#d1d1d1]" />
-                    <h3 className="text-[11px] text-white">
+                    <PiBowlFoodDuotone className="mr-[2px] text-[#d1d1d1]  md:mr-1" />
+                    <h3 className="text-[9px] text-white md:text-[11px]">
                       {recipe.servingSize} Portioner
                     </h3>
                   </div>

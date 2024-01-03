@@ -5,7 +5,10 @@ export const recipeFields = {
   description: z.string(),
   tags: z.array(z.string()),
   servingSize: z.string(),
-  cookingTime: z.union([z.number(), z.null(), z.string()]),
+  cookingTime: z.object({
+    hours: z.union([z.string(), z.number()]),
+    minutes: z.union([z.string(), z.number()]),
+  }),
   video: z.string(),
   country: z.string(),
   collections: z.array(

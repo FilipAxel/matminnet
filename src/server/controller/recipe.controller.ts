@@ -89,9 +89,11 @@ export const createRecipe = async (
       data: {
         name: name,
         description: description,
-        countryId: foundUniqueCountry?.id || null,
+        countryId: foundUniqueCountry?.id,
         servingSize: servingSize,
-        cookingTime: cookingTime !== null ? +cookingTime : null,
+        cookingTimeHours: Number(cookingTime.hours),
+        cookingTimeMinutes: Number(cookingTime.minutes),
+
         directions: {
           create: direction.map((step) => ({
             time:
@@ -522,7 +524,8 @@ export const getTopRatedRecipes = async (
     const filteredTopRatedRecipes: filteredTopRated[] = topRatedRecipes.map(
       (recipe) => {
         return exclude(recipe, [
-          "cookingTime",
+          "cookingTimeHours",
+          "cookingTimeMinutes",
           "countryId",
           "created_at",
           "updated_at",

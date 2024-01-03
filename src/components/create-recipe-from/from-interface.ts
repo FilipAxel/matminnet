@@ -7,11 +7,16 @@ export interface FormValues {
     ingredients: IngredientOption[];
   }[];
   servingSize: string;
-  cookingTime: string | number | null;
+  cookingTime: SetTimmerFormData;
   video: string;
   country: string;
   collections: CollectionOption[];
   publicationStatus: boolean;
+}
+
+export interface SetTimmerFormData {
+  hours: number;
+  minutes: number;
 }
 
 export interface CollectionOption {

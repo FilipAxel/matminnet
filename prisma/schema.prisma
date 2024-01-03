@@ -140,7 +140,8 @@ model Recipe {
     tags                     Tag[]
     servingSize              String?
     description              String?                    @db.Text
-    cookingTime              Int?
+    cookingTimeHours         Int?
+    cookingTimeMinutes       Int?
     country                  Country?                   @relation(fields: [countryId], references: [id])
     countryId                String?
     images                   Image[]

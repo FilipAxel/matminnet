@@ -26,7 +26,7 @@ export const searchRouter = createTRPCRouter({
           // const recipesCount = await ctx.prisma.recipe.count();
           //const skip = Math.floor(Math.random() * recipesCount);
           const randomRecipes = await ctx.prisma.recipe.findMany({
-            take: 10,
+            /*       take: 10, */
             /*    skip: skip, */
             where: {
               ...(!publicSearch
@@ -40,7 +40,7 @@ export const searchRouter = createTRPCRouter({
                   }
                 : {}),
               AND: {
-                cookingTime: filters.cookingTime
+                cookingTimeMinutes: filters.cookingTime
                   ? {
                       lte: filters.cookingTime,
                     }
@@ -114,7 +114,7 @@ export const searchRouter = createTRPCRouter({
                     publicationStatus: publication,
                   }
                 : {}),
-              cookingTime: filters.cookingTime
+              cookingTimeMinutes: filters.cookingTime
                 ? {
                     lte: filters.cookingTime,
                   }
