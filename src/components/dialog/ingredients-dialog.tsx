@@ -1,5 +1,6 @@
 import {
   Button,
+  Divider,
   Modal,
   ModalBody,
   ModalContent,
@@ -7,7 +8,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import React from "react";
-import { SiReadthedocs } from "react-icons/si";
+import { IoIosListBox } from "react-icons/io";
 
 export interface IngredientsSection {
   ingredientSectionId?: string;
@@ -40,39 +41,51 @@ const IngredientDialog: React.FC<IngredientSectionProps> = ({
     <>
       <Button
         onPress={onOpen}
-        variant="light"
-        className="text-black"
-        color="default"
-        startContent={<SiReadthedocs className="text-xl" />}
+        variant="solid"
+        className=""
+        color="primary"
+        startContent={<IoIosListBox className="text-2xl" />}
       >
         Ingredienser
       </Button>
 
-      <Modal placement="auto" isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
+      <Modal
+        placement="auto"
+        scrollBehavior="inside"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
+        <ModalContent className="p-2">
           {(_) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <ModalHeader className="flex flex-col gap-1 text-2xl font-bold">
                 Ingredienser
               </ModalHeader>
-              <ModalBody>
-                {ingredientsSection.map((section) => {
-                  return section.ingredients.map((ingredient) => {
-                    const {
-                      quantity,
-                      unit,
-                      ingredient: { name },
-                    } = ingredient;
-                    return (
-                      <div className="flex" key={ingredient.id}>
-                        <h1 className="font-semibold">
-                          {quantity}&nbsp;{unit}&nbsp;
-                        </h1>
-                        <h2>{name}</h2>
-                      </div>
-                    );
-                  });
-                })}
+              <ModalBody className="mb-2">
+                {ingredientsSection.map((section) => (
+                  <div key={section.name}>
+                    <Divider className="my-4" />
+                    <h1 className="text-xl font-semibold">{section.name}</h1>
+                    {section.ingredients.map((ingredient) => {
+                      const {
+                        quantity,
+                        unit,
+                        ingredient: { name },
+                      } = ingredient;
+                      return (
+                        <div
+                          className="flex justify-between p-1"
+                          key={ingredient.id}
+                        >
+                          <h1 className="font-medium">
+                            {quantity}&nbsp;{unit}&nbsp;
+                          </h1>
+                          <h2>{name}</h2>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ))}
               </ModalBody>
             </>
           )}
