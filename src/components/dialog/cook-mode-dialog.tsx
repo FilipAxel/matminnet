@@ -65,6 +65,27 @@ const CookModeDialog: React.FC<CookModeProps> = ({
     boundaries: directions.length,
   });
 
+  const [checkedSteps, setCheckedSteps] = useState<{ [key: string]: boolean }>(
+    {}
+  );
+
+  const handleStepCheckboxChange = (
+    mainStep: number,
+    subStepIndex?: number
+  ) => {
+    let index: number;
+    if (subStepIndex) {
+      index = parseInt(mainStep.toString() + subStepIndex.toString());
+    } else {
+      index = mainStep;
+    }
+
+    setCheckedSteps((prevCheckedSteps) => ({
+      ...prevCheckedSteps,
+      [index]: !prevCheckedSteps[index],
+    }));
+  };
+
   return (
     <>
       <Button
@@ -116,6 +137,16 @@ const CookModeDialog: React.FC<CookModeProps> = ({
                     color="success"
                     key={directions?.[activePage - 1]?.mainStepIndex}
                     aria-label={directions?.[activePage - 1]?.mainStepValue}
+                    isSelected={
+                      checkedSteps[
+                        directions?.[activePage - 1]?.mainStepIndex ?? 1
+                      ] || false
+                    }
+                    onValueChange={() =>
+                      handleStepCheckboxChange(
+                        directions?.[activePage - 1]?.mainStepIndex || 0
+                      )
+                    }
                     classNames={{
                       base: cn(
                         "inline-flex w-full max-w-md bg-content1",
@@ -145,8 +176,23 @@ const CookModeDialog: React.FC<CookModeProps> = ({
                         <Checkbox
                           size="md"
                           color="success"
-                          value={step.subStepValue}
-                          defaultChecked={true}
+                          aria-label={step.subStepValue}
+                          isSelected={
+                            checkedSteps[
+                              parseInt(
+                                (directions?.[
+                                  activePage - 1
+                                ]?.mainStepIndex.toString() || 0) +
+                                  step.subStepIndex.toString()
+                              )
+                            ] || false
+                          }
+                          onValueChange={() =>
+                            handleStepCheckboxChange(
+                              directions?.[activePage - 1]?.mainStepIndex || 0,
+                              step.subStepIndex
+                            )
+                          }
                           classNames={{
                             base: cn(
                               "inline-flex w-full max-w-md bg-content1",
