@@ -116,7 +116,7 @@ const RecipeSection = ({ id }: { id: string }) => {
                 </p>
               )}
 
-              <div className="justify-left mx-3 my-4 flex flex-wrap gap-2 px-2">
+              <div className="justify-left mx-3 my-4 flex flex-wrap gap-2">
                 {data?.recipe.tags.map((tag, index) => (
                   <Button
                     href={`/discover?tags=${tag.name}`}
