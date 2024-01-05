@@ -95,7 +95,7 @@ const ImageController: React.FC<ImageControllerProps> = ({
             </p>
 
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              JPEG, PNG, WebP, SVG (MAX. 2560x1440px)
+              JPEG, PNG, WebP, SVG, HEIC (MAX. 2560x1440px)
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Vänligen välj upp till max tre bilder.
@@ -107,7 +107,7 @@ const ImageController: React.FC<ImageControllerProps> = ({
             id="dropzone-file"
             type="file"
             className="hidden"
-            accept=".jpg, .jpeg, .png, .webp, .svg"
+            accept=".jpg, .jpeg, .png, .webp, .svg, .heic"
             aria-label="Ladda upp bilder"
             multiple
             onChange={handleFileChange}
