@@ -91,8 +91,8 @@ export const createRecipe = async (
         description: description,
         countryId: foundUniqueCountry?.id,
         servingSize: servingSize,
-        cookingTimeHours: Number(cookingTime.hours),
-        cookingTimeMinutes: Number(cookingTime.minutes),
+        cookingTimeHours: Number(cookingTime?.hours),
+        cookingTimeMinutes: Number(cookingTime?.minutes),
 
         directions: {
           create: direction.map((step) => ({
