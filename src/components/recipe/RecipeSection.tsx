@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import CookModeDialog from "../dialog/cook-mode-dialog";
 import { useRouter } from "next/router";
+import { PiBowlFoodDuotone } from "react-icons/pi";
 
 const RecipeSection = ({ id }: { id: string }) => {
   const { data: session } = useSession();
@@ -98,14 +99,15 @@ const RecipeSection = ({ id }: { id: string }) => {
               </div>
               <div className="mb-3 flex gap-2 px-4">
                 {data?.recipe?.servingSize && (
-                  <h3 className="text-[16px]">
+                  <h3 className="flex items-center text-[16px]">
+                    <PiBowlFoodDuotone className="mr-[2px] md:mr-1" />
                     {data?.recipe?.servingSize} Portioner |
                   </h3>
                 )}
                 {data?.recipe?.cookingTimeMinutes ||
                 data?.recipe?.cookingTimeHours ? (
                   <h3 className="flex items-center text-[16px]">
-                    <MdOutlineTimer className="mr-2" />
+                    <MdOutlineTimer className="mr-[2px]" />
                     {data?.recipe?.cookingTimeHours && (
                       <span>{data?.recipe?.cookingTimeHours}&nbsp;tim</span>
                     )}

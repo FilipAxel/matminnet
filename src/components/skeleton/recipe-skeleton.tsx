@@ -24,11 +24,11 @@ const SkeletonRecipe = () => {
           </div>
           <div className="mt-3 flex items-center px-5">
             <div className="mr-2 flex items-center">
-              <MdAccessTime className="mr-1 animate-pulse text-[#d1d1d1]" />
+              <PiBowlFoodDuotone className="mr-1 animate-pulse text-[#d1d1d1]" />
               <div className="h-4 w-8 animate-pulse rounded bg-gray-300 text-white"></div>
             </div>
             <div className="flex items-center">
-              <PiBowlFoodDuotone className="mr-1 animate-pulse text-[#d1d1d1]" />
+              <MdAccessTime className="mr-1 animate-pulse text-[#d1d1d1]" />
               <div className="h-4 w-8 animate-pulse rounded bg-gray-300 text-white"></div>
             </div>
           </div>
