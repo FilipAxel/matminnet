@@ -16,7 +16,7 @@ const RecipeImage: React.FC<RecipeImageProps> = ({ images }) => {
   return (
     <>
       <div className="flex w-full flex-col items-center justify-center overflow-hidden">
-        <div className="relative">
+        <div className="relative md:ml-2">
           <div className="absolute bottom-2 right-2 z-50">
             <MdOutlineZoomOutMap
               onClick={onOpen}
@@ -55,11 +55,11 @@ const RecipeImage: React.FC<RecipeImageProps> = ({ images }) => {
         </Modal>
 
         {images?.length && images.length > 1 ? (
-          <div className="mx-auto flex justify-center gap-2">
+          <div className="relative flex w-full justify-center gap-2 md:justify-start">
             {images?.map((image, index: number) => (
               <div
                 key={index}
-                className={`mt-5 cursor-pointer  rounded-[10px] ${
+                className={`mt-3 cursor-pointer rounded-[10px] ${
                   index === mainImageIndex ? "border-2 border-[#b195d2]" : ""
                 }`}
               >

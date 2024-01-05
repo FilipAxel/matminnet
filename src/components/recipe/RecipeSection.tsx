@@ -11,7 +11,6 @@ import { MdOutlineTimer } from "react-icons/md";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import CookModeDialog from "../dialog/cook-mode-dialog";
-import { type Recipe } from "@prisma/client";
 
 const RecipeSection = ({ id }: { id: string }) => {
   const { data: session } = useSession();
@@ -42,13 +41,6 @@ const RecipeSection = ({ id }: { id: string }) => {
     }
   );
 
-  const calculateTotalCookingTime = (recipe: Recipe): number => {
-    const hoursInMinutes = (recipe.cookingTimeHours || 0) * 60;
-    const minutes = recipe.cookingTimeMinutes || 0;
-
-    return hoursInMinutes + minutes;
-  };
-
   if (isLoading) {
     return <SkeletonRecipe />;
   }
@@ -64,7 +56,7 @@ const RecipeSection = ({ id }: { id: string }) => {
     return (
       <>
         <div className="mx-auto mb-10 max-w-5xl">
-          <div className="mt-5 flex flex-wrap lg:flex-row-reverse lg:flex-nowrap lg:justify-end">
+          <div className="mt-5 flex flex-wrap md:flex-row-reverse md:flex-nowrap md:justify-end">
             <div className="w-full lg:w-[70%]">
               <h1 className="mt-2 w-full px-4 text-left text-[36px] font-bold text-[#3A3A3A]">
                 {data?.recipe.name}
@@ -135,10 +127,10 @@ const RecipeSection = ({ id }: { id: string }) => {
             <RecipeImage images={data?.recipe.images} />
           </div>
 
-          <div className="mx-2 mt-4 flex flex-wrap justify-center lg:mt-8 lg:flex-nowrap lg:justify-normal">
+          <div className="mx-2 mt-4 flex flex-wrap justify-center md:mt-8 md:flex-nowrap md:justify-normal">
             {data?.recipe.ingredientsSection.length ? (
-              <div className="flex w-full flex-col sm:max-w-[700px] md:max-w-[500px]">
-                <h2 className="mb-2 text-center text-[30px] font-bold lg:text-left">
+              <div className="flex w-full flex-col md:max-w-[500px]">
+                <h2 className="mb-2 text-center text-[30px] font-bold md:text-left">
                   Ingredienser
                 </h2>
                 <div className="flex flex-col gap-2">
@@ -156,7 +148,7 @@ const RecipeSection = ({ id }: { id: string }) => {
 
             {data?.recipe.directions.length ? (
               <div>
-                <h2 className="mt-4 text-center text-[30px] font-bold lg:ml-5 lg:mt-0 lg:text-left">
+                <h2 className="mt-4 text-center text-[30px] font-bold md:ml-5 md:mt-0 md:text-left">
                   Gör så här
                 </h2>
                 <div className="flex w-full flex-col items-center justify-center gap-3 overflow-hidden p-2 pb-5 lg:max-w-[600px]">

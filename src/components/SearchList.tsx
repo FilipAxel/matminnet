@@ -3,7 +3,7 @@ import { api } from "~/utils/api";
 import RecipeCard from "./recipe/recipe-card";
 import { type RecipeWithImage } from "~/pages/recipes";
 import { useSearchParams } from "next/navigation";
-import { Spinner } from "@nextui-org/react";
+import SkeletonRecipeCard from "./skeleton/recipe-card-skeletion";
 
 const SearchList = ({
   publicSearch,
@@ -14,6 +14,7 @@ const SearchList = ({
   publication?: string;
   collection?: string;
 }) => {
+  const numberOfSkeletonsCards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const searchParams = useSearchParams();
   const [recipesData, setRecipesData] = useState<RecipeWithImage[]>([]);
 
@@ -57,8 +58,10 @@ const SearchList = ({
   return (
     <>
       {isLoading && recipesData.length === 0 && (
-        <div className="grid h-[70vh] place-items-center">
-          <Spinner size="lg" />
+        <div className="mt-5 flex flex-wrap justify-center gap-3 p-3 xs:justify-start media428:ml-2 sm:justify-start md:ml-4">
+          {numberOfSkeletonsCards.map((n) => {
+            return <SkeletonRecipeCard key={n} />;
+          })}
         </div>
       )}
 
