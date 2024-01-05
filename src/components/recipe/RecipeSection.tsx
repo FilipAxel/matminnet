@@ -1,5 +1,4 @@
-import { Button } from "@nextui-org/react";
-import router from "next/router";
+import { BreadcrumbItem, Breadcrumbs, Button } from "@nextui-org/react";
 import { api } from "~/utils/api";
 import SkeletonRecipe from "../skeleton/recipe-skeleton";
 import DirectionSection from "./DirectionSection";
@@ -11,9 +10,11 @@ import { MdOutlineTimer } from "react-icons/md";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import CookModeDialog from "../dialog/cook-mode-dialog";
+import { useRouter } from "next/router";
 
 const RecipeSection = ({ id }: { id: string }) => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const { data, isLoading } = api.recipe.getRecipeWithId.useQuery({
     id,
@@ -55,7 +56,20 @@ const RecipeSection = ({ id }: { id: string }) => {
   } else {
     return (
       <>
-        <div className="mx-auto mb-10 max-w-5xl">
+        <div className="mx-auto mb-10 mt-0 max-w-5xl">
+          <Breadcrumbs
+            classNames={{
+              base: "w-full bg-default-100 mt-0",
+            }}
+            radius="none"
+            variant="solid"
+            className="w-full pl-2"
+          >
+            <BreadcrumbItem href={"/discover"}>Recept</BreadcrumbItem>
+            <BreadcrumbItem href={router.asPath}>
+              {data?.recipe.name}
+            </BreadcrumbItem>
+          </Breadcrumbs>
           <div className="mt-5 flex flex-wrap md:flex-row-reverse md:flex-nowrap md:justify-end">
             <div className="w-full lg:w-[70%]">
               <h1 className="mt-2 w-full px-4 text-left text-[36px] font-bold text-[#3A3A3A]">
