@@ -1,179 +1,140 @@
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  Button,
-} from "@nextui-org/react";
-import classNames from "classnames";
+import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { FaPause, FaPlay, FaStop } from "react-icons/fa6";
 
-interface TimerDialogProps {
-  direction: string;
-  isOpen: boolean;
-  timeValue: number;
-  unit: string;
-  onClose: () => void;
-}
-const minuteSeconds = 60;
-const hourSeconds = 3600;
-
-const renderTime = (minutes: number, seconds: number) => {
-  const minutesClass = classNames("time", {
-    "transition-opacity ease-out duration-400 hidden": minutes === 0,
-  });
-  const formattedSecounds = Math.ceil(seconds).toString();
-  if (minutes === 0 && seconds === 0) {
-    return (
-      <div className="text-2xl">
-        <div>Time&apos;s Up! 🎉</div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="text-2xl">
-      <div className={minutesClass}>{`${minutes} min`}</div>
-      <div>{formattedSecounds} sec</div>
-    </div>
-  );
+export const playSound = async (url: string): Promise<void> => {
+  const audio = new Audio(url);
+  await audio.play();
 };
 
-const TimerDialog: React.FC<TimerDialogProps> = ({
-  direction,
-  isOpen,
-  onClose,
-  timeValue,
-  unit,
-}) => {
-  const [isPlayingTimer, setIsPlayingTimer] = useState(false);
-  const [timerCompleted, setTimerCompleted] = useState(false);
-  const [timerKey, setTimerKey] = useState(1);
+interface TimerDialogProps {
+  timeValue: number;
+  unit: string;
+}
 
-  const resetTimer = () => {
-    setIsPlayingTimer(true);
-    setTimerCompleted(false);
-    setTimerKey(timerKey + 1);
-  };
-
-  const calculateDuration = () => {
-    switch (unit) {
-      case "sec":
-        return timeValue;
-      case "min":
-        return timeValue * minuteSeconds;
-      case "hr":
-        return timeValue * hourSeconds;
-      default:
-        return 0;
-    }
-  };
-
-  const showNotification = async () => {
-    if ("Notification" in window) {
-      try {
-        const permission = await Notification.requestPermission();
-        if (permission === "denied") {
-          console.warn(
-            "Aviseringsbehörighet nekad. Du kommer inte att få aviseringar."
-          );
-          console.warn(
-            "För att återställa aviseringstillståndet, klicka på låsikonen bredvid webbadressen och tillåt aviseringar"
-          );
-        }
-      } catch (error) {
-        console.error("Error requesting notification permission:", error);
+export const showNotification = async (): Promise<void> => {
+  if ("Notification" in window) {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === "denied") {
+        console.warn(
+          "Aviseringsbehörighet nekad. Du kommer inte att få aviseringar."
+        );
+        console.warn(
+          "För att återställa aviseringstillståndet, klicka på låsikonen bredvid webbadressen och tillåt aviseringar"
+        );
       }
+    } catch (error) {
+      console.error("Error requesting notification permission:", error);
     }
+  }
+};
+
+export const calculateDurationInSeconds = (unit: string, timeValue: number) => {
+  switch (unit) {
+    case "sec":
+      return Math.floor(timeValue);
+    case "min":
+      return Math.floor(timeValue * 60); // Convert minutes to seconds
+    case "hr":
+      return Math.floor(timeValue * 3600); // Convert hours to seconds
+    default:
+      return 0;
+  }
+};
+
+const TimerDialog: React.FC<TimerDialogProps> = ({ timeValue, unit }) => {
+  const [start, setStart] = useState(false);
+  const [reset, setReset] = useState(1);
+  const [minutes, setMinutes] = useState(
+    Math.floor((calculateDurationInSeconds(unit, timeValue) % 3600) / 60)
+  );
+  const [seconds, setseconds] = useState(
+    calculateDurationInSeconds(unit, timeValue) % 60
+  );
+
+  const handleStart = () => {
+    setStart(true);
   };
 
-  const playSound = async (url: string) => {
-    const audio = new Audio(url);
-    await audio.play();
+  const handleStop = () => {
+    setStart(false);
+  };
+
+  const handleReset = () => {
+    setStart(false);
+    setReset(reset + 1);
   };
 
   return (
-    <Modal
-      backdrop="blur"
-      className="m-4"
-      placement="center"
-      size="xl"
-      isOpen={isOpen}
-      onClose={onClose}
-    >
-      <ModalContent>
-        {(_) => (
-          <>
-            <ModalHeader className="flex flex-col gap-1 font-medium">
-              <p>{direction}</p>
-            </ModalHeader>
-            <ModalBody>
-              <div className="flex items-center justify-center">
-                <CountdownCircleTimer
-                  key={timerKey}
-                  isPlaying={isPlayingTimer}
-                  size={200}
-                  strokeWidth={8}
-                  colors="#EF798A"
-                  duration={calculateDuration()}
-                  onComplete={() => {
-                    setIsPlayingTimer(false);
-                    setTimerCompleted(true);
-                    void playSound("/timer.mp3");
-                  }}
-                >
-                  {({ elapsedTime, color }) => {
-                    const remainingTime = calculateDuration() - elapsedTime;
-                    const minutes = Math.floor(remainingTime / minuteSeconds);
-                    const seconds = remainingTime % minuteSeconds;
-                    return (
-                      <span style={{ color }}>
-                        {renderTime(minutes, seconds)}
-                      </span>
-                    );
-                  }}
-                </CountdownCircleTimer>
-              </div>
-              <div className="flex flex-col gap-2 py-8">
-                {!timerCompleted ? (
-                  <Button
-                    className="text-white"
-                    color="success"
-                    variant="solid"
-                    isDisabled={isPlayingTimer}
-                    onPress={() => {
-                      setIsPlayingTimer(true);
-                      void showNotification();
-                    }}
-                  >
-                    Starta timer
-                  </Button>
-                ) : (
-                  <Button
-                    className="text-white"
-                    color="success"
-                    variant="solid"
-                    onPress={resetTimer}
-                  >
-                    Återställ
-                  </Button>
-                )}
-                <Button
-                  color="danger"
-                  variant="light"
-                  onPress={() => {
-                    setIsPlayingTimer(false);
-                  }}
-                >
-                  Pausa
-                </Button>
-              </div>
-            </ModalBody>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
+    <div className="mt-3 flex flex-col items-center justify-center rounded-large bg-gray-700 p-3">
+      <CountdownCircleTimer
+        isPlaying={start}
+        duration={calculateDurationInSeconds(unit, timeValue)}
+        size={160}
+        strokeWidth={8}
+        colors={"#f5a524"}
+        key={reset}
+        onComplete={() => {
+          void playSound("/timer.mp3");
+          setStart(false);
+        }}
+        initialRemainingTime={calculateDurationInSeconds(unit, timeValue)}
+      >
+        {({ remainingTime }) => {
+          setMinutes(Math.floor((remainingTime % 3600) / 60));
+          setseconds(remainingTime % 60);
+
+          return (
+            <>
+              <h1
+                role="timer"
+                aria-live="assertive"
+                className="text-center text-3xl font-normal text-white"
+              >
+                {minutes ? `${minutes < 10 ? `0${minutes}` : minutes}:` : "00:"}
+                {`${seconds < 10 ? `0${seconds}` : seconds}`}
+              </h1>
+            </>
+          );
+        }}
+      </CountdownCircleTimer>
+      <div className="flex gap-32">
+        <Button
+          className="h-12 w-12 bg-[#ff0000]"
+          variant="solid"
+          radius="full"
+          isIconOnly
+          onClick={handleReset}
+        >
+          <FaStop className="text-white" />
+        </Button>
+        <Button
+          className={`h-12 w-12 ${start ? "bg-[#f5a524]" : " bg-success-400"}`}
+          variant="solid"
+          radius="full"
+          isIconOnly
+          onClick={() => {
+            if (start) {
+              handleStop();
+            } else {
+              if (seconds <= 0 && minutes <= 0) {
+                handleReset();
+              }
+              handleStart();
+              void showNotification();
+            }
+          }}
+        >
+          {start ? (
+            <FaPause className="text-white" />
+          ) : (
+            <FaPlay className="text-white" />
+          )}
+        </Button>
+      </div>
+    </div>
   );
 };
 

@@ -14,11 +14,7 @@ import {
   usePagination,
 } from "@nextui-org/react";
 import { useState } from "react";
-import {
-  MdNavigateBefore,
-  MdNavigateNext,
-  MdOutlineTimer,
-} from "react-icons/md";
+import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import TimerDialog from "./timer-dialog";
 import { FaPlay } from "react-icons/fa6";
 import IngrediantDialog, {
@@ -55,7 +51,6 @@ const CookModeDialog: React.FC<CookModeProps> = ({
   directions,
   ingredientsSection,
 }) => {
-  const [openTimerStep, setOpenTimerStep] = useState<string>("");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { activePage, range, setPage, onNext, onPrevious } = usePagination({
     total: directions.length,
@@ -206,28 +201,10 @@ const CookModeDialog: React.FC<CookModeProps> = ({
                         >
                           {step.subStepIndex + 1}:&nbsp;{step.subStepValue}
                           {step.time?.timeValue && (
-                            <>
-                              <Button
-                                className="my-4 bg-[#cf2d051e] text-sm font-semibold text-[#cf2e05]"
-                                radius="full"
-                                onPress={() => {
-                                  setOpenTimerStep(step.subStepValue);
-                                }}
-                              >
-                                <MdOutlineTimer /> Öppna Timer:&nbsp;
-                                {step.time?.timeValue}&nbsp;
-                                {step.time?.unit}
-                              </Button>
-                              {openTimerStep === step.subStepValue && (
-                                <TimerDialog
-                                  direction={step.subStepValue}
-                                  timeValue={step.time?.timeValue}
-                                  unit={step.time?.unit}
-                                  isOpen={openTimerStep === step.subStepValue}
-                                  onClose={() => setOpenTimerStep("")}
-                                />
-                              )}
-                            </>
+                            <TimerDialog
+                              timeValue={step.time?.timeValue}
+                              unit={step.time?.unit}
+                            />
                           )}
                         </Checkbox>
                       </div>
