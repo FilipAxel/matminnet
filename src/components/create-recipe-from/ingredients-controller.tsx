@@ -22,7 +22,8 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
   currentValue,
 }) => {
   const customSelectStyles = selectCustomStyle();
-  const { data: ingredients } = api.ingredient.getAllIngredients.useQuery();
+  const { data: ingredients, isLoading } =
+    api.ingredient.getAllIngredients.useQuery();
   const { onChange } = field;
   const ingredientOptions: IngredientOption[] =
     ingredients?.map((ingredient: { name: string }) => ({
@@ -94,9 +95,10 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
     <div className="z-50 w-full">
       <CreatableSelect
         isMulti
+        isLoading={isLoading}
         styles={customSelectStyles}
         value={currentValue}
-        aria-label={"ingredients"}
+        aria-label={"Ingredienser"}
         options={ingredientOptions}
         isClearable={true}
         onChange={handleInputChange}
@@ -105,11 +107,12 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
         <div className="m-0 flex w-full flex-wrap rounded-b-lg bg-gray-700 p-2">
           {currentValue.map((option, index) => (
             <Fragment key={option?.label}>
-              <div className="m-3 flex w-full justify-around gap-5">
+              <div className="m-1 flex w-full justify-around gap-2">
                 <div className="w-full">
                   <Input
                     aria-labelledby={option?.label}
                     aria-label={option?.label}
+                    className="text-xs"
                     size="sm"
                     color="primary"
                     disabled
@@ -123,7 +126,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                   />
                 </div>
 
-                <div className="w-full">
+                <div className="w-full max-w-[85px] sm:max-w-[150px]">
                   <Input
                     aria-labelledby={"quantity"}
                     aria-label={"quantity"}
@@ -131,9 +134,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                     color="primary"
                     endContent={
                       <div className="pointer-events-none flex items-center">
-                        <span className="text-small text-default-400">
-                          Antal
-                        </span>
+                        <span className="text-xs text-default-400">Antal</span>
                       </div>
                     }
                     radius="sm"
@@ -159,9 +160,7 @@ const IngredientsController: React.FC<IngredientsControllerProps> = ({
                     value={option?.unit}
                     endContent={
                       <div className="pointer-events-none flex items-center">
-                        <span className="text-small text-default-400">
-                          Enhet
-                        </span>
+                        <span className="text-xs text-default-400">Enhet</span>
                       </div>
                     }
                     type="text"

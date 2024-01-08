@@ -33,7 +33,7 @@ const IngredientName: React.FC<StepProps> = ({
           id={`step${step.mainStepIndex}`}
           type="text"
           aria-label="step"
-          label={`Ingrediens Lista ${step.mainStepIndex}`}
+          label={`Ingrediens Namn valfritt, för steg ${step.mainStepIndex}`}
           value={step.sectionName}
           onChange={(e) => updateStep(step.mainStepIndex, e.target.value)}
         />

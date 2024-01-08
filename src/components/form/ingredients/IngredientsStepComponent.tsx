@@ -27,7 +27,7 @@ const IngredientsStepComponent: React.FC<IngredientsStepProps> = ({
     const newStepIndex = ingredientSection.length + 1;
     const newStep = {
       mainStepIndex: newStepIndex,
-      sectionName: `Lista ${newStepIndex}`,
+      sectionName: "",
       ingredients: [],
     };
     setIngredientSection([...ingredientSection, newStep]);
